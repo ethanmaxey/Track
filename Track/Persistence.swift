@@ -14,9 +14,13 @@ struct PersistenceController {
     static let preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+        
+        let jobNames = ["Facebook", "Apple", "Google", "Amazon", "Microsoft"]
+        
+        for name in jobNames {
+            let newJob = JobListing(context: viewContext)
+            newJob.name = name
+            newJob.id = UUID()
         }
         do {
             try viewContext.save()
