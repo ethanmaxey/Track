@@ -24,7 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0DB0A7FD2C83EC840038F855 /* Track.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Track.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DB0A7FD2C83EC840038F855 /* Track.io.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Track.io.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DB0A8122C83EC840038F855 /* TrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DB0A81C2C83EC840038F855 /* TrackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -85,7 +85,7 @@
 		0DB0A7FE2C83EC840038F855 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0DB0A7FD2C83EC840038F855 /* Track.app */,
+				0DB0A7FD2C83EC840038F855 /* Track.io.app */,
 				0DB0A8122C83EC840038F855 /* TrackTests.xctest */,
 				0DB0A81C2C83EC840038F855 /* TrackUITests.xctest */,
 			);
@@ -114,7 +114,7 @@
 			packageProductDependencies = (
 			);
 			productName = Track;
-			productReference = 0DB0A7FD2C83EC840038F855 /* Track.app */;
+			productReference = 0DB0A7FD2C83EC840038F855 /* Track.io.app */;
 			productType = "com.apple.product-type.application";
 		};
 		0DB0A8112C83EC840038F855 /* TrackTests */ = {
@@ -412,7 +412,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.ethanmaxey.Track;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Track.io;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -441,7 +441,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.ethanmaxey.Track;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Track.io;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

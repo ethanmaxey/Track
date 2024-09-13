@@ -57,10 +57,16 @@ struct CustomAlertView<T: Hashable, M: View>: View {
             if isAnimating {
                 VStack {
                     VStack {
-                        Text(titleKey).font(.title2).bold().foregroundStyle(.tint).padding(8)
+                        Text(titleKey)
+                            .font(.title3)
+                            .bold()
+                            .foregroundStyle(.tint)
+                            .padding(8)
 
-                        TextField("", text: $username, prompt: Text("Required"))
+                        // Cannot convert value of type 'some View' to expected argument type 'Text?'
+                        TextField("", text: $username, prompt: DefaultText)
                         .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
 
                         /// Buttons
                         HStack {
@@ -73,11 +79,11 @@ struct CustomAlertView<T: Hashable, M: View>: View {
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(.background)
+                    .background(.black)
                     .cornerRadius(35)
                 }
                 .padding()
-                .transition(.slide)
+                .transition(.blurReplace)
                 .zIndex(2)
             }
         }
@@ -125,6 +131,11 @@ struct CustomAlertView<T: Hashable, M: View>: View {
                 .background(.tint)
                 .clipShape(RoundedRectangle(cornerRadius: 30.0))
         }
+    }
+    
+    var DefaultText: Text? {
+        Text("Enter job name here.")
+            .foregroundStyle(.gray)
     }
 
     func dismiss() {

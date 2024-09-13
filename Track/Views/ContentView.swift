@@ -9,16 +9,21 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(sortDescriptors: []) private var jobs: FetchedResults<JobListing>
+    @Environment(\.managedObjectContext) var viewContext
+    @FetchRequest(sortDescriptors: []) var jobs: FetchedResults<JobListing>
 
     @State private var isPresented = false
     @State private var addJobAlertData: String = "Fake"
+    @State private var searchText = String()
+    
+    var results: [JobListing] {
+        searchText.isEmpty ? Array(jobs) : jobs.filter { $0.name?.contains(searchText) ?? false }
+    }
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(jobs) { job in
+                ForEach(results, id: \.self)  { job in
                     NavigationLink(destination: JobDetailsView(job: job)) {
                         Text(job.name ?? "No Name")
                     }
@@ -27,6 +32,8 @@ struct ContentView: View {
                 .onDelete(perform: deletejobs)
             }
             .styleList()
+            .searchable(text: $searchText)
+            .foregroundStyle(.blue)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     RoundedButton(buttonType: .navigationLink(
@@ -37,7 +44,7 @@ struct ContentView: View {
                         isPresented = true
                     }), text: "New Job", color: .blue)
                     .customAlert(
-                        "Alert Title",
+                        "Congrats! Where did you apply?",
                         isPresented: $isPresented,
                         presenting: addJobAlertData,
                         actionText: "Yes, Done"
@@ -48,42 +55,13 @@ struct ContentView: View {
                     }
                 }
             }
+            .toolbarBackground(.black, for: .navigationBar)
+            .toolbarBackground(.automatic, for: .bottomBar)
             .toolbarBackground(.black, for: .bottomBar)
             .toolbarBackground(.visible, for: .bottomBar)
+            .preferredColorScheme(.dark)
         }
         .background(Color.black)
-    }
-
-    private func addjob(name: String) {
-        withAnimation {
-            let newJob = JobListing(context: viewContext)
-            newJob.id = UUID()
-            newJob.name = name
-            
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-
-    private func deletejobs(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { jobs[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
     }
 }
 

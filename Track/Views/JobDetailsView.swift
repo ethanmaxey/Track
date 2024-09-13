@@ -17,7 +17,7 @@ struct JobDetailsView: View {
                 .foregroundStyle(.blue)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.black)
+        .background(.black.opacity(0.95))
     }
 }
 

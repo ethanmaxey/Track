@@ -21,7 +21,7 @@ struct VisualizeView: View {
             Chart {
                 ForEach(jobs, id: \.id) { job in
                     PointMark(
-                        x: .value("Job ID", job.id?.uuidString ?? "Unknown"),
+                        x: .value("Company", job.name ?? "Unknown"),
                         y: .value("Count", CGFloat(arc4random()) / CGFloat(UInt32.max))
                     )
                     .foregroundStyle(.blue)

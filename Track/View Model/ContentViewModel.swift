@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension ContentView {
-    private func addjob(name: String) {
+    func addjob(name: String) {
         withAnimation {
             let newJob = JobListing(context: viewContext)
             newJob.id = UUID()
@@ -25,7 +25,7 @@ extension ContentView {
         }
     }
 
-    private func deletejobs(offsets: IndexSet) {
+    func deletejobs(offsets: IndexSet) {
         withAnimation {
             offsets.map { jobs[$0] }.forEach(viewContext.delete)
 
