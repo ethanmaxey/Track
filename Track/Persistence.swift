@@ -17,9 +17,9 @@ struct PersistenceController {
         
         let jobNames = ["Facebook", "Apple", "Google", "Amazon", "Microsoft"]
         
-        for name in jobNames {
+        for company in jobNames {
             let newJob = JobListing(context: viewContext)
-            newJob.name = name
+            newJob.company = company
             newJob.id = UUID()
         }
         do {
@@ -57,5 +57,24 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+    }
+    
+    func addjob(company: String) {
+        let newJob = JobListing(context: container.viewContext)
+        newJob.id = UUID()
+        newJob.company = company
+        newJob.interview = false
+        newJob.oa = false
+        newJob.offer = false
+        newJob.rejected = false
+        
+        do {
+            try container.viewContext.save()
+        } catch {
+            // Replace this implementation with code to handle the error appropriately.
+            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
     }
 }
