@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CustomAlertView<T: Hashable, M: View>: View {
-
     @Namespace private var namespace
 
     @Binding private var isPresented: Bool
@@ -21,10 +20,6 @@ struct CustomAlertView<T: Hashable, M: View>: View {
 
     private var action: (() -> ())?
     private var message: (() -> M)?
-
-    // Animation
-    @State private var isAnimating = false
-    private let animationDuration = 0.5
     
     @State private var username: String = String()
 
@@ -53,39 +48,37 @@ struct CustomAlertView<T: Hashable, M: View>: View {
                 .ignoresSafeArea()
                 .opacity(isPresented ? 0.6 : 0)
                 .zIndex(1)
-
-            if isAnimating {
+            
+            VStack {
                 VStack {
-                    VStack {
-                        Text(titleKey)
-                            .font(.title3)
-                            .bold()
-                            .foregroundStyle(.tint)
-                            .padding(8)
+                    Text(titleKey)
+                        .font(.title3)
+                        .bold()
+                        .foregroundStyle(.tint)
+                        .padding(8)
 
-                        // Cannot convert value of type 'some View' to expected argument type 'Text?'
-                        TextField("", text: $username, prompt: DefaultText)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(.white)
+                    // Cannot convert value of type 'some View' to expected argument type 'Text?'
+                    TextField("", text: $username, prompt: DefaultText)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.white)
 
-                        /// Buttons
-                        HStack {
-                            CancelButton
-                            DoneButton
-                        }
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding()
-                        .frame(maxWidth: .infinity)
+                    /// Buttons
+                    HStack {
+                        CancelButton
+                        DoneButton
                     }
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(.black)
-                    .cornerRadius(35)
                 }
                 .padding()
-                .transition(.blurReplace)
-                .zIndex(2)
+                .frame(maxWidth: .infinity)
+                .background(.black)
+                .cornerRadius(35)
             }
+            .padding()
+            .transition(.blurReplace)
+            .zIndex(2)
         }
         .ignoresSafeArea()
         .onAppear {
@@ -117,8 +110,7 @@ struct CustomAlertView<T: Hashable, M: View>: View {
                 dismiss()
                 actionWithValue?(username)
             } else {
-                // Don't dismiss, animate a shake/jiggle queue.
-                withAnimation(.easeInOut(duration: animationDuration)) {}
+
             }
 
         } label: {
@@ -139,26 +131,11 @@ struct CustomAlertView<T: Hashable, M: View>: View {
     }
 
     func dismiss() {
-        if #available(iOS 17.0, *) {
-            withAnimation(.easeInOut(duration: animationDuration)) {
-                isAnimating = false
-            } completion: {
-                isPresented = false
-            }
-        } else {
-            withAnimation(.easeInOut(duration: animationDuration)) {
-                isAnimating = false
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-                isPresented = false
-            }
-        }
+        isPresented = false
     }
 
     func show() {
-        withAnimation(.easeInOut(duration: animationDuration)) {
-            isAnimating = true
-        }
+        isPresented = true
     }
 }
 

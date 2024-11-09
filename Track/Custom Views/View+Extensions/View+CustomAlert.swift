@@ -39,9 +39,6 @@ extension View {
             if isPresented.wrappedValue {
                 // disable the default FullScreenCover animation
                 transaction.disablesAnimations = true
-
-                // add custom animation for presenting and dismissing the FullScreenCover
-                transaction.animation = .linear(duration: 0.1)
             }
         }
     }
@@ -74,9 +71,6 @@ extension View {
             if isPresented.wrappedValue {
                 // disable the default FullScreenCover animation
                 transaction.disablesAnimations = true
-
-                // add custom animation for presenting and dismissing the FullScreenCover
-                transaction.animation = .linear(duration: 0.1)
             }
         }
     }

@@ -14,8 +14,6 @@ struct ListStyle: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .foregroundColor(.blue)
-            .background(listBackgroundColor)
             .scrollContentBackground(.hidden)
             .listRowSeparator(.hidden)
     }

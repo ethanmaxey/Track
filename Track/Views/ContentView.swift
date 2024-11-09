@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var viewContext
     @FetchRequest(sortDescriptors: []) var jobs: FetchedResults<JobListing>
     @EnvironmentObject var viewModel: ViewModel
@@ -30,7 +31,6 @@ struct ContentView: View {
                     NavigationLink(destination: JobDetailsView(job: job)) {
                         Text(job.company ?? "Uh Oh! No name found.")
                     }
-                    .listRowBackground(Color.black)
                 }
                 .onDelete(perform: { offsets in
                     viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
@@ -38,7 +38,6 @@ struct ContentView: View {
             }
             .styleList()
             .searchable(text: $searchText)
-            .foregroundStyle(.blue)
             .filterSheet(isPresented: $isFiltersPresented, filterCriteria: filterCriteria)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -61,16 +60,19 @@ struct ContentView: View {
                     }
                 }
             }
-            .toolbarBackground(.black, for: .navigationBar)
-            .toolbarBackground(.automatic, for: .bottomBar)
-            .toolbarBackground(.black, for: .bottomBar)
-            .toolbarBackground(.visible, for: .bottomBar)
-            .preferredColorScheme(.dark)
         }
-        .background(Color.black)
+        .background(colorScheme == .dark ? Color.black : Color.white)
     }
 }
 
 #Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext).environmentObject(ViewModel.preview)
+    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(ViewModel.preview)
+}
+
+#Preview("Dark") {
+    ContentView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(ViewModel.preview)
+        .preferredColorScheme(.dark)
 }
