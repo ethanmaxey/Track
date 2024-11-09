@@ -9,12 +9,6 @@ import Sankey
 import SwiftUI
 
 struct VisualizeView: View {
-    @Environment(\.colorScheme) var colorScheme
-//    @Environment(\.managedObjectContext) private var viewContext
-//    @FetchRequest(
-//        entity: JobListing.entity(),
-//        sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]
-//    ) private var jobs: FetchedResults<JobListing>
 
     @State var data: [SankeyLink] = [
         ["Applications", "Interviews", "4"],
@@ -38,74 +32,36 @@ struct VisualizeView: View {
                 nodeColors: colors,
                 nodeColorMode: .unique,
                 nodeWidth: 25,
-                nodePadding: 100,
+                nodePadding: 50,
                 nodeLabelColor: "black",
                 nodeLabelFontSize: 24,
-                nodeLabelFontName: nil,
-                nodeLabelBold: false,
-                nodeLabelItalic: false,
                 nodeLabelPadding: 1,
-                nodeInteractivity: false,
                 linkColors: colors,
                 linkColorMode: .target,
-                linkColorFill: nil,
-                linkColorFillOpacity: nil,
-                linkColorStroke: nil,
-                linkColorStrokeWidth: 0,
-                tooltipValueLabel: "",
-                tooltipTextColor: "black",
-                tooltipTextFontSize: 0,
-                tooltipTextFontName: nil,
-                tooltipTextBold: false,
-                tooltipTextItalic: false,
-                layoutIterations: 32
+                layoutIterations: 1000
             )
         }
-        .background(colorScheme == .dark ? Color.black : Color.white)
         .supportedInterfaceOrientations(.landscape)
-    }
-    
-    /*
-     Applications [4] Interviews
-     Applications [9] Rejected
-     Applications [4] No Answer
-
-     Interviews [2] Offers
-     Interviews [2] No Offer
-
-     Offers [1] Accepted
-     Offers [1] Declined
-    */
-    func createSankeyData() -> [SankeyLink] {
-        var links: [String: Int] = [:]
-
-//        for job in jobs {
-//            var path: [String] = ["\(job.company ?? "Unknown")"]
-//
-//            if job.oa {
-//                path.append("OA")
-//            }
-//            if job.interview {
-//                path.append("Interview")
-//            }
-//            if job.offer {
-//                path.append("Offer")
-//            } else if job.rejected {
-//                path.append("Rejected")
-//            }
-//
-//            for i in 0..<path.count-1 {
-//                let keyString = "\(path[i]) -> \(path[i + 1])"
-//                links[keyString, default: 0] += 1
-//            }
-//        }
-
-        return links.map { SankeyLink(source: $0.key.components(separatedBy: " -> ").first!,
-                                      target: $0.key.components(separatedBy: " -> ").last!,
-                                      value: Double($0.value)) }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    print("Finish me!")
+                } label: {
+                    Label(String(), systemImage: "square.and.arrow.up")
+                }
+            }
+        }
     }
 }
 
-#Preview(traits: .landscapeLeft) {
-    VisualizeView()
+#Preview("Light") {
+    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(ViewModel.preview)
+}
+
+#Preview("Dark") {
+    ContentView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(ViewModel.preview)
+        .preferredColorScheme(.dark)
 }

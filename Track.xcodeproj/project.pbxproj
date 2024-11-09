@@ -39,16 +39,6 @@
 			path = Track;
 			sourceTree = "<group>";
 		};
-		0DB0A8152C83EC840038F855 /* TrackTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = TrackTests;
-			sourceTree = "<group>";
-		};
-		0DB0A81F2C83EC840038F855 /* TrackUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = TrackUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,8 +71,6 @@
 			isa = PBXGroup;
 			children = (
 				0DB0A7FF2C83EC840038F855 /* Track */,
-				0DB0A8152C83EC840038F855 /* TrackTests */,
-				0DB0A81F2C83EC840038F855 /* TrackUITests */,
 				0DB0A7FE2C83EC840038F855 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -136,9 +124,6 @@
 			dependencies = (
 				0DB0A8142C83EC840038F855 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				0DB0A8152C83EC840038F855 /* TrackTests */,
-			);
 			name = TrackTests;
 			packageProductDependencies = (
 			);
@@ -158,9 +143,6 @@
 			);
 			dependencies = (
 				0DB0A81E2C83EC840038F855 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				0DB0A81F2C83EC840038F855 /* TrackUITests */,
 			);
 			name = TrackUITests;
 			packageProductDependencies = (
@@ -330,7 +312,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -388,7 +370,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;

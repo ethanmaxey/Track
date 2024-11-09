@@ -61,11 +61,10 @@ struct ContentView: View {
                 }
             }
         }
-        .background(colorScheme == .dark ? Color.black : Color.white)
     }
 }
 
-#Preview {
+#Preview("Light") {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(ViewModel.preview)
 }

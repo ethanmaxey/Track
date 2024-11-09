@@ -29,9 +29,6 @@ struct JobDetailsView: View {
     
     var body: some View {
         VStack {
-            Text(job.company ?? "No Name")
-                .foregroundStyle(.blue)
-            
             Form {
                 Text(job.company ?? "")
                 
@@ -59,11 +56,17 @@ struct JobDetailsView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.black.opacity(0.95))
     }
 }
 
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext).environmentObject(ViewModel.preview)
+#Preview("Light") {
+    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(ViewModel.preview)
+}
+
+#Preview("Dark") {
+    ContentView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(ViewModel.preview)
+        .preferredColorScheme(.dark)
 }
