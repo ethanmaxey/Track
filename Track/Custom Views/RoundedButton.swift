@@ -31,7 +31,9 @@ struct RoundedButton: View {
             }
 
         case .navigationLink(let destination):
-            NavigationLink(destination: destination) {
+            NavigationLink(destination: destination.onAppear {
+                Haptics.play(.light)
+            }) {
                 content
             }
         }

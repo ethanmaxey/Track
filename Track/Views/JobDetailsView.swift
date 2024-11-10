@@ -8,55 +8,41 @@
 import SwiftUI
 
 struct JobDetailsView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var viewModel: ViewModel
-    var job: JobListing
-    
-    @State var oa: Bool
-    @State var interview: Bool
-    @State var offer: Bool
-    @State var rejected: Bool
-
-    init(job: JobListing) {
-        self.job = job
-        
-        _oa = State(initialValue: job.oa)
-        _interview = State(initialValue: job.interview)
-        _offer = State(initialValue: job.offer)
-        _rejected = State(initialValue: job.rejected)
-    }
+    @Environment(\.managedObjectContext) private var viewContext
+    @ObservedObject var job: JobListing
 
     var body: some View {
         VStack {
             Form {
                 Text(job.company ?? "")
-                
+
                 Section(header: Text("Job Details")) {
-                    Toggle("Online Assesment", isOn: $oa)
-                        .onChange(of: oa) {
-                            viewModel.updateJobDetail(for: \.oa, value: oa, job: job)
+                    Toggle("Online Assesment", isOn: $job.oa)
+                        .onChange(of: job.oa) {
+                            viewModel.saveContext()
                         }
 
-                    Toggle("Interview Invite", isOn: $interview)
-                        .onChange(of: interview) {
-                            viewModel.updateJobDetail(for: \.interview, value: interview, job: job)
+                    Toggle("Interview Invite", isOn: $job.interview)
+                        .onChange(of: job.interview) {
+                            viewModel.saveContext()
                         }
 
-                    Toggle("Received Offer", isOn: $offer)
-                        .onChange(of: offer) {
-                            viewModel.updateJobDetail(for: \.offer, value: offer, job: job)
+                    Toggle("Received Offer", isOn: $job.offer)
+                        .onChange(of: job.offer) {
+                            viewModel.saveContext()
                         }
 
-                    Toggle("Rejected", isOn: $rejected)  
-                        .onChange(of: rejected) { 
-                            viewModel.updateJobDetail(for: \.rejected, value: rejected, job: job)
+                    Toggle("Rejected", isOn: $job.rejected)
+                        .onChange(of: job.rejected) {
+                            viewModel.saveContext()
                         }
-
                 }
             }
         }
     }
 }
+
 
 #Preview("Light") {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

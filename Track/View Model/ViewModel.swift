@@ -48,17 +48,14 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func updateJobDetail<T>(for keyPath: ReferenceWritableKeyPath<JobListing, T>, value: T, job: JobListing) {
-        viewContext.performAndWait {
-            job[keyPath: keyPath] = value
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                print("Error updating job: \(nsError), \(nsError.userInfo)")
-            }
+    func saveContext() {
+        do {
+            try viewContext.save()
+        } catch {
+            fatalError()
         }
     }
+
 }
 
 // MARK: - Previews
