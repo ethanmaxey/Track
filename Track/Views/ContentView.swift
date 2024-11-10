@@ -9,12 +9,11 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var viewContext
     @FetchRequest(sortDescriptors: []) var jobs: FetchedResults<JobListing>
     @EnvironmentObject var viewModel: ViewModel
 
-    @State private var isPresented = false
+    @State var isPresented = false
     @State private var addJobAlertData = String()
     @State private var searchText = String()
     @State private var isFiltersPresented = false
@@ -42,12 +41,12 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     RoundedButton(buttonType: .navigationLink(
-                        destination: AnyView(VisualizeView())), text: "Visualize", color: .white
+                        destination: AnyView(VisualizeView())), text: "Visualize", theme: .white
                     )
                     
                     RoundedButton(buttonType: .button(action: {
                         isPresented = true
-                    }), text: "New Job", color: .blue)
+                    }), text: "New Job", theme: .blue)
                     .customAlert(
                         "Congrats! Where did you apply?",
                         isPresented: $isPresented,
@@ -61,6 +60,7 @@ struct ContentView: View {
                 }
             }
         }
+        .supportedInterfaceOrientations(.all)
     }
 }
 

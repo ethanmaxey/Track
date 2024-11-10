@@ -8,37 +8,39 @@
 import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    // MARK: - New
+    static var orientationLock = UIInterfaceOrientationMask.portrait {
+        didSet {
+            UIApplication.shared.connectedScenes
+                .forEach { scene in
+                    if let windowScene = scene as? UIWindowScene {
+                        windowScene
+                            .requestGeometryUpdate(
+                                .iOS(
+                                    interfaceOrientations: orientationLock
+                                )
+                            )
+                    }
+                }
+            UIApplication.shared
+                .getWindow()?.rootViewController?
+                .setNeedsUpdateOfSupportedInterfaceOrientations()
+        }
+    }
     
-    static var supportedInterfaceOrientations = UIInterfaceOrientationMask.portrait {
-        didSet { updateSupportedInterfaceOrientationsInUI() }
-      }
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
+    }
 }
 
-extension AppDelegate {
-  private static func updateSupportedInterfaceOrientationsInUI() {
-    if #available(iOS 16.0, *) {
-      UIApplication.shared.connectedScenes.forEach { scene in
-        if let windowScene = scene as? UIWindowScene {
-          windowScene.requestGeometryUpdate(
-            .iOS(interfaceOrientations: supportedInterfaceOrientations)
-          )
+extension UIApplication {
+    func getWindow() -> UIWindow? {
+        guard let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return nil
         }
-      }
-      UIViewController.attemptRotationToDeviceOrientation()
-    } else {
-      if supportedInterfaceOrientations == .landscape {
-        UIDevice.current.setValue(
-          UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation"
-        )
-      } else {
-        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-      }
+        guard let firstWindow = firstScene.windows.first else {
+            return nil
+        }
+        return firstWindow
     }
-  }
-
-  func application(
-    _ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?
-  ) -> UIInterfaceOrientationMask {
-    Self.supportedInterfaceOrientations
-  }
 }

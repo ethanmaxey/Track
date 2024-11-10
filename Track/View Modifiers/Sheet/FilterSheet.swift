@@ -30,7 +30,7 @@ struct FilterSheet: ViewModifier {
                             Spacer()
                             RoundedButton(buttonType: .button(action: {
                                 isPresented.toggle()
-                            }), text: "Apply", color: .blue)
+                            }), text: "Apply", theme: .blue)
                         }
                         .padding()
                     }

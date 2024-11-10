@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RoundedButton: View {
+    @Environment(\.colorScheme) var colorScheme
     
     enum ButtonType {
         case navigationLink(destination: AnyView)
@@ -16,7 +17,7 @@ struct RoundedButton: View {
     
     let buttonType: ButtonType
     let text: String
-    var color: Color = .blue
+    var theme: Color
     private let cornerRadius: CGFloat = 50
     
     var body: some View {
@@ -33,19 +34,29 @@ struct RoundedButton: View {
     }
     
     private var content: some View {
-        Text(text)
-            .foregroundColor(color)
+        let isStandardTheme: Bool = theme == .black || theme == .white
+        let textColor: Color = isStandardTheme ? (colorScheme == .dark ? .white : .black) : .white
+        let backgroundColor: Color = isStandardTheme ? (colorScheme == .dark ? .black : .white) : theme
+
+        return Text(text)
+            .foregroundColor(textColor)
             .padding()
             .frame(minWidth: 100, maxWidth: 100)
-            .background(Color.black)
+            .background(backgroundColor)
             .cornerRadius(cornerRadius)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(color, lineWidth: 2)
+                    .stroke(colorScheme == .dark ? .white : .black, lineWidth: 2)
             )
     }
+
 }
 
-#Preview {
+#Preview("Light") {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext).environmentObject(ViewModel.preview)
+}
+
+#Preview("Dark") {
+    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext).environmentObject(ViewModel.preview)
+        .preferredColorScheme(.dark)
 }
