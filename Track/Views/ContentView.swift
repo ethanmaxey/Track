@@ -60,7 +60,6 @@ struct ContentView: View {
                 }
             }
         }
-        .supportedInterfaceOrientations(.all)
     }
 }
 

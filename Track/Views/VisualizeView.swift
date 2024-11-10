@@ -9,6 +9,7 @@ import Sankey
 import SwiftUI
 
 struct VisualizeView: View {
+    @Environment(\.colorScheme) var colorScheme
 
     @State var data: [SankeyLink] = [
         ["Applications", "Interviews", "4"],
@@ -25,23 +26,45 @@ struct VisualizeView: View {
         "#cab2d6", "#ffff99", "#1f78b4", "#33a02c"
     ]
     
+    // Changing this will force an update on SankeyDiagram
+    @State private var reloadKey = UUID()
+    
+    // Whether to show loading indicator
+    // Hopefully API will let us manage state in the future.
+    @State private var isLoading = true
+    
     var body: some View {
         VStack {
-            SankeyDiagram(
-                data,
-                nodeColors: colors,
-                nodeColorMode: .unique,
-                nodeWidth: 25,
-                nodePadding: 50,
-                nodeLabelColor: "black",
-                nodeLabelFontSize: 24,
-                nodeLabelPadding: 1,
-                linkColors: colors,
-                linkColorMode: .target,
-                layoutIterations: 1000
-            )
+            if isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .onAppear {
+                        // Simulate a delay to represent loading
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            isLoading = false
+                        }
+                    }
+            } else {
+                SankeyDiagram(
+                    data,
+                    nodeColors: colors,
+                    nodeColorMode: .unique,
+                    nodeWidth: 25,
+                    nodePadding: 50,
+                    nodeLabelColor: colorScheme == .light ? "black" : "white",
+                    nodeLabelFontSize: 24,
+                    nodeLabelBold: true,
+                    nodeLabelPadding: 1,
+                    linkColors: colors,
+                    linkColorMode: .target,
+                    layoutIterations: 1000
+                )
+                .id(reloadKey)
+            }
         }
-        .supportedInterfaceOrientations(.landscape)
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+            reloadKey = UUID()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {

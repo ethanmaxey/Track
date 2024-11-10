@@ -78,6 +78,7 @@ struct CustomAlertView<T: Hashable, M: View>: View {
             }
             .padding()
             .transition(.blurReplace)
+            .frame(width: 400)
             .zIndex(2)
         }
         .ignoresSafeArea()
@@ -89,6 +90,7 @@ struct CustomAlertView<T: Hashable, M: View>: View {
     // MARK: Buttons
     var CancelButton: some View {
         Button {
+            Haptics.play(.light)
             dismiss()
         } label: {
             Text("Cancel")
@@ -105,7 +107,7 @@ struct CustomAlertView<T: Hashable, M: View>: View {
 
     var DoneButton: some View {
         Button {
-    
+            Haptics.play(.light)
             if !username.isEmpty {
                 dismiss()
                 actionWithValue?(username)

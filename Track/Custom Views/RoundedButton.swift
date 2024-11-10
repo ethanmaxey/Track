@@ -23,9 +23,13 @@ struct RoundedButton: View {
     var body: some View {
         switch buttonType {
         case .button(let action):
-            Button(action: action) {
+            Button {
+                Haptics.play(.light)
+                action()
+            } label: {
                 content
             }
+
         case .navigationLink(let destination):
             NavigationLink(destination: destination) {
                 content
