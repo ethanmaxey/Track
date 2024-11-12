@@ -162,7 +162,3 @@ extension CustomAlertView where T == Never {
         self.messageWithValue = nil
     }
 }
-
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext).environmentObject(ViewModel.preview)
-}

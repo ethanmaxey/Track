@@ -38,39 +38,40 @@ struct ContentView: View {
             .styleList()
             .searchable(text: $searchText)
             .filterSheet(isPresented: $isFiltersPresented, filterCriteria: filterCriteria)
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    RoundedButton(buttonType: .navigationLink(
-                        destination: AnyView(VisualizeView())), text: "Visualize", theme: .white
-                    )
-                    
-                    RoundedButton(buttonType: .button(action: {
-                        isPresented = true
-                    }), text: "New Job", theme: .blue)
-                    .customAlert(
-                        "Congrats! Where did you apply?",
-                        isPresented: $isPresented,
-                        presenting: addJobAlertData,
-                        actionText: "Yes, Done"
-                    ) { userInput in
-                        viewModel.addJob(company: userInput)
-                    } message: { value in
-                        Text("Showing alert for \(value)… And adding a long text for preview.")
-                    }
-                }
+            .toolbar(content: contentViewToolbarContent)
+        }
+    }
+}
+
+// MARK: - Toolbar
+extension ContentView {
+    @ToolbarContentBuilder
+    public func contentViewToolbarContent() -> some ToolbarContent {
+        ToolbarItemGroup(placement: .bottomBar) {
+            RoundedButton(buttonType: .navigationLink(
+                destination: AnyView(VisualizeView())), text: "Visualize", theme: .white
+            )
+            
+            RoundedButton(buttonType: .button(action: {
+                isPresented = true
+            }), text: "New Job", theme: .blue)
+            .customAlert(
+                "Congrats! Where did you apply?",
+                isPresented: $isPresented,
+                presenting: addJobAlertData,
+                actionText: "Yes, Done"
+            ) { userInput in
+                viewModel.addJob(company: userInput)
+            } message: { value in
+                Text("Showing alert for \(value)… And adding a long text for preview.")
             }
         }
     }
 }
 
-#Preview("Light") {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-        .environmentObject(ViewModel.preview)
-}
 
-#Preview("Dark") {
+#Preview {
     ContentView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(ViewModel.preview)
-        .preferredColorScheme(.dark)
 }

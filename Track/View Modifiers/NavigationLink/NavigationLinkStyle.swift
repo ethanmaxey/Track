@@ -25,7 +25,3 @@ extension View {
         modifier(NavigationLinkStyle())
     }
 }
-
-//#Preview {
-//    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext).environmentObject(ViewModel.preview)
-//}

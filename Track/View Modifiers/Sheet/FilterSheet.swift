@@ -48,10 +48,6 @@ extension View {
     }
 }
 
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext).environmentObject(ViewModel.preview)
-}
-
 extension View {
     @available(iOS 14, *)
     func navigationBarTitleTextColor(_ color: Color) -> some View {

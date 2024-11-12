@@ -42,16 +42,3 @@ struct JobDetailsView: View {
         }
     }
 }
-
-
-#Preview("Light") {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-        .environmentObject(ViewModel.preview)
-}
-
-#Preview("Dark") {
-    ContentView()
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-        .environmentObject(ViewModel.preview)
-        .preferredColorScheme(.dark)
-}

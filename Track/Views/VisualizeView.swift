@@ -10,6 +10,7 @@ import SwiftUI
 
 struct VisualizeView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(NetworkMonitor.self) private var networkMonitor: NetworkMonitor
 
     @State var data: [SankeyLink] = [
         ["Applications", "Interviews", "4"],
@@ -35,7 +36,13 @@ struct VisualizeView: View {
     
     var body: some View {
         VStack {
-            if isLoading {
+            if !networkMonitor.hasNetworkConnection {
+                ContentUnavailableView(
+                    "No Internet Connection",
+                    systemImage: "wifi.exclamationmark",
+                    description: Text("Please check your connection and try again.")
+                )
+            } else if isLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
                     .onAppear {
@@ -66,11 +73,13 @@ struct VisualizeView: View {
             reloadKey = UUID()
         }
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    print("Finish me!")
-                } label: {
-                    Label(String(), systemImage: "square.and.arrow.up")
+            if networkMonitor.hasNetworkConnection {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        print("Finish me!")
+                    } label: {
+                        Label(String(), systemImage: "square.and.arrow.up")
+                    }
                 }
             }
         }

@@ -24,7 +24,3 @@ extension View {
         modifier(ListStyle())
     }
 }
-
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext).environmentObject(ViewModel.preview)
-}
