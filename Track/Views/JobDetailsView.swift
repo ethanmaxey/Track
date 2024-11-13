@@ -58,12 +58,14 @@ struct JobDetailsView: View {
                 Section("Phase II", isExpanded: $sectionTwoExpanded) {
                     Toggle("Offer", isOn: $job.offer)
                         .onChange(of: job.offer) {
+                            job.no_offer = !job.offer
                             viewModel.saveContext()
                             updateExpansionStates()
                         }
                     
                     Toggle("No Offer", isOn: $job.no_offer)
                         .onChange(of: job.no_offer) {
+                            job.offer = !job.no_offer
                             viewModel.saveContext()
                             updateExpansionStates()
                         }
@@ -72,11 +74,13 @@ struct JobDetailsView: View {
                 Section("Phase III", isExpanded: $sectionThreeExpanded) {
                     Toggle("Accepted", isOn: $job.accepted)
                         .onChange(of: job.accepted) {
+                            job.declined = !job.accepted
                             viewModel.saveContext()
                         }
                     
                     Toggle("Declined", isOn: $job.declined)
                         .onChange(of: job.declined) {
+                            job.accepted = !job.declined
                             viewModel.saveContext()
                         }
                 }
@@ -90,8 +94,16 @@ struct JobDetailsView: View {
     }
     
     private func updateExpansionStates() {
-        sectionTwoExpanded = job.interview || job.rejected || job.ghosted
-        sectionThreeExpanded = job.offer || job.no_offer
+        if job.ghosted || job.rejected {
+            sectionTwoExpanded = false
+        } else {
+            sectionTwoExpanded = job.interview || job.rejected || job.ghosted
+            sectionThreeExpanded = job.offer
+        }
+        
+        if !job.ghosted && !job.rejected && !job.interview {
+            sectionThreeExpanded = false
+        }
     }
 }
 

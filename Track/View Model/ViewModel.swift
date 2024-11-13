@@ -20,8 +20,13 @@ class ViewModel: ObservableObject {
         withAnimation {
             let newJob = JobListing(context: viewContext)
             newJob.id = UUID()
+            
+            newJob.accepted = false
             newJob.company = company
+            newJob.declined = false
+            newJob.ghosted = true
             newJob.interview = false
+            newJob.no_offer = false
             newJob.oa = false
             newJob.offer = false
             newJob.rejected = false
