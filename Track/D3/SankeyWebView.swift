@@ -12,12 +12,9 @@ struct SankeyWebView: UIViewRepresentable {
     let htmlName: String
 
     func updateUIView(_ webView: WKWebView, context: Context) {
-        
-        // Assuming 'index.html' and 'data_sankey.json' are in the same directory in your bundle
-        if let url = Bundle.main.url(forResource: "index", withExtension: "html") {
-            let dirUrl = url.deletingLastPathComponent()
-            webView.loadFileURL(url, allowingReadAccessTo: dirUrl)
-        }
+        let htmlPath = Bundle.main.path(forResource: "index", ofType: "html")
+        let htmlUrl = URL(fileURLWithPath: htmlPath!, isDirectory: false)
+        webView.loadFileURL(htmlUrl, allowingReadAccessTo: htmlUrl)
     }
 }
 
