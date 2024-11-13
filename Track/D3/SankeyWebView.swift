@@ -9,8 +9,6 @@ import SwiftUI
 import WebKit
 
 struct SankeyWebView: UIViewRepresentable {
-    let htmlName: String
-
     func updateUIView(_ webView: WKWebView, context: Context) {
         let htmlPath = Bundle.main.path(forResource: "index", ofType: "html")
         let htmlUrl = URL(fileURLWithPath: htmlPath!, isDirectory: false)

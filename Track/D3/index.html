@@ -27,10 +27,32 @@
     
     <script>
         
+        const data = {
+            "nodes": [
+                { "node": 0, "name": "Applications" },
+                { "node": 1, "name": "Interviews" },
+                { "node": 2, "name": "Rejected" },
+                { "node": 3, "name": "No Answer" },
+                { "node": 4, "name": "Offers" },
+                { "node": 5, "name": "No Offer" },
+                { "node": 6, "name": "Accepted" },
+                { "node": 7, "name": "Declined" }
+            ],
+            "links": [
+                { "source": 0, "target": 1, "value": 4 }, // Applications to Interviews
+                { "source": 0, "target": 2, "value": 9 }, // Applications to Rejected
+                { "source": 0, "target": 3, "value": 4 }, // Applications to No Answer
+                { "source": 1, "target": 4, "value": 2 }, // Interviews to Offers
+                { "source": 1, "target": 5, "value": 2 }, // Interviews to No Offer
+                { "source": 4, "target": 6, "value": 1 }, // Offers to Accepted
+                { "source": 4, "target": 7, "value": 1 }  // Offers to Declined
+            ]
+        };
+        
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 10, bottom: 10, left: 10},
-        width = 450 - margin.left - margin.right,
-        height = 480 - margin.top - margin.bottom;
+        width = window.innerWidth;
+        height = window.innerHeight;
         
         // append the svg object to the body of the page
         var svg = d3.select("#my_dataviz").append("svg")
@@ -46,33 +68,14 @@
               // Set the sankey diagram properties
               var sankey = d3.sankey()
               .nodeWidth(36)
-              .nodePadding(290)
+              .nodePadding(height / data["nodes"].length)
               .size([width, height]);
-
-              const data = {
-                  "nodes": [
-                      { "node": 0, "name": "node0" },
-                      { "node": 1, "name": "node1" },
-                      { "node": 2, "name": "node2" },
-                      { "node": 3, "name": "node3" },
-                      { "node": 4, "name": "node4" }
-                  ],
-                  "links": [
-                      { "source": 0, "target": 2, "value": 2 },
-                      { "source": 1, "target": 2, "value": 2 },
-                      { "source": 1, "target": 3, "value": 2 },
-                      { "source": 0, "target": 4, "value": 2 },
-                      { "source": 2, "target": 3, "value": 2 },
-                      { "source": 2, "target": 4, "value": 2 },
-                      { "source": 3, "target": 4, "value": 4 }
-                  ]
-              };
                   
                   // Constructs a new Sankey generator with the default settings.
                   sankey
                   .nodes(data.nodes)
                   .links(data.links)
-                  .layout(1);
+                  .layout(1000);
                   
                   // add in the links
                   var link = svg.append("g")
