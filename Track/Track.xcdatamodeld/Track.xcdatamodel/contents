@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24B5055e" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24B83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="JobListing" representedClassName="JobListing" syncable="YES" codeGenerationType="class">
+        <attribute name="accepted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="company" optional="YES" attributeType="String"/>
+        <attribute name="declined" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="ghosted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="interview" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="no_offer" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="oa" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="offer" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="rejected" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

@@ -12,15 +12,7 @@ struct VisualizeView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(NetworkMonitor.self) private var networkMonitor: NetworkMonitor
 
-    @State var data: [SankeyLink] = [
-        ["Applications", "Interviews", "4"],
-        ["Applications", "Rejected", "9"],
-        ["Applications", "No Answer", "4"],
-        ["Interviews", "Offers", "2"],
-        ["Interviews", "No Offer", "2"],
-        ["Offers", "Accepted", "1"],
-        ["Offers", "Declined", "1"]
-    ]
+    let data: [SankeyLink]
     
     let colors = [
         "#a6cee3", "#b2df8a", "#fb9a99", "#fdbf6f",
@@ -89,11 +81,13 @@ struct VisualizeView: View {
 #Preview("Light") {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(ViewModel.preview)
+        .environment(NetworkMonitor())
 }
 
 #Preview("Dark") {
     ContentView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(ViewModel.preview)
+        .environment(NetworkMonitor())
         .preferredColorScheme(.dark)
 }

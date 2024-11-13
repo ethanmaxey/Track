@@ -36,7 +36,7 @@ struct ContentView: View {
                 })
             }
             .styleList()
-            .searchable(text: $searchText)
+            .searchable(text: $searchText) 
             .filterSheet(isPresented: $isFiltersPresented, filterCriteria: filterCriteria)
             .toolbar(content: contentViewToolbarContent)
         }
@@ -48,8 +48,28 @@ extension ContentView {
     @ToolbarContentBuilder
     public func contentViewToolbarContent() -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
-            RoundedButton(buttonType: .navigationLink(
-                destination: AnyView(VisualizeView())), text: "Visualize", theme: .white
+            RoundedButton(
+                buttonType: .navigationLink(
+                    destination: AnyView(
+                        VisualizeView(data: [
+                            ["Applications", "Interviews", "\(jobs.count { $0.interview })"],
+                            ["Applications", "Rejected", "\(jobs.count { $0.rejected })"],
+                            ["Applications", "No Answer", "\(jobs.count { $0.ghosted })"],
+                            ["Interviews", "Offers", "\(jobs.count { $0.offer })"],
+                            ["Interviews", "No Offer", "\(jobs.count { $0.no_offer })"],
+                            ["Offers", "Accepted", "\(jobs.count { $0.accepted })"],
+                            ["Offers", "Declined", "\(jobs.count { $0.declined })"]
+                        ])
+                    )
+                ),
+                text: "Visualize",
+                theme: .white
+            )
+            
+            RoundedButton(
+                buttonType: .navigationLink(destination: AnyView(SankeyWebView(htmlName: "sankey"))),
+                text: "D3",
+                theme: .white
             )
             
             RoundedButton(buttonType: .button(action: {
@@ -70,8 +90,16 @@ extension ContentView {
 }
 
 
-#Preview {
+#Preview("Light") {
+    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(ViewModel.preview)
+        .environment(NetworkMonitor())
+}
+
+#Preview("Dark") {
     ContentView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(ViewModel.preview)
+        .environment(NetworkMonitor())
+        .preferredColorScheme(.dark)
 }
