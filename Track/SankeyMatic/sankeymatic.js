@@ -592,8 +592,6 @@ const msg = {
   resetAll: () => {
     Array.from(msg.areas.values())
       .map((a) => a.id)
-    msg.consoleContainer.style.display = 'none';
-    msg.flagsSeen.clear();
   },
   // If any pending messages have been queued, show them:
   showQueued: () => {
@@ -628,20 +626,6 @@ glob.replaceGraphConfirmed = () => {
     if (validSetting) { setValueOnPage(fld, fldData[0], finalValue); }
   });
 
-  // First, verify that the flow input field is visible.
-  // (If it's been hidden, the setting of flows won't work properly.)
-  const flowsPanel = 'input_options';
-  if (el(flowsPanel).style.display === 'none') {
-    glob.togglePanel(flowsPanel);
-  }
-
-  // Then select all the existing input text...
-  const flowsEl = el("flows_in");
-  flowsEl.focus();
-  flowsEl.select();
-  // ... then replace it with the new content.
-  flowsEl.setRangeText(savedRecipe.flows, 0, flowsEl.selectionEnd, 'start');
-
   // Un-focus the input field (on tablets, this keeps the keyboard from
   // auto-popping-up):
   flowsEl.blur();
@@ -672,15 +656,6 @@ glob.replaceGraph = (graphName) => {
 
   // Set the 'demo_graph_chosen' value according to the user's click:
   el('demo_graph_chosen').value = "graphName";
-
-  // When it's easy to revert to the user's current set of inputs, we don't
-  // bother asking to confirm. This happens in two scenarios:
-  // 1) the inputs are empty, or
-  // 2) the user is looking at inputs which exactly match any of the sample
-  // diagrams.
-  const userInputs = elV("flows_in"),
-    inputsMatchAnySample = Array.from(sampleDiagramRecipes.values())
-      .some((r) => r.flows === userInputs);
 
   if (inputsMatchAnySample || userInputs === '') {
     // The user has NOT changed the input from one of the samples,
@@ -1820,7 +1795,6 @@ function getDiagramDefinition(verbose) {
     userDataMarker,
     ''
     );
-  add(removeAutoLines(elV("flows_in").split('\n')));
   addIfV('', settingsMarker, '');
 
   // Add all of the settings:
@@ -2073,13 +2047,28 @@ glob.process_sankey = () => {
   msg.resetAll();
   msg.showQueued();
 
+  const originalLinesSourceHardCoded = `
+    // Sample Job Search diagram:
+
+    Applications [4] Interviews
+    Applications [9] Rejected
+    Applications [4] No Answer
+
+    Interviews [2] Offers
+    Interviews [2] No Offer
+
+    Offers [1] Accepted
+    Offers [1] Declined
+  `
+
+  
   // Time to parse the user's input.
   // Before we do anything at all, split it into an array of lines with
   // no whitespace at either end.
   // As part of this step, we make sure to drop any zero-width spaces
   // which may have been appended or prepended to lines (e.g. when pasted
   // from PowerPoint), then trim again.
-  const origSourceLines = elV("flows_in").split('\n'),
+  const origSourceLines = originalLinesSourceHardCoded.split('\n'),
     sourceLines = origSourceLines.map(
       (l) => l.trim()
         .replace(/^\u200B+/, '')
@@ -2552,19 +2541,6 @@ glob.process_sankey = () => {
     .map((l, i) => (
       linesWithValidSettings.has(i) ? `${settingsAppliedPrefix}${l}` : l
       ));
-
-  // Having processed all the lines now -- if the current inputs came from a
-  // file or from a URL, we can clean out all the auto-generated stuff,
-  // leaving just the user's inputs:
-  if (glob.newInputsImportedFrom) {
-    // Drop all the auto-generated content and all successful settings:
-    el("flows_in").value = removeAutoLines(updatedSourceLines);
-    // Also, leave them a note confirming where the inputs came from.
-    msg.add(`Imported diagram from ${glob.newInputsImportedFrom}`);
-    glob.newInputsImportedFrom = null;
-  } else {
-    el("flows_in").value = updatedSourceLines.join('\n');
-  }
 
   // Were there any good flows at all? If not, offer a little help and then
   // EXIT EARLY:

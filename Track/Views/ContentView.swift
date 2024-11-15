@@ -79,7 +79,7 @@ extension ContentView {
                 
                 RoundedButton(
                     buttonType: .navigationLink(destination: AnyView(SankeyMaticWebView().id(reloadKey))),
-                    text: "D3",
+                    text: "Matic",
                     theme: .white
                 )
                 

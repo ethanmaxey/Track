@@ -6,12 +6,12 @@
 
                 <title>SankeyETHAN</title>
                 <link rel="stylesheet" href="build.css">
-                    <script src="d3.min.js"></script>
-                    <script src="constants.js"></script>
-                    <script src="sankey.js"></script>
-                    <script src="lz-string.min.js"></script>
-                    <script src="sankeymatic.js"></script>
-
+                    <script defer src="d3.min.js"></script>
+                    <script defer src="umd.js"></script>
+                    <script defer src="constants.js"></script>
+                    <script defer src="sankey.js"></script>
+                    <script defer src="lz-string.min.js"></script>
+                    <script defer src="sankeymatic.js"></script>
     </head>
     <body>
         
@@ -32,21 +32,6 @@
                                         Inputs<span id="input_options_hint">:</span></h2>
                                     
                                     <div id="input_options" class="text_center grid_sidebar_right">
-                                        <div>
-                                            <textarea id="flows_in" title="Diagram Inputs" rows="19" cols="40" class="font_sans" onchange="process_sankey();" onkeyup="debounced_process_sankey();">// Enter Flows between Nodes, like this:
-                                                // Sample Job Search diagram:
-
-                                                Applications [4] Interviews
-                                                Applications [9] Rejected
-                                                Applications [4] No Answer
-                                                
-                                                Interviews [2] Offers
-                                                Interviews [2] No Offer
-                                                
-                                                Offers [1] Accepted
-                                                Offers [1] Declined
-                                              </textarea>
-                                        </div>
                                         
                                         <div class="separated_stack">
                                             <span><input name="layout_order" id="layout_order_automatic" value="automatic" type="radio" onchange="process_sankey();" checked="checked" /><label for="layout_order_automatic" class="ropt">Automatically</label></span>
