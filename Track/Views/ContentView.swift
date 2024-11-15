@@ -10,7 +10,7 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
-    @FetchRequest(sortDescriptors: []) var jobs: FetchedResults<JobListing>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]) var jobs: FetchedResults<JobListing>
     @EnvironmentObject var viewModel: ViewModel
 
     @State var isPresented = false
@@ -21,6 +21,7 @@ struct ContentView: View {
     
     // Changing this will force an update on SankeyWebView
     @State private var reloadKey = UUID()
+    @State private var orientation = UIDevice.current.orientation
     
     var results: [JobListing] {
         searchText.isEmpty ? Array(jobs) : jobs.filter { $0.company?.contains(searchText) ?? false }
@@ -43,7 +44,10 @@ struct ContentView: View {
             .filterSheet(isPresented: $isFiltersPresented, filterCriteria: filterCriteria)
             .toolbar(content: contentViewToolbarContent)
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                reloadKey = UUID()
+                if UIDevice.current.orientation != orientation {
+                    reloadKey = UUID()
+                    orientation = UIDevice.current.orientation
+                }
             }
         }
     }
@@ -74,7 +78,7 @@ extension ContentView {
                 )
                 
                 RoundedButton(
-                    buttonType: .navigationLink(destination: AnyView(SankeyWebView().id(reloadKey))),
+                    buttonType: .navigationLink(destination: AnyView(SankeyMaticWebView().id(reloadKey))),
                     text: "D3",
                     theme: .white
                 )

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     
     <head>
         <!-- Load d3.js -->
@@ -22,6 +23,23 @@
         }
         .link:hover {
             stroke-opacity: .5;
+        }
+        
+        body {
+            /* Default to light mode */
+            background-color: white;
+            color: black; /* Setting text color for visibility */
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body, p, div, span {
+                background-color: black;
+                color: white; /* Ensure text color is set for all text elements in dark mode */
+            }
+            
+            .link {
+                stroke: #FFF;
+            }
         }
     </style>
     
@@ -51,8 +69,8 @@
         
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 10, bottom: 10, left: 10},
-        width = window.innerWidth;
-        height = window.innerHeight;
+        width = window.innerWidth * 0.9;
+        height = window.innerHeight * 0.9;
         
         // append the svg object to the body of the page
         var svg = d3.select("#my_dataviz").append("svg")
@@ -68,14 +86,14 @@
               // Set the sankey diagram properties
               var sankey = d3.sankey()
               .nodeWidth(36)
-              .nodePadding(height / data["nodes"].length)
+              .nodePadding((height) / 10)
               .size([width, height]);
                   
                   // Constructs a new Sankey generator with the default settings.
                   sankey
                   .nodes(data.nodes)
                   .links(data.links)
-                  .layout(1000);
+                  .layout(10000);
                   
                   // add in the links
                   var link = svg.append("g")

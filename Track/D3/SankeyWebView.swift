@@ -10,9 +10,15 @@ import WebKit
 
 struct SankeyWebView: UIViewRepresentable {
     func updateUIView(_ webView: WKWebView, context: Context) {
-        let htmlPath = Bundle.main.path(forResource: "index", ofType: "html")
+        let htmlPath = Bundle.main.path(forResource: "indexOld", ofType: "html")
         let htmlUrl = URL(fileURLWithPath: htmlPath!, isDirectory: false)
         webView.loadFileURL(htmlUrl, allowingReadAccessTo: htmlUrl)
+        webView.scrollView.isScrollEnabled = false
+        
+        // This prevents the webview from "flashing" randomly.
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
+        webView.isInspectable = true
     }
 }
 
