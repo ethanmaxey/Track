@@ -14,6 +14,7 @@ struct SankeyMaticWebView: UIViewRepresentable {
         let htmlUrl = URL(fileURLWithPath: htmlPath!, isDirectory: false)
         webView.loadFileURL(htmlUrl, allowingReadAccessTo: htmlUrl)
         webView.scrollView.isScrollEnabled = false
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
         webView.isInspectable = true
     }
 }
