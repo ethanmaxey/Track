@@ -14,6 +14,7 @@ struct ContentView: View {
     @EnvironmentObject var viewModel: ViewModel
 
     @State var isPresented = false
+    @State var isLandscapePresented = false
     @State private var addJobAlertData = String()
     @State private var searchText = String()
     @State private var isFiltersPresented = false
@@ -26,6 +27,21 @@ struct ContentView: View {
     var results: [JobListing] {
         searchText.isEmpty ? Array(jobs) : jobs.filter { $0.company?.contains(searchText) ?? false }
     }
+    
+    let sankeyInput =
+    """
+    // Sample Job Search diagram:
+
+    Applications [4] Interviews
+    Applications [69] Rejected
+    Applications [4] No Answer
+
+    Interviews [2] Offers
+    Interviews [2] No Offer
+
+    Offers [1] Accepted
+    Offers [1] Declined
+    """
     
     var body: some View {
         NavigationView {
@@ -78,7 +94,13 @@ extension ContentView {
                 )
                 
                 RoundedButton(
-                    buttonType: .navigationLink(destination: AnyView(SankeyMaticWebView().id(reloadKey))),
+                    buttonType: .navigationLink(
+                        destination: AnyView(
+                            SankeyMaticWebView(sankeyInput: sankeyInput)
+                                    .id(reloadKey)
+                                    .edgesIgnoringSafeArea(.all)
+                        )
+                    ),
                     text: "Matic",
                     theme: .white
                 )

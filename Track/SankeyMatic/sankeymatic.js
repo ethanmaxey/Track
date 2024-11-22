@@ -521,7 +521,6 @@ Requires:
   // setValueOnPage(name, type, computer-friendly value):
   // Given a valid value, update the field on the page to adopt it:
   function setValueOnPage(sName, dataType, cVal) {
-    // console.log(sName, dataType, cVal);
     switch (dataType) {
       case 'radio': radioRef(sName).value = cVal; break;
       // cVal is expected to be boolean at this point for checkboxes:
@@ -994,6 +993,10 @@ Requires:
      * @returns {textFragment[]} List of text items
      */
     function getLabelPieces(n, magnification) {
+
+      // Ethan: Set this to true so the labels actually appear!
+      cfg.labelname_appears = true
+
       const overallSize = cfg.labelname_size * magnification,
         // The relative-size values 50 to 150 become -.5 to .5:
         relativeSizeAdjustment = (cfg.labels_relativesize - 100) / 100,
@@ -1101,8 +1104,10 @@ Requires:
     function setUpDiagramSize() {
       // Calculate the actual room we have to draw in...
       // Start from the user's declared canvas size + margins:
-      const graphW = window.innerWidth,
-        graphH = window.innerHeight,
+
+      // Ethan: This changes size
+      const graphW = window.innerWidth * 0.9,
+        graphH = window.innerHeight * 0.8,
         lastStage = stagesArr.length - 1,
         labelsBeforeFirst
           = stagesArr[0].filter((n) => n.label?.anchor === 'end'),
@@ -1214,6 +1219,7 @@ Requires:
       // dragged:
       n.css_class = `for_${n.dom_id}`; // for_r0, for_r1...
       n.tooltip = `${n.tipname}:\n${withUnits(n.value)}`;
+
       n.opacity = n.opacity || cfg.node_opacity;
   
       // Fill in any missing Node colors. (Flows may inherit from these.)
@@ -1338,7 +1344,9 @@ Requires:
     // Add a [g]roup translating the remaining elements 'inward' by the margins:
     const diagMain
       = diagramRoot.append('g')
-        .attr('transform', `translate(${ep(graph.final_margin_l)},${ep(cfg.margin_t)})`);
+
+      // Ethan: Second param controls top margin
+        .attr('transform', `translate(${ep(graph.final_margin_l)}, ${30})`);
   
     // MARK Functions for Flow hover effects
     // applyFlowEffects(flow, opacity, styles):
@@ -1677,13 +1685,12 @@ Requires:
         .attr('fill', mColor)
         .text('Made at SankeyMATIC.com');
     }
-  
+
     if (!cfg.labels_hide && (cfg.labelname_appears || cfg.labelvalue_appears)) {
       // Add labels in a distinct layer on the top (so nodes can't block them)
       diagLabels.selectAll()
         .data(allNodes.filter(shadowFilter))
         .enter()
-        .filter((n) => !n.hideLabel)
         .append('text')
           .attr('id', (n) => n.label.dom_id)
           // Associate this label with its Node using the CSS class:
@@ -1916,8 +1923,6 @@ Requires:
     const searchString = glob.location?.search;
     if (searchString) {
   
-      console.log("searchString", searchString)
-  
       const compressedInputs
         = new URLSearchParams(searchString)?.get(urlInputsParam);
       if (compressedInputs) {
@@ -2062,21 +2067,6 @@ Requires:
     msg.resetAll();
     msg.showQueued();
   
-    const originalLinesSourceHardCoded = `
-      // Sample Job Search diagram:
-  
-      Applications [4] Interviews
-      Applications [9] Rejected
-      Applications [4] No Answer
-  
-      Interviews [2] Offers
-      Interviews [2] No Offer
-  
-      Offers [1] Accepted
-      Offers [1] Declined
-    `
-  
-    
     // Time to parse the user's input.
     // Before we do anything at all, split it into an array of lines with
     // no whitespace at either end.
