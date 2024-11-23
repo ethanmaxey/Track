@@ -28,21 +28,6 @@ struct ContentView: View {
         searchText.isEmpty ? Array(jobs) : jobs.filter { $0.company?.contains(searchText) ?? false }
     }
     
-    let sankeyInput =
-    """
-    // Sample Job Search diagram:
-
-    Applications [4] Interviews
-    Applications [69] Rejected
-    Applications [4] No Answer
-
-    Interviews [2] Offers
-    Interviews [2] No Offer
-
-    Offers [1] Accepted
-    Offers [1] Declined
-    """
-    
     var body: some View {
         NavigationView {
             List {
@@ -96,7 +81,7 @@ extension ContentView {
                 RoundedButton(
                     buttonType: .navigationLink(
                         destination: AnyView(
-                            SankeyMaticWebView(sankeyInput: sankeyInput)
+                            SankeyMaticWebView()
                                     .id(reloadKey)
                                     .edgesIgnoringSafeArea(.all)
                         )

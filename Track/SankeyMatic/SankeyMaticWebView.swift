@@ -9,7 +9,7 @@ import SwiftUI
 import WebKit
 
 struct SankeyMaticWebView: UIViewRepresentable {
-    var sankeyInput: String
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]) var jobs: FetchedResults<JobListing>
     
     func updateUIView(_ webView: WKWebView, context: Context) {
         let htmlPath = Bundle.main.path(forResource: "index", ofType: "html")
@@ -28,17 +28,7 @@ extension SankeyMaticWebView {
     }
     
     func makeUIView(context: Context) -> WKWebView {
-        let input = """
-        Applications [4] Interviews
-        Applications [300] Rejected
-        Applications [5] No Answer
-        
-        Interviews [2] Offers
-        Interviews [2] No Offer
-        
-        Offers [1] Accepted
-        Offers [1] Declined
-        """
+        let input = getInput()
         
         let sankeyInputJS = """
         var originalLinesSourceHardCoded = `\(input)`;
@@ -54,6 +44,22 @@ extension SankeyMaticWebView {
         webView.navigationDelegate = context.coordinator
         
         return webView
+    }
+}
+
+extension SankeyMaticWebView {
+    func getInput() -> String {
+        return """
+        Applications [\(jobs.count { $0.interview })] Interviews
+        Applications [\(jobs.count { $0.rejected })] Rejected
+        Applications [\(jobs.count { $0.ghosted })] No Answer
+        
+        Interviews [\(jobs.count { $0.offer })] Offers
+        Interviews [\(jobs.count { $0.no_offer })] No Offer
+        
+        Offers [\(jobs.count { $0.accepted })] Accepted
+        Offers [\(jobs.count { $0.declined })] Declined
+        """
     }
 }
 
@@ -75,3 +81,4 @@ class SankeyMaticWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMes
         print("WebView provisional navigation error: \(error.localizedDescription)")
     }
 }
+
