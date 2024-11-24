@@ -57,9 +57,14 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+        
+        // Load default companies on first launch only
+        if isFirstLaunch() {
+            populateDefaultData()
+        }
     }
     
-    func addjob(company: String) {
+    func addJob(company: String) {
         let newJob = JobListing(context: container.viewContext)
         newJob.id = UUID()
         newJob.company = company
@@ -75,6 +80,23 @@ struct PersistenceController {
             // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
+    private func isFirstLaunch() -> Bool {
+        let hasLaunched = UserDefaults.standard.bool(forKey: "hasLaunched")
+        if !hasLaunched {
+            UserDefaults.standard.set(true, forKey: "hasLaunched")
+            UserDefaults.standard.synchronize()
+            return true
+        }
+        return false
+    }
+
+    private func populateDefaultData() {
+        let jobNames = ["Facebook", "Apple", "Google", "Amazon", "Microsoft"]
+        for company in jobNames {
+            addJob(company: company)
         }
     }
 }
