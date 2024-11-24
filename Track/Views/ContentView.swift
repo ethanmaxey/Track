@@ -29,7 +29,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 ForEach(results, id: \.self)  { job in
                     NavigationLink(destination: JobDetailsView(job: job)) {
@@ -70,7 +70,7 @@ extension ContentView {
                                     .toolbar(content: {
                                         ShareLink(
                                             item: Image("Hitti"),
-                                            preview: SharePreview("Instafilter image", image: Image("Hitti"))
+                                            preview: SharePreview("Check out my job search progress!", image: Image("Hitti"))
                                         )
                                     })
                         )
