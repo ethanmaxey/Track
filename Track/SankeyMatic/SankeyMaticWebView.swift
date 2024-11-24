@@ -16,7 +16,6 @@ struct SankeyMaticWebView: UIViewRepresentable {
         let htmlUrl = URL(fileURLWithPath: htmlPath!, isDirectory: false)
         webView.loadFileURL(htmlUrl, allowingReadAccessTo: htmlUrl)
         webView.scrollView.isScrollEnabled = false
-        webView.scrollView.contentInsetAdjustmentBehavior = .never
         webView.isInspectable = true
         webView.isUserInteractionEnabled = false
     }
@@ -47,6 +46,7 @@ extension SankeyMaticWebView {
     }
 }
 
+// MARK: - Input Processing
 extension SankeyMaticWebView {
     func getInput() -> String {
         return """
@@ -61,6 +61,23 @@ extension SankeyMaticWebView {
         Offers [\(jobs.count { $0.declined })] Declined
         """
     }
+}
+
+// MARK: - Sharing Functionality
+extension SankeyMaticWebView {
+    // Function to take a snapshot of the WebView
+     static func makeSankeyImage(webView: WKWebView, completion: @escaping (UIImage?) -> Void) {
+         let config = WKSnapshotConfiguration()
+         config.afterScreenUpdates = true  // Ensure the snapshot includes recent changes.
+         webView.takeSnapshot(with: config) { image, error in
+             if let image = image {
+                 completion(image)
+             } else {
+                 print(error ?? "Unknown error taking snapshot")
+                 completion(nil)
+             }
+         }
+     }
 }
 
 class SankeyMaticWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {

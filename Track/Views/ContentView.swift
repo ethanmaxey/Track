@@ -60,23 +60,6 @@ extension ContentView {
     public func contentViewToolbarContent() -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
             HStack {
-                RoundedButton(
-                    buttonType: .navigationLink(
-                        destination: AnyView(
-                            VisualizeView(data: [
-                                ["Applications", "Interviews", "\(jobs.count { $0.interview })"],
-                                ["Applications", "Rejected", "\(jobs.count { $0.rejected })"],
-                                ["Applications", "No Answer", "\(jobs.count { $0.ghosted })"],
-                                ["Interviews", "Offers", "\(jobs.count { $0.offer })"],
-                                ["Interviews", "No Offer", "\(jobs.count { $0.no_offer })"],
-                                ["Offers", "Accepted", "\(jobs.count { $0.accepted })"],
-                                ["Offers", "Declined", "\(jobs.count { $0.declined })"]
-                            ])
-                        )
-                    ),
-                    text: "Visualize",
-                    theme: .white
-                )
                 
                 RoundedButton(
                     buttonType: .navigationLink(
@@ -84,11 +67,19 @@ extension ContentView {
                             SankeyMaticWebView()
                                     .id(reloadKey)
                                     .edgesIgnoringSafeArea(.all)
+                                    .toolbar(content: {
+                                        ShareLink(
+                                            item: Image("Hitti"),
+                                            preview: SharePreview("Instafilter image", image: Image("Hitti"))
+                                        )
+                                    })
                         )
                     ),
-                    text: "Matic",
+                    text: "Visualize",
                     theme: .white
                 )
+                
+                Spacer()
                 
                 RoundedButton(buttonType: .button(action: {
                     isPresented = true
