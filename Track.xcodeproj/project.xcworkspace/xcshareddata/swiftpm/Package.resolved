@@ -1,15 +1,6 @@
 {
-  "originHash" : "c3e1e1bc08b3ec55a2e70c2b9d5cb1812175951010e5e75e4914bd6ce947b4f0",
+  "originHash" : "a85108fd545c2e09cde3acf0d769c834c649d166e5ed6ad82842da1df6838a16",
   "pins" : [
-    {
-      "identity" : "sankey",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/maxhumber/Sankey.git",
-      "state" : {
-        "revision" : "c73266fe6ce621f96d838c424068a81e4c2cbb27",
-        "version" : "1.0.0"
-      }
-    },
     {
       "identity" : "swiftui-interface-orientation",
       "kind" : "remoteSourceControl",

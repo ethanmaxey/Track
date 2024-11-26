@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0D4008972CF6285A00B2B22E /* InterfaceOrientation in Frameworks */ = {isa = PBXBuildFile; productRef = 0D4008962CF6285A00B2B22E /* InterfaceOrientation */; };
-		0D6BC65B2CCD93DA0027648B /* Sankey in Frameworks */ = {isa = PBXBuildFile; productRef = 0D6BC65A2CCD93DA0027648B /* Sankey */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +46,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D6BC65B2CCD93DA0027648B /* Sankey in Frameworks */,
 				0D4008972CF6285A00B2B22E /* InterfaceOrientation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,7 +105,6 @@
 			);
 			name = Track;
 			packageProductDependencies = (
-				0D6BC65A2CCD93DA0027648B /* Sankey */,
 				0D4008962CF6285A00B2B22E /* InterfaceOrientation */,
 			);
 			productName = Track;
@@ -187,7 +184,6 @@
 			mainGroup = 0DB0A7F42C83EC840038F855;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				0D2F8A702CCD9336008556B8 /* XCRemoteSwiftPackageReference "Sankey" */,
 				0D4008952CF6285A00B2B22E /* XCRemoteSwiftPackageReference "swiftui-interface-orientation" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -557,14 +553,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0D2F8A702CCD9336008556B8 /* XCRemoteSwiftPackageReference "Sankey" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/maxhumber/Sankey.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		0D4008952CF6285A00B2B22E /* XCRemoteSwiftPackageReference "swiftui-interface-orientation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/wvteijlingen/swiftui-interface-orientation.git";
@@ -580,11 +568,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0D4008952CF6285A00B2B22E /* XCRemoteSwiftPackageReference "swiftui-interface-orientation" */;
 			productName = InterfaceOrientation;
-		};
-		0D6BC65A2CCD93DA0027648B /* Sankey */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0D2F8A702CCD9336008556B8 /* XCRemoteSwiftPackageReference "Sankey" */;
-			productName = Sankey;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

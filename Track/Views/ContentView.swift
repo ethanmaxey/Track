@@ -66,7 +66,7 @@ extension ContentView {
                 
                 RoundedButton(buttonType: .button(action: {
                     isPresented = true
-                }), text: "New Job", theme: .blue)
+                }), text: "Add Job", theme: .blue)
                 .customAlert(
                     "Congrats! Where did you apply?",
                     isPresented: $isPresented,
