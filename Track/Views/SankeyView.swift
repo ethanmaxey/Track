@@ -30,13 +30,15 @@ struct SankeyView: View {
         SankeyMaticWebView(snapToggle: $snapshotTrigger, viewModel: viewModel)
             .id(reloadKey)
             .toolbar {
-                ShareLink(
-                    item: Image(uiImage: image ?? UIImage()),
-                    preview: SharePreview(
-                        "Check out my job search progress!",
-                        image: Image(uiImage: image ?? UIImage())
+                if let image {
+                    ShareLink(
+                        item: Image(uiImage: image),
+                        preview: SharePreview(
+                            "Check out my job search progress!",
+                            image: Image(uiImage: image)
+                        )
                     )
-                )
+                }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
                 if UIDevice.current.orientation.isPortrait {
@@ -60,7 +62,7 @@ struct SankeyView: View {
     
     private func takeScreenShot() {
         isShareEnabled = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             snapshotTrigger.toggle()
             isShareEnabled = true
         }
