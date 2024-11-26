@@ -11,6 +11,7 @@ import CoreData
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]) var jobs: FetchedResults<JobListing>
+    
     @EnvironmentObject var viewModel: ViewModel
 
     @State var isPresented = false
@@ -20,9 +21,9 @@ struct ContentView: View {
     @State private var isFiltersPresented = false
     @State private var filterCriteria: ApplicationStatus = .applied
     
-    // Changing this will force an update on SankeyWebView
-    @State private var reloadKey = UUID()
-    @State private var orientation = UIDevice.current.orientation
+    // To passed into SankeyMaticWebView as binding.
+    @State private var sankeyOrigin: CGPoint = .zero
+    @State private var sankeySize: CGSize = .zero
     
     var results: [JobListing] {
         searchText.isEmpty ? Array(jobs) : jobs.filter { $0.company?.contains(searchText) ?? false }
@@ -41,15 +42,9 @@ struct ContentView: View {
                 })
             }
             .styleList()
-            .searchable(text: $searchText) 
+            .searchable(text: $searchText)
             .filterSheet(isPresented: $isFiltersPresented, filterCriteria: filterCriteria)
             .toolbar(content: contentViewToolbarContent)
-            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                if UIDevice.current.orientation != orientation {
-                    reloadKey = UUID()
-                    orientation = UIDevice.current.orientation
-                }
-            }
         }
     }
 }
@@ -62,19 +57,7 @@ extension ContentView {
             HStack {
                 
                 RoundedButton(
-                    buttonType: .navigationLink(
-                        destination: AnyView(
-                            SankeyMaticWebView()
-                                    .id(reloadKey)
-                                    .edgesIgnoringSafeArea(.all)
-                                    .toolbar(content: {
-                                        ShareLink(
-                                            item: Image("Hitti"),
-                                            preview: SharePreview("Check out my job search progress!", image: Image("Hitti"))
-                                        )
-                                    })
-                        )
-                    ),
+                    buttonType: .navigationLink(destination: AnyView(SankeyView())),
                     text: "Visualize",
                     theme: .white
                 )

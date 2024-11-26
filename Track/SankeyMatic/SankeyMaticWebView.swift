@@ -11,6 +11,9 @@ import WebKit
 struct SankeyMaticWebView: UIViewRepresentable {
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]) var jobs: FetchedResults<JobListing>
     
+    @Binding var snapToggle: Bool
+    @Binding var renderedImage: UIImage?
+    
     func updateUIView(_ webView: WKWebView, context: Context) {
         let htmlPath = Bundle.main.path(forResource: "index", ofType: "html")
         let htmlUrl = URL(fileURLWithPath: htmlPath!, isDirectory: false)
@@ -18,6 +21,19 @@ struct SankeyMaticWebView: UIViewRepresentable {
         webView.scrollView.isScrollEnabled = false
         webView.isInspectable = true
         webView.isUserInteractionEnabled = false
+        
+        guard snapToggle else {
+            return
+        }
+        
+        let _ = webView.takeSnapshot(with: nil) { img, err in
+            if let img {
+                renderedImage = img
+                snapToggle = false
+            } else {
+                print(err.debugDescription)
+            }
+        }
     }
 }
 
@@ -61,23 +77,6 @@ extension SankeyMaticWebView {
         Offers [\(jobs.count { $0.declined })] Declined
         """
     }
-}
-
-// MARK: - Sharing Functionality
-extension SankeyMaticWebView {
-    // Function to take a snapshot of the WebView
-     static func makeSankeyImage(webView: WKWebView, completion: @escaping (UIImage?) -> Void) {
-         let config = WKSnapshotConfiguration()
-         config.afterScreenUpdates = true  // Ensure the snapshot includes recent changes.
-         webView.takeSnapshot(with: config) { image, error in
-             if let image = image {
-                 completion(image)
-             } else {
-                 print(error ?? "Unknown error taking snapshot")
-                 completion(nil)
-             }
-         }
-     }
 }
 
 class SankeyMaticWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
