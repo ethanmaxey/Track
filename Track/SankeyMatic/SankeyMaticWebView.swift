@@ -12,7 +12,8 @@ struct SankeyMaticWebView: UIViewRepresentable {
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]) var jobs: FetchedResults<JobListing>
     
     @Binding var snapToggle: Bool
-    @Binding var renderedImage: UIImage?
+    
+    let viewModel: SankeyViewModel
     
     func updateUIView(_ webView: WKWebView, context: Context) {
         let htmlPath = Bundle.main.path(forResource: "index", ofType: "html")
@@ -28,7 +29,7 @@ struct SankeyMaticWebView: UIViewRepresentable {
         
         let _ = webView.takeSnapshot(with: nil) { img, err in
             if let img {
-                renderedImage = img
+                viewModel.image = img
                 snapToggle = false
             } else {
                 print(err.debugDescription)
