@@ -64,14 +64,29 @@ struct PersistenceController {
         }
     }
     
-    func addJob(company: String) {
+    func addJob(
+        company: String,
+        interview: Bool = false,
+        offer: Bool = false,
+        no_offer: Bool = false,
+        rejected: Bool = false,
+        ghosted: Bool = true,
+        accepted: Bool = false,
+        declined: Bool = false
+    ) {
         let newJob = JobListing(context: container.viewContext)
         newJob.id = UUID()
         newJob.company = company
-        newJob.interview = false
-        newJob.oa = false
-        newJob.offer = false
-        newJob.rejected = false
+        
+        newJob.interview = interview
+        newJob.rejected = rejected
+        newJob.ghosted = ghosted
+    
+        newJob.accepted = accepted
+        newJob.declined = declined
+        
+        newJob.offer = offer
+        newJob.no_offer = no_offer
         
         do {
             try container.viewContext.save()
@@ -94,9 +109,10 @@ struct PersistenceController {
     }
 
     private func populateDefaultData() {
-        let jobNames = ["Facebook", "Apple", "Google", "Amazon", "Microsoft"]
-        for company in jobNames {
-            addJob(company: company)
-        }
+        addJob(company: "Facebook", ghosted: true)
+        addJob(company: "Microsoft", rejected: true, ghosted: false)
+        addJob(company: "Apple", interview: true, no_offer: true, ghosted: false)
+        addJob(company: "Google", interview: true, offer: true, ghosted: false, accepted: true)
+        addJob(company: "Amazon", interview: true, offer: true, ghosted: false, declined: true)
     }
 }
