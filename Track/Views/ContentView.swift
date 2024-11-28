@@ -25,7 +25,8 @@ struct ContentView: View {
     @State private var sankeySize: CGSize = .zero
     
     var results: [JobListing] {
-        searchText.isEmpty ? Array(jobs) : jobs.filter { $0.company?.contains(searchText) ?? false
+        searchText.isEmpty ? Array(jobs) : jobs.filter {
+            $0.company?.contains(searchText) ?? false
         }
     }
     
