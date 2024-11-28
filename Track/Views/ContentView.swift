@@ -14,8 +14,7 @@ struct ContentView: View {
     
     @EnvironmentObject var viewModel: ViewModel
 
-    @State var isPresented = false
-    @State var isLandscapePresented = false
+    @State var isAddJobAlertPresented = false
     @State private var addJobAlertData = String()
     @State private var searchText = String()
     @State private var isFiltersPresented = false
@@ -26,7 +25,8 @@ struct ContentView: View {
     @State private var sankeySize: CGSize = .zero
     
     var results: [JobListing] {
-        searchText.isEmpty ? Array(jobs) : jobs.filter { $0.company?.contains(searchText) ?? false }
+        searchText.isEmpty ? Array(jobs) : jobs.filter { $0.company?.contains(searchText) ?? false
+        }
     }
     
     var body: some View {
@@ -43,7 +43,6 @@ struct ContentView: View {
             }
             .styleList()
             .searchable(text: $searchText)
-            .filterSheet(isPresented: $isFiltersPresented, filterCriteria: filterCriteria)
             .toolbar(content: contentViewToolbarContent)
         }
     }
@@ -56,6 +55,8 @@ extension ContentView {
         ToolbarItemGroup(placement: .bottomBar) {
             HStack {
                 
+                Spacer()
+                
                 RoundedButton(
                     buttonType: .navigationLink(destination: AnyView(SankeyView())),
                     text: "Visualize",
@@ -65,11 +66,11 @@ extension ContentView {
                 Spacer()
                 
                 RoundedButton(buttonType: .button(action: {
-                    isPresented = true
+                    isAddJobAlertPresented = true
                 }), text: "Add Job", theme: .blue)
                 .customAlert(
                     "Congrats! Where did you apply?",
-                    isPresented: $isPresented,
+                    isPresented: $isAddJobAlertPresented,
                     presenting: addJobAlertData,
                     actionText: "Yes, Done"
                 ) { userInput in
@@ -77,7 +78,16 @@ extension ContentView {
                 } message: { value in
                     Text("Showing alert for \(value)… And adding a long text for preview.")
                 }
+                
+                Spacer()
             }
+        }
+        
+        ToolbarItem(placement: .principal) {
+            Image("Logo")
+                .resizable()
+                .scaledToFit()
+                .padding(5)
         }
     }
 }

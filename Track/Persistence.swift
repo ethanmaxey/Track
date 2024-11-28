@@ -15,13 +15,40 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        let jobNames = ["Facebook", "Apple", "Google", "Amazon", "Microsoft"]
+        let facebook = JobListing(context: viewContext)
+        facebook.company = "Facebook"
+        facebook.id = UUID()
+        facebook.ghosted = true
         
-        for company in jobNames {
-            let newJob = JobListing(context: viewContext)
-            newJob.company = company
-            newJob.id = UUID()
-        }
+        let microsft = JobListing(context: viewContext)
+        microsft.company = "Microsoft"
+        microsft.id = UUID()
+        microsft.ghosted = false
+        microsft.rejected = true
+        
+        let apple = JobListing(context: viewContext)
+        apple.company = "Apple"
+        apple.id = UUID()
+        apple.ghosted = false
+        apple.interview = true
+        apple.no_offer = true
+        
+        let google = JobListing(context: viewContext)
+        google.company = "Google"
+        google.id = UUID()
+        google.ghosted = false
+        google.interview = true
+        google.offer = true
+        google.accepted = true
+        
+        let amazon = JobListing(context: viewContext)
+        amazon.company = "Amazon"
+        amazon.id = UUID()
+        amazon.ghosted = false
+        amazon.interview = true
+        amazon.offer = true
+        amazon.declined = true
+        
         do {
             try viewContext.save()
         } catch {
