@@ -11,6 +11,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0D27B6A02CF928BF001C9BB4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0DB0A7F52C83EC840038F855 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DB0A7FC2C83EC840038F855;
+			remoteInfo = Track;
+		};
 		0DB0A8132C83EC840038F855 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0DB0A7F52C83EC840038F855 /* Project object */;
@@ -28,12 +35,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D27B69A2CF928BF001C9BB4 /* Track.ioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Track.ioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DB0A7FD2C83EC840038F855 /* Track.io.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Track.io.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DB0A8122C83EC840038F855 /* TrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DB0A81C2C83EC840038F855 /* TrackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		0D27B69B2CF928BF001C9BB4 /* Track.ioUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Track.ioUITests;
+			sourceTree = "<group>";
+		};
 		0DB0A7FF2C83EC840038F855 /* Track */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Track;
@@ -42,6 +55,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0D27B6972CF928BF001C9BB4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0DB0A7FA2C83EC840038F855 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -71,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				0DB0A7FF2C83EC840038F855 /* Track */,
+				0D27B69B2CF928BF001C9BB4 /* Track.ioUITests */,
 				0DB0A7FE2C83EC840038F855 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,6 +102,7 @@
 				0DB0A7FD2C83EC840038F855 /* Track.io.app */,
 				0DB0A8122C83EC840038F855 /* TrackTests.xctest */,
 				0DB0A81C2C83EC840038F855 /* TrackUITests.xctest */,
+				0D27B69A2CF928BF001C9BB4 /* Track.ioUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -88,6 +110,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0D27B6992CF928BF001C9BB4 /* Track.ioUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0D27B6A42CF928BF001C9BB4 /* Build configuration list for PBXNativeTarget "Track.ioUITests" */;
+			buildPhases = (
+				0D27B6962CF928BF001C9BB4 /* Sources */,
+				0D27B6972CF928BF001C9BB4 /* Frameworks */,
+				0D27B6982CF928BF001C9BB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0D27B6A12CF928BF001C9BB4 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0D27B69B2CF928BF001C9BB4 /* Track.ioUITests */,
+			);
+			name = Track.ioUITests;
+			packageProductDependencies = (
+			);
+			productName = Track.ioUITests;
+			productReference = 0D27B69A2CF928BF001C9BB4 /* Track.ioUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		0DB0A7FC2C83EC840038F855 /* Track */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0DB0A8262C83EC840038F855 /* Build configuration list for PBXNativeTarget "Track" */;
@@ -161,6 +206,10 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					0D27B6992CF928BF001C9BB4 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 0DB0A7FC2C83EC840038F855;
+					};
 					0DB0A7FC2C83EC840038F855 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -194,11 +243,19 @@
 				0DB0A7FC2C83EC840038F855 /* Track */,
 				0DB0A8112C83EC840038F855 /* TrackTests */,
 				0DB0A81B2C83EC840038F855 /* TrackUITests */,
+				0D27B6992CF928BF001C9BB4 /* Track.ioUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0D27B6982CF928BF001C9BB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0DB0A7FB2C83EC840038F855 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -223,6 +280,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0D27B6962CF928BF001C9BB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0DB0A7F92C83EC840038F855 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -247,6 +311,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0D27B6A12CF928BF001C9BB4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0DB0A7FC2C83EC840038F855 /* Track */;
+			targetProxy = 0D27B6A02CF928BF001C9BB4 /* PBXContainerItemProxy */;
+		};
 		0DB0A8142C83EC840038F855 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0DB0A7FC2C83EC840038F855 /* Track */;
@@ -260,6 +329,48 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0D27B6A22CF928BF001C9BB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 57X39L89Y4;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.app.ethanmaxey.Track-ioUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Track;
+			};
+			name = Debug;
+		};
+		0D27B6A32CF928BF001C9BB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 57X39L89Y4;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.app.ethanmaxey.Track-ioUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Track;
+			};
+			name = Release;
+		};
 		0DB0A8242C83EC840038F855 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -451,6 +562,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.ethanmaxey.TrackTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -470,6 +585,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.ethanmaxey.TrackTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -487,6 +606,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.ethanmaxey.TrackUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -504,6 +627,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.ethanmaxey.TrackUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -514,6 +641,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0D27B6A42CF928BF001C9BB4 /* Build configuration list for PBXNativeTarget "Track.ioUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D27B6A22CF928BF001C9BB4 /* Debug */,
+				0D27B6A32CF928BF001C9BB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0DB0A7F82C83EC840038F855 /* Build configuration list for PBXProject "Track" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
