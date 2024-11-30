@@ -29,7 +29,7 @@ final class Track_ioUITests: XCTestCase {
     
     @MainActor
     func testTakeDetailsScreenshot() throws {
-        app.buttons["Google"].tap()
+        app.buttons["🔍 Google"].tap()
         snapshot("Details")
     }
     

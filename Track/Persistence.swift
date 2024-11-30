@@ -136,10 +136,10 @@ struct PersistenceController {
     }
 
     private func populateDefaultData() {
-        addJob(company: "Facebook", ghosted: true)
-        addJob(company: "Microsoft", rejected: true, ghosted: false)
-        addJob(company: "Apple", interview: true, no_offer: true, ghosted: false)
-        addJob(company: "Google", interview: true, offer: true, ghosted: false, accepted: true)
-        addJob(company: "Amazon", interview: true, offer: true, ghosted: false, declined: true)
+        addJob(company: "🚗 Doordash", ghosted: true)
+        addJob(company: "🏠 Airbnb", rejected: true, ghosted: false)
+        addJob(company: "🍏 Apple", interview: true, no_offer: true, ghosted: false)
+        addJob(company: "🔍 Google", interview: true, offer: true, ghosted: false, accepted: true)
+        addJob(company: "🚀 NASA", interview: true, offer: true, ghosted: false, declined: true)
     }
 }
