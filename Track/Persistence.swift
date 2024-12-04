@@ -104,6 +104,7 @@ struct PersistenceController {
         let newJob = JobListing(context: container.viewContext)
         newJob.id = UUID()
         newJob.company = company
+        newJob.date = Date()
         
         newJob.interview = interview
         newJob.rejected = rejected

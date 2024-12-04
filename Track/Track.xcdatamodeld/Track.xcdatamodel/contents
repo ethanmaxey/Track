@@ -3,6 +3,7 @@
     <entity name="JobListing" representedClassName="JobListing" syncable="YES" codeGenerationType="class">
         <attribute name="accepted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="company" optional="YES" attributeType="String"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="declined" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="ghosted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>

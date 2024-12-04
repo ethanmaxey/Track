@@ -15,26 +15,34 @@ struct JobDetailsView: View {
     @State var sectionOneExpanded: Bool = true
     @State var sectionTwoExpanded: Bool = false
     @State var sectionThreeExpanded: Bool = false
-    
-    // Start
-    // -> Applications
-    
-    // First stage
-    // -> Applications -> Interview
-    // -> Applications -> Rejected
-    // -> Applications -> Ghosted
-    
-    // Second Stage
-    // -> Applications -> Interview -> Offers
-    // -> Applications -> Interview -> No Offer
-    
-    // Third Stage
-    // -> Applications -> Interview -> Offers -> Accepted
-    // -> Applications -> Interview -> Offers -> Declined
 
     var body: some View {
         VStack {
             Form {
+                Section("Details") {
+                    HStack {
+                        Text("Company")
+                        
+                        Spacer()
+                        
+                        TextField("Company", text: Binding($job.company) ?? .constant(String()))
+                            .multilineTextAlignment(.trailing)
+                            .onDisappear {
+                                try? job.managedObjectContext?.save()
+                            }
+                    }
+                    
+                    
+                    DatePicker(
+                        "Date",
+                        selection: Binding($job.date) ?? .constant(Date()),
+                        displayedComponents: .date
+                    )
+                    .onChange(of: job.date) {
+                        viewModel.saveContext()
+                    }
+                }
+                
                 Section("Phase I", isExpanded: $sectionOneExpanded) {
                     Toggle("Ghosted", isOn: $job.ghosted)
                         .onChange(of: job.ghosted) {
