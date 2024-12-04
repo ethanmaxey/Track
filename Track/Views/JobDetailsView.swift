@@ -15,7 +15,14 @@ struct JobDetailsView: View {
     @State var sectionOneExpanded: Bool = true
     @State var sectionTwoExpanded: Bool = false
     @State var sectionThreeExpanded: Bool = false
+    
+    @State private var companyText: String
 
+    init(job: JobListing) {
+        self.job = job
+        // Initialize the state with the job's company or an empty string if nil
+        _companyText = State(initialValue: job.company ?? "")
+    }
     var body: some View {
         VStack {
             Form {
@@ -25,10 +32,14 @@ struct JobDetailsView: View {
                         
                         Spacer()
                         
-                        TextField("Company", text: Binding($job.company) ?? .constant(String()))
+                        TextField("Company", text: $companyText)
                             .multilineTextAlignment(.trailing)
                             .onDisappear {
+                                job.company = companyText
                                 try? job.managedObjectContext?.save()
+                                viewModel.saveContext()
+                                NotificationCenter.default.post(name: .NSManagedObjectContextDidSave, object: job.managedObjectContext)
+                                viewModel.objectWillChange.send()
                             }
                     }
                     

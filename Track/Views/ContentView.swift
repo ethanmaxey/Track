@@ -10,9 +10,18 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]) var jobs: FetchedResults<JobListing>
+    @FetchRequest(
+        entity: JobListing.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)],
+        predicate: nil,
+        animation: .default
+    )
+    var jobs: FetchedResults<JobListing>
     
     @EnvironmentObject var viewModel: ViewModel
+    
+    @State private var refreshing = false
+    private var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
 
     @State var isAddJobAlertPresented = false
     @State private var addJobAlertData = String()
@@ -35,12 +44,15 @@ struct ContentView: View {
             List {
                 ForEach(results, id: \.self)  { job in
                     NavigationLink(destination: JobDetailsView(job: job)) {
-                        Text(job.company ?? "Uh Oh! No name found.")
+                        Text((job.company ?? "Uh Oh! No name found." ) + (refreshing ? "" : ""))
                     }
                 }
                 .onDelete(perform: { offsets in
                     viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
                 })
+                .onReceive(didSave) { _ in
+                     refreshing.toggle()
+                }
             }
             .styleList()
             .searchable(text: $searchText)

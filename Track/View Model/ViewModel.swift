@@ -12,9 +12,15 @@ class ViewModel: ObservableObject {
     private var viewContext: NSManagedObjectContext
     @FetchRequest(sortDescriptors: []) var jobs: FetchedResults<JobListing>
 
+    @Published var refreshToggle: Bool = false
+    
     init(context: NSManagedObjectContext) {
         self.viewContext = context
     }
+       
+   func refresh() {
+       refreshToggle.toggle()
+   }
 
     func addJob(company: String) {
         withAnimation {
