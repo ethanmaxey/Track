@@ -17,12 +17,15 @@ struct JobDetailsView: View {
     @State var sectionThreeExpanded: Bool = false
     
     @State private var companyText: String
+    @State private var jobDate: Date
 
     init(job: JobListing) {
         self.job = job
         // Initialize the state with the job's company or an empty string if nil
         _companyText = State(initialValue: job.company ?? "")
+        _jobDate = State(initialValue: job.date ?? Date())
     }
+    
     var body: some View {
         VStack {
             Form {
@@ -46,11 +49,15 @@ struct JobDetailsView: View {
                     
                     DatePicker(
                         "Date",
-                        selection: Binding($job.date) ?? .constant(Date()),
+                        selection: $jobDate,
                         displayedComponents: .date
                     )
-                    .onChange(of: job.date) {
+                    .onDisappear {
+                        job.date = jobDate
+                        try? job.managedObjectContext?.save()
                         viewModel.saveContext()
+                        NotificationCenter.default.post(name: .NSManagedObjectContextDidSave, object: job.managedObjectContext)
+                        viewModel.objectWillChange.send()
                     }
                 }
                 
