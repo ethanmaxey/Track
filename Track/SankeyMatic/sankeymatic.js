@@ -1105,9 +1105,21 @@ Requires:
       // Calculate the actual room we have to draw in...
       // Start from the user's declared canvas size + margins:
 
+        
+        let graphWidth, graphHeight;
+
+        if (window.innerWidth > window.innerHeight) { // Landscape mode
+            graphWidth = window.innerWidth * 0.9;
+            graphHeight = window.innerHeight * 0.7;
+        } else { // Portrait mode
+            graphWidth = window.innerWidth * 0.9;
+            graphHeight = graphWidth * (0.5); // Maintain the same aspect ratio
+        }
+        
       // Ethan: This changes size
-      const graphW = window.innerWidth * 0.9,
-        graphH = window.innerHeight * 0.7,
+      const
+        graphW = graphWidth,
+        graphH = graphHeight,
         lastStage = stagesArr.length - 1,
         labelsBeforeFirst
           = stagesArr[0].filter((n) => n.label?.anchor === 'end'),
@@ -1342,11 +1354,10 @@ Requires:
     }
   
     // Add a [g]roup translating the remaining elements 'inward' by the margins:
-    const diagMain
-      = diagramRoot.append('g')
+      const diagMain = diagramRoot.append('g')
+        // Ethan: This transformation centers the Graph
+        .attr('transform', `translate(${ep(graph.final_margin_l)}, ${(window.innerHeight - graph.h) / 2})`);
 
-      // Ethan: Second param controls top margin
-        .attr('transform', `translate(${ep(graph.final_margin_l)}, ${30})`);
   
     // MARK Functions for Flow hover effects
     // applyFlowEffects(flow, opacity, styles):

@@ -9,8 +9,6 @@ import SwiftUI
 
 @main
 struct TrackApp: App {
-    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
-    
     let persistenceController = PersistenceController.shared
     let viewModel = ViewModel(context: PersistenceController.shared.container.viewContext)
 

@@ -30,7 +30,6 @@ struct SankeyView: View {
     var body: some View {
         SankeyMaticWebView(snapToggle: $snapshotTrigger, viewModel: viewModel)
             .id(reloadKey)
-            .interfaceOrientations(.landscape)
             .toolbar {
                 if let image {
                     ShareLink(
