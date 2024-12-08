@@ -14,8 +14,6 @@ class SankeyViewModel: ObservableObject {
 
 struct SankeyView: View {
     @State private var orientation = UIDevice.current.orientation
-    @State private var isShareEnabled = false
-    
     @ObservedObject var viewModel = SankeyViewModel()
     @State private var snapshotTrigger = false
     
@@ -27,41 +25,37 @@ struct SankeyView: View {
     }
     
     var body: some View {
-        SankeyMaticWebView(snapToggle: $snapshotTrigger, viewModel: viewModel)
-            .toolbar {
-                if let image {
-                    ShareLink(
-                        item: Image(uiImage: image),
-                        preview: SharePreview(
-                            "Check out my job search progress!",
-                            image: Image(uiImage: image)
-                        )
-                    )
-                }
-            }
-            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                if UIDevice.current.orientation.isPortrait {
-                    if orientation != .portrait {
+        NavigationStack {
+            SankeyMaticWebView(snapToggle: $snapshotTrigger, viewModel: viewModel)
+                .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                    if UIDevice.current.orientation.isPortrait {
                         orientation = .portrait
                         takeScreenShot()
-                    }
-                } else if UIDevice.current.orientation.isLandscape {
-                    if orientation != .landscapeLeft || orientation == .landscapeRight {
+                    } else if UIDevice.current.orientation.isLandscape {
                         orientation = .landscapeLeft
                         takeScreenShot()
                     }
                 }
-            }
-            .onAppear {
-                takeScreenShot()
-            }
+                .onAppear {
+                    takeScreenShot()
+                }
+                .toolbar {
+                    if let image {
+                        ShareLink(
+                            item: Image(uiImage: image),
+                            preview: SharePreview(
+                                "Check out my job search progress!",
+                                image: Image(uiImage: image)
+                            )
+                        )
+                    }
+                }
+        }
     }
     
     private func takeScreenShot() {
-        isShareEnabled = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             snapshotTrigger.toggle()
-            isShareEnabled = true
         }
     }
 }
