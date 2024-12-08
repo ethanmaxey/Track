@@ -70,16 +70,15 @@ struct SankeyView: View {
         }
     }
 }
+
 #Preview("Light") {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(ViewModel.preview)
-        .environment(NetworkMonitor())
 }
 
 #Preview("Dark") {
     ContentView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(ViewModel.preview)
-        .environment(NetworkMonitor())
         .preferredColorScheme(.dark)
 }
