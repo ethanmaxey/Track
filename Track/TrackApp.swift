@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import TipKit
 
 @main
 struct TrackApp: App {
     let persistenceController = PersistenceController.shared
     let viewModel = ViewModel(context: PersistenceController.shared.container.viewContext)
 
+    init() {
+        try? Tips.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

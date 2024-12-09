@@ -7,15 +7,17 @@
 
 import InterfaceOrientation
 import SwiftUI
+import TipKit
 
 class SankeyViewModel: ObservableObject {
     @Published var image: UIImage?
 }
 
 struct SankeyView: View {
-    @State private var orientation = UIDevice.current.orientation
     @ObservedObject var viewModel = SankeyViewModel()
     @State private var snapshotTrigger = false
+    
+    var sankeyLandscapeTip = SankeyLandscapeTip()
     
     var image: UIImage? {
         viewModel.image?.resizableImage(
@@ -26,30 +28,40 @@ struct SankeyView: View {
     
     var body: some View {
         NavigationStack {
-            SankeyMaticWebView(snapToggle: $snapshotTrigger, viewModel: viewModel)
-                .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                    if UIDevice.current.orientation.isPortrait {
-                        orientation = .portrait
-                        takeScreenShot()
-                    } else if UIDevice.current.orientation.isLandscape {
-                        orientation = .landscapeLeft
-                        takeScreenShot()
-                    }
+            ZStack {
+                // The main content
+                VStack {
+                    SankeyMaticWebView(snapToggle: $snapshotTrigger, viewModel: viewModel)
                 }
-                .onAppear {
-                    takeScreenShot()
+                
+                if UIDevice.current.orientation.isPortrait {
+                    // The overlayed tip, moved up 1/4 of the page.
+                    TipView(sankeyLandscapeTip, arrowEdge: .bottom)
+                        .padding()
+                        .offset(y: -UIScreen.main.bounds.height * 0.25)
                 }
-                .toolbar {
-                    if let image {
-                        ShareLink(
-                            item: Image(uiImage: image),
-                            preview: SharePreview(
-                                "Check out my job search progress!",
-                                image: Image(uiImage: image)
-                            )
+            }
+
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                takeScreenShot()
+            }
+            .onAppear {
+                takeScreenShot()
+            }
+            .toolbar {
+                if let image {
+                    ShareLink(
+                        item: Image(uiImage: image),
+                        preview: SharePreview(
+                            "Check out my job search progress!",
+                            image: Image(uiImage: image)
                         )
-                    }
+                    )
+                } else {
+                    Image(systemName: "square.and.arrow.up")
+                        .foregroundStyle(.gray)
                 }
+            }
         }
     }
     
