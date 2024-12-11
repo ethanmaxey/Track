@@ -9,11 +9,17 @@ import SwiftUI
 import StoreKit
 
 struct SettingsView: View {
-    @State private var showRateAlert = false
+    @AppStorage("useEmojis") private var useEmojis: Bool = false // Default to `false` if no value exists in storage
 
     var body: some View {
         NavigationView {
             List {
+                Section(header: Text("Preferences")) {
+                    Toggle(isOn: $useEmojis) {
+                        Label("Auto-Add Emoji to Jobs", systemImage: "face.smiling")
+                    }
+                }
+                
                 Section(header: Text("Feedback")) {
                     Button(action: {
                         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {

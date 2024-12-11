@@ -136,6 +136,9 @@ struct PersistenceController {
     }
 
     private func populateDefaultData() {
+        // Save a preference
+        UserDefaults.standard.set(true, forKey: "useEmojis")
+        
         addJob(company: "🚗 Doordash", ghosted: true)
         addJob(company: "🏠 Airbnb", rejected: true, ghosted: false)
         addJob(company: "🍏 Apple", interview: true, no_offer: true, ghosted: false)

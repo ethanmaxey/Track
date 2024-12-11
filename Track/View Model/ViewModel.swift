@@ -5,8 +5,9 @@
 //  Created by Ethan Maxey on 9/12/24.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
+import TextToEmoji
 
 class ViewModel: ObservableObject {
     @Published var jobs: [JobListing] = []
@@ -43,9 +44,7 @@ class ViewModel: ObservableObject {
         withAnimation {
             let newJob = JobListing(context: viewContext)
             newJob.id = UUID()
-            
             newJob.accepted = false
-            newJob.company = company
             newJob.declined = false
             newJob.ghosted = true
             newJob.interview = false
@@ -54,16 +53,36 @@ class ViewModel: ObservableObject {
             newJob.offer = false
             newJob.rejected = false
 
-            do {
-                try viewContext.save()
-                fetchJobs()
-            } catch {
-                // Handle the error appropriately
-                let nsError = error as NSError
-                print("Unresolved error \(nsError), \(nsError.userInfo)")
+            let useEmojis = UserDefaults.standard.bool(forKey: "useEmojis")
+            if useEmojis {
+                Task {
+                    let emoji = try? await TextToEmoji.emoji(for: company)
+                    guard let emoji else {
+                        let randomEmoji = String(UnicodeScalar(Array(0x1F300...0x1F3F0).randomElement()!)!)
+                        newJob.company = randomEmoji + company
+                        return
+                    }
+                    
+                    DispatchQueue.main.async { [weak self] in
+                        withAnimation {
+                            newJob.company = emoji + company
+                            
+                            do {
+                                try self?.viewContext.save()
+                                self?.fetchJobs()
+                            } catch {
+                                let nsError = error as NSError
+                                print("Unresolved error \(nsError), \(nsError.userInfo)")
+                            }
+                        }
+                    }
+                }
+            } else {
+                newJob.company = company
             }
         }
     }
+
 
     func deleteJobs(offsets: IndexSet, from jobList: [JobListing]) {
         withAnimation {

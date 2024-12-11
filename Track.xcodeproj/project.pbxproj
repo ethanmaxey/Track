@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0D5555932D0920830018EF49 /* TextToEmoji in Frameworks */ = {isa = PBXBuildFile; productRef = 0D5555922D0920830018EF49 /* TextToEmoji */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		0D27B6A02CF928BF001C9BB4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -62,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D5555932D0920830018EF49 /* TextToEmoji in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +150,7 @@
 			);
 			name = Track;
 			packageProductDependencies = (
+				0D5555922D0920830018EF49 /* TextToEmoji */,
 			);
 			productName = Track;
 			productReference = 0DB0A7FD2C83EC840038F855 /* Track.io.app */;
@@ -227,6 +233,7 @@
 			mainGroup = 0DB0A7F42C83EC840038F855;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				0D5555912D0920830018EF49 /* XCRemoteSwiftPackageReference "text-to-emoji" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0DB0A7FE2C83EC840038F855 /* Products */;
@@ -682,6 +689,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0D5555912D0920830018EF49 /* XCRemoteSwiftPackageReference "text-to-emoji" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WouterWisse/text-to-emoji.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0D5555922D0920830018EF49 /* TextToEmoji */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0D5555912D0920830018EF49 /* XCRemoteSwiftPackageReference "text-to-emoji" */;
+			productName = TextToEmoji;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0DB0A7F52C83EC840038F855 /* Project object */;
 }
