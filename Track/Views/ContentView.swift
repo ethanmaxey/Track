@@ -14,16 +14,19 @@ struct ContentView: View {
                 .tabItem {
                     Label("Track", systemImage: "house")
                 }
+                .tag(0)
             
             SankeyView()
                 .tabItem {
                     Label("Visualize", systemImage: "chart.xyaxis.line")
                 }
+                .tag(1)
             
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
+                .tag(2)
         }
     }
 }

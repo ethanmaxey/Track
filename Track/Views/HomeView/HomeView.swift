@@ -53,6 +53,9 @@ struct HomeView: View {
                 .onReceive(didSave) { _ in
                      refreshing.toggle()
                 }
+                .onDisappear {
+                    viewModel.saveContext()
+                }
             }
             .styleList()
             .searchable(text: $searchText)

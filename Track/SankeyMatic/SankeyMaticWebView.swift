@@ -9,11 +9,11 @@ import SwiftUI
 import WebKit
 
 struct SankeyMaticWebView: UIViewRepresentable {
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]) var jobs: FetchedResults<JobListing>
-    
     @Binding var snapToggle: Bool
     
-    let viewModel: SankeyViewModel
+    @EnvironmentObject var viewModel: ViewModel
+    
+    let sankeyViewModel: SankeyViewModel
     
     func updateUIView(_ webView: WKWebView, context: Context) {
         let htmlPath = Bundle.main.path(forResource: "index", ofType: "html")
@@ -23,13 +23,15 @@ struct SankeyMaticWebView: UIViewRepresentable {
         webView.isInspectable = true
         webView.isUserInteractionEnabled = false
         
+        updateSankeyData(for: webView)
+        
         guard snapToggle else {
             return
         }
         
         let _ = webView.takeSnapshot(with: nil) { img, err in
             if let img {
-                viewModel.image = img
+                sankeyViewModel.image = img
                 snapToggle = false
             } else {
                 print(err.debugDescription)
@@ -69,19 +71,49 @@ extension SankeyMaticWebView {
 
 // MARK: - Input Processing
 extension SankeyMaticWebView {
-    func getInput() -> String {
+    private func getInput() -> String {
         return """
-        Applications [\(jobs.count { $0.interview })] Interviews
-        Applications [\(jobs.count { $0.rejected })] Rejected
-        Applications [\(jobs.count { $0.ghosted })] No Answer
+        Applications [\(viewModel.jobs.count { $0.interview })] Interviews
+        Applications [\(viewModel.jobs.count { $0.rejected })] Rejected
+        Applications [\(viewModel.jobs.count { $0.ghosted })] No Answer
         
-        Interviews [\(jobs.count { $0.offer })] Offers
-        Interviews [\(jobs.count { $0.no_offer })] No Offer
+        Interviews [\(viewModel.jobs.count { $0.offer })] Offers
+        Interviews [\(viewModel.jobs.count { $0.no_offer })] No Offer
         
-        Offers [\(jobs.count { $0.accepted })] Accepted
-        Offers [\(jobs.count { $0.declined })] Declined
+        Offers [\(viewModel.jobs.count { $0.accepted })] Accepted
+        Offers [\(viewModel.jobs.count { $0.declined })] Declined
         """
     }
+    
+    private func updateSankeyData(for webView: WKWebView) {
+        let input = getInput()
+        
+        let sankeyInputJS = """
+        originalLinesSourceHardCoded = `\(input)`;
+        """
+        
+        webView.evaluateJavaScript(sankeyInputJS) { result, error in
+            if let error = error {
+                print("Error resetting data: \(error.localizedDescription)")
+            } else {
+                print("originalLinesSourceHardCoded: \(result ?? "No result")")
+            }
+        }
+        
+        processSankey(webView: webView)
+    }
+    
+    private func processSankey(webView: WKWebView) {
+        let jsFunction = "process_sankey();"
+        webView.evaluateJavaScript(jsFunction) { result, error in
+            if let error = error {
+                print("Error calling process sankey: \(error.localizedDescription)")
+            } else {
+                print("process_sankey executed successfully: \(result ?? "No result")")
+            }
+        }
+    }
+
 }
 
 class SankeyMaticWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {

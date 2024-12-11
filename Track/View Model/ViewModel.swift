@@ -9,13 +9,30 @@ import SwiftUI
 import CoreData
 
 class ViewModel: ObservableObject {
-    private var viewContext: NSManagedObjectContext
-    @FetchRequest(sortDescriptors: []) var jobs: FetchedResults<JobListing>
-
+    @Published var jobs: [JobListing] = []
     @Published var refreshToggle: Bool = false
     
-    init(context: NSManagedObjectContext) {
-        self.viewContext = context
+    private var viewContext: NSManagedObjectContext
+    
+    init(viewContext: NSManagedObjectContext) {
+        self.viewContext = viewContext
+        fetchJobs()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchJobs),
+            name: .NSManagedObjectContextDidSave,
+            object: viewContext
+        )
+    }
+
+    @objc func fetchJobs() {
+        let request: NSFetchRequest<JobListing> = JobListing.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)]
+        if let results = try? viewContext.fetch(request) {
+            DispatchQueue.main.async {
+                self.jobs = results
+            }
+        }
     }
        
    func refresh() {
@@ -39,6 +56,7 @@ class ViewModel: ObservableObject {
 
             do {
                 try viewContext.save()
+                fetchJobs()
             } catch {
                 // Handle the error appropriately
                 let nsError = error as NSError
@@ -52,6 +70,7 @@ class ViewModel: ObservableObject {
             offsets.map { jobList[$0] }.forEach(viewContext.delete)
             do {
                 try viewContext.save()
+                fetchJobs()
             } catch {
                 // handle the error
                 print("Error saving context: \(error.localizedDescription)")
@@ -62,6 +81,7 @@ class ViewModel: ObservableObject {
     func saveContext() {
         do {
             try viewContext.save()
+            fetchJobs()
         } catch {
             fatalError()
         }
@@ -73,6 +93,6 @@ class ViewModel: ObservableObject {
 extension ViewModel {
     static var preview: ViewModel {
         let controller = PersistenceController.preview // Assume this provides an in-memory context
-        return ViewModel(context: controller.container.viewContext)
+        return ViewModel(viewContext: controller.container.viewContext)
     }
 }

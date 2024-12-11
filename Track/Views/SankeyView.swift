@@ -5,7 +5,6 @@
 //  Created by Ethan Maxey on 11/25/24.
 //
 
-import InterfaceOrientation
 import SwiftUI
 import TipKit
 
@@ -14,13 +13,15 @@ class SankeyViewModel: ObservableObject {
 }
 
 struct SankeyView: View {
-    @ObservedObject var viewModel = SankeyViewModel()
+    @ObservedObject var sankeyViewModel = SankeyViewModel()
     @State private var snapshotTrigger = false
+    @State private var orientation = UIDevice.current.orientation
+    @State private var refreshOnAppearID = UUID()
     
     var sankeyLandscapeTip = SankeyLandscapeTip()
     
     var image: UIImage? {
-        viewModel.image?.resizableImage(
+        sankeyViewModel.image?.resizableImage(
             withCapInsets: UIEdgeInsets(top: 150, left: 150, bottom: 150, right: 150),
             resizingMode: .tile
         )
@@ -31,10 +32,11 @@ struct SankeyView: View {
             ZStack {
                 // The main content
                 VStack {
-                    SankeyMaticWebView(snapToggle: $snapshotTrigger, viewModel: viewModel)
+                    SankeyMaticWebView(snapToggle: $snapshotTrigger, sankeyViewModel: sankeyViewModel)
+                        .id(refreshOnAppearID)
                 }
                 
-                if UIDevice.current.orientation.isPortrait {
+                if orientation.isPortrait {
                     // The overlayed tip, moved up 1/4 of the page.
                     TipView(sankeyLandscapeTip, arrowEdge: .bottom)
                         .padding()
@@ -43,9 +45,11 @@ struct SankeyView: View {
             }
 
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                orientation = UIDevice.current.orientation
                 takeScreenShot()
             }
             .onAppear {
+                refreshOnAppearID = UUID()
                 takeScreenShot()
             }
             .toolbar {

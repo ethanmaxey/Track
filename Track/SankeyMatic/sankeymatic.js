@@ -1356,7 +1356,7 @@ Requires:
     // Add a [g]roup translating the remaining elements 'inward' by the margins:
       const diagMain = diagramRoot.append('g')
         // Ethan: This transformation centers the Graph
-        .attr('transform', `translate(${ep(graph.final_margin_l)}, ${(window.innerHeight - graph.h) / 2})`);
+        .attr('transform', `translate(${ep(graph.final_margin_l)}, ${(window.innerHeight - graph.h) / 3})`);
 
   
     // MARK Functions for Flow hover effects

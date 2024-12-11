@@ -11,7 +11,7 @@ import TipKit
 @main
 struct TrackApp: App {
     let persistenceController = PersistenceController.shared
-    let viewModel = ViewModel(context: PersistenceController.shared.container.viewContext)
+    let viewModel = ViewModel(viewContext: PersistenceController.shared.container.viewContext)
 
     init() {
         try? Tips.configure()
