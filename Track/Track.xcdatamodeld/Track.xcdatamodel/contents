@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24B83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="JobListing" representedClassName="JobListing" syncable="YES" codeGenerationType="class">
+    <entity name="JobListing" representedClassName="JobListing" parentEntity="Resume" syncable="YES" codeGenerationType="class">
         <attribute name="accepted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="company" optional="YES" attributeType="String"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -12,5 +12,13 @@
         <attribute name="oa" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="offer" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="rejected" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="resume" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Resume" inverseName="job" inverseEntity="Resume"/>
+    </entity>
+    <entity name="Resume" representedClassName="Resume" syncable="YES" codeGenerationType="class">
+        <attribute name="fileData" optional="YES" attributeType="Binary"/>
+        <attribute name="fileName" optional="YES" attributeType="String"/>
+        <attribute name="fileURL" optional="YES" attributeType="String"/>
+        <attribute name="uploadDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="job" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="JobListing" inverseName="resume" inverseEntity="JobListing"/>
     </entity>
 </model>

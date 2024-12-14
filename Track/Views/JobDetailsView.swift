@@ -12,9 +12,9 @@ struct JobDetailsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var job: JobListing
     
-    @State var sectionOneExpanded: Bool = true
-    @State var sectionTwoExpanded: Bool = false
-    @State var sectionThreeExpanded: Bool = false
+    @State private var sectionOneExpanded: Bool = true
+    @State private var sectionTwoExpanded: Bool = false
+    @State private var sectionThreeExpanded: Bool = false
     
     @State private var companyText: String
     @State private var jobDate: Date
@@ -61,6 +61,26 @@ struct JobDetailsView: View {
                     }
                 }
                 
+                /*
+                Section("Resume") {
+                    Button("Upload Resume") {
+                        isDocumentPickerShowing.toggle()
+                    }
+                    .fileImporter(isPresented: $isDocumentPickerShowing, allowedContentTypes: [.pdf], allowsMultipleSelection: false) { result in
+                        if let newResume = viewModel.addResume(basedOn: result), let url = newResume.fileURL {
+                            job.resume = newResume
+                            previewURL = URL(fileURLWithPath: url)
+                        }
+                    }
+
+                    Picker("Selected Resume", selection: $job.resume) {
+                        ForEach(viewModel.jobs.filter({ $0.resume != nil }).map({ $0.resume! }), id: \.self) { resume in
+                            Text(resume.fileName ?? "Resume").tag(resume as Resume?)
+                        }
+                    }
+                }
+                 */
+
                 Section("Phase I", isExpanded: $sectionOneExpanded) {
                     Toggle("Ghosted", isOn: $job.ghosted)
                         .onChange(of: job.ghosted) {
@@ -136,6 +156,28 @@ struct JobDetailsView: View {
         .onAppear {
             updateExpansionStates()
         }
+        
+        /*
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if let selectedResume = job.resume, let url = selectedResume.fileURL {
+                    Button {
+                        if FileManager.default.fileExists(atPath: url) {
+                            print("File exists at path: \(url)")
+                        } else {
+                            print("File does not exist at path: \(url)")
+                        }
+
+                        
+                        previewURL = URL(filePath: url)
+                    } label: {
+                        Image(systemName: "doc.text.magnifyingglass")
+                            .quickLookPreview($previewURL)
+                    }
+                }
+            }
+        }
+         */
     }
     
     private func updateExpansionStates() {

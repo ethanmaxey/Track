@@ -1104,22 +1104,11 @@ Requires:
     function setUpDiagramSize() {
       // Calculate the actual room we have to draw in...
       // Start from the user's declared canvas size + margins:
-
-        
-        let graphWidth, graphHeight;
-
-        if (window.innerWidth > window.innerHeight) { // Landscape mode
-            graphWidth = window.innerWidth * 0.9;
-            graphHeight = window.innerHeight * 0.7;
-        } else { // Portrait mode
-            graphWidth = window.innerWidth * 0.9;
-            graphHeight = graphWidth * (0.5); // Maintain the same aspect ratio
-        }
         
       // Ethan: This changes size
       const
-        graphW = graphWidth,
-        graphH = graphHeight,
+        graphW = window.innerWidth * 0.9,
+        graphH = window.innerHeight * 0.9,
         lastStage = stagesArr.length - 1,
         labelsBeforeFirst
           = stagesArr[0].filter((n) => n.label?.anchor === 'end'),

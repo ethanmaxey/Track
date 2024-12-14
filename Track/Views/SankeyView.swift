@@ -32,8 +32,12 @@ struct SankeyView: View {
             ZStack {
                 // The main content
                 VStack {
-                    SankeyMaticWebView(snapToggle: $snapshotTrigger, sankeyViewModel: sankeyViewModel)
-                        .id(refreshOnAppearID)
+                    SankeyMaticWebView(
+                        snapToggle: $snapshotTrigger,
+                        orientation: $orientation,
+                        sankeyViewModel: sankeyViewModel
+                    )
+                    .id(refreshOnAppearID)
                 }
                 
                 if orientation.isPortrait {

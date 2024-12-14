@@ -10,6 +10,7 @@ import WebKit
 
 struct SankeyMaticWebView: UIViewRepresentable {
     @Binding var snapToggle: Bool
+    @Binding var orientation: UIDeviceOrientation
     
     @EnvironmentObject var viewModel: ViewModel
     
@@ -22,6 +23,15 @@ struct SankeyMaticWebView: UIViewRepresentable {
         webView.scrollView.isScrollEnabled = false
         webView.isInspectable = true
         webView.isUserInteractionEnabled = false
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Rotate 90 Degrees
+        if orientation.isPortrait {
+            let rotationAngle = CGFloat.pi / 2
+            webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+        } else {
+            webView.transform = .identity
+        }
         
         updateSankeyData(for: webView)
         
@@ -92,28 +102,15 @@ extension SankeyMaticWebView {
         originalLinesSourceHardCoded = `\(input)`;
         """
         
-        webView.evaluateJavaScript(sankeyInputJS) { result, error in
-            if let error = error {
-                print("Error resetting data: \(error.localizedDescription)")
-            } else {
-                print("originalLinesSourceHardCoded: \(result ?? "No result")")
-            }
-        }
+        webView.evaluateJavaScript(sankeyInputJS)
         
         processSankey(webView: webView)
     }
     
     private func processSankey(webView: WKWebView) {
         let jsFunction = "process_sankey();"
-        webView.evaluateJavaScript(jsFunction) { result, error in
-            if let error = error {
-                print("Error calling process sankey: \(error.localizedDescription)")
-            } else {
-                print("process_sankey executed successfully: \(result ?? "No result")")
-            }
-        }
+        webView.evaluateJavaScript(jsFunction)
     }
-
 }
 
 class SankeyMaticWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {

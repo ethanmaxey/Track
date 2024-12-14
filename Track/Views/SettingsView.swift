@@ -9,7 +9,7 @@ import SwiftUI
 import StoreKit
 
 struct SettingsView: View {
-    @AppStorage("useEmojis") private var useEmojis: Bool = false // Default to `false` if no value exists in storage
+    @AppStorage("useEmojis") private var useEmojis: Bool = true
 
     var body: some View {
         NavigationView {
@@ -26,7 +26,7 @@ struct SettingsView: View {
                             SKStoreReviewController.requestReview(in: scene)
                         }
                     }) {
-                        Label("Rate This App", systemImage: "star.fill")
+                        Label("Rate This App", systemImage: "star")
                     }
                 }
 
@@ -54,6 +54,7 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .listStyle(InsetGroupedListStyle())
         }
+        .navigationViewStyle(.stack)
     }
 }
 

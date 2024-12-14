@@ -11,6 +11,7 @@ import TextToEmoji
 
 class ViewModel: ObservableObject {
     @Published var jobs: [JobListing] = []
+    @Published var resumes: [Resume] = []
     @Published var refreshToggle: Bool = false
     
     private var viewContext: NSManagedObjectContext
@@ -18,12 +19,20 @@ class ViewModel: ObservableObject {
     init(viewContext: NSManagedObjectContext) {
         self.viewContext = viewContext
         fetchJobs()
+        fetchResumes()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(fetchJobs),
             name: .NSManagedObjectContextDidSave,
             object: viewContext
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchResumes),
+            name: .NSManagedObjectContextDidSave,
+            object: viewContext
+        )
+
     }
 
     @objc func fetchJobs() {
@@ -35,6 +44,17 @@ class ViewModel: ObservableObject {
             }
         }
     }
+    
+    @objc func fetchResumes() {
+        let request: NSFetchRequest<Resume> = Resume.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Resume.fileName, ascending: true)]
+        if let results = try? viewContext.fetch(request) {
+            DispatchQueue.main.async {
+                self.resumes = results
+            }
+        }
+    }
+
        
    func refresh() {
        refreshToggle.toggle()
@@ -52,6 +72,8 @@ class ViewModel: ObservableObject {
             newJob.oa = false
             newJob.offer = false
             newJob.rejected = false
+            newJob.date = Date.distantPast
+            newJob.resume = nil
 
             let useEmojis = UserDefaults.standard.bool(forKey: "useEmojis")
             if useEmojis {
@@ -66,7 +88,6 @@ class ViewModel: ObservableObject {
                     DispatchQueue.main.async { [weak self] in
                         withAnimation {
                             newJob.company = emoji + company
-                            
                             do {
                                 try self?.viewContext.save()
                                 self?.fetchJobs()
@@ -101,11 +122,11 @@ class ViewModel: ObservableObject {
         do {
             try viewContext.save()
             fetchJobs()
+            fetchResumes()
         } catch {
             fatalError()
         }
     }
-
 }
 
 // MARK: - Previews
@@ -113,5 +134,48 @@ extension ViewModel {
     static var preview: ViewModel {
         let controller = PersistenceController.preview // Assume this provides an in-memory context
         return ViewModel(viewContext: controller.container.viewContext)
+    }
+}
+
+// MARK: - Resumes
+extension ViewModel {
+    func addResume(basedOn result: Result<[URL], Error>) -> Resume? {
+        switch result {
+        case .success(let data):
+            let newResume = Resume(context: viewContext)
+            
+            if let fileURL = data.first {
+                let fileName = fileURL.lastPathComponent
+                newResume.fileName = fileName
+                newResume.uploadDate = Date()
+                
+                let fileManager = FileManager.default
+                let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let destinationURL = directory.appendingPathComponent(fileName)
+                
+                do {
+                    // Ensure directory exists
+                    if !fileManager.fileExists(atPath: directory.path) {
+                        try fileManager.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
+                    }
+                    
+                    // Copy file to destination
+                    try fileManager.copyItem(at: fileURL, to: destinationURL)
+                    newResume.fileURL = destinationURL.absoluteString
+                    print("File successfully saved at: \(destinationURL.path)")
+                } catch {
+                    print("Failed to copy file: \(error)")
+                    return nil
+                }
+            }
+            
+            resumes.append(newResume)
+            saveContext()
+            return newResume
+            
+        case .failure(let error):
+            print("Add Resume did fail: \(error)")
+            return nil
+        }
     }
 }

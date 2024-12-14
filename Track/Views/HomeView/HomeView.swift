@@ -12,7 +12,7 @@ struct HomeView: View {
     @Environment(\.managedObjectContext) var viewContext
     @FetchRequest(
         entity: JobListing.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.company, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \JobListing.date, ascending: false)],
         predicate: nil,
         animation: .default
     )
