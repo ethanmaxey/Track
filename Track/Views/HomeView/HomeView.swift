@@ -5,6 +5,7 @@
 //  Created by Ethan Maxey on 8/31/24.
 //
 
+import SwiftRater
 import SwiftUI
 import CoreData
 
@@ -47,9 +48,12 @@ struct HomeView: View {
                         Text((job.company ?? "Uh Oh! No name found." ) + (refreshing ? "" : ""))
                     }
                 }
-                .onDelete(perform: { offsets in
+                .onDelete { offsets in
                     viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
-                })
+                }
+                .onAppear {
+                    SwiftRater.check()
+                }
                 .onReceive(didSave) { _ in
                      refreshing.toggle()
                 }

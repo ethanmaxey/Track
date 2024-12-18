@@ -1,6 +1,15 @@
 {
-  "originHash" : "76f85628b9528f2919696d7c74ac86552938ae8ce1df7e6c0fdb17bed2afb950",
+  "originHash" : "1570653bd0a6a1b66082ee693198fd1098623b0ac8333ea3a89a0df6c92150ba",
   "pins" : [
+    {
+      "identity" : "swiftrater",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/takecian/SwiftRater.git",
+      "state" : {
+        "revision" : "9a7855378c4586d1e550b956bb13456bdccc3a49",
+        "version" : "2.2.2"
+      }
+    },
     {
       "identity" : "text-to-emoji",
       "kind" : "remoteSourceControl",
