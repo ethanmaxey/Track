@@ -68,7 +68,7 @@ struct SettingsView: View {
                         } label: {
                             Image(systemName: "x.circle")
                                 .resizable()
-                                .frame(width: 20, height: 20)
+                                .frame(width: 25, height: 25)
                                 .padding()
                         }
                     }
@@ -85,7 +85,7 @@ struct SettingsView: View {
                         } label: {
                             Image(systemName: "x.circle")
                                 .resizable()
-                                .frame(width: 20, height: 20)
+                                .frame(width: 25, height: 25)
                                 .padding()
                         }
                     }
