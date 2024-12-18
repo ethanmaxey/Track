@@ -16,6 +16,8 @@ struct JobDetailsView: View {
     @State private var sectionTwoExpanded: Bool = false
     @State private var sectionThreeExpanded: Bool = false
     
+    @State private var isSyncing: Bool = false
+    
     @State private var companyText: String
     @State private var jobDate: Date
 
@@ -84,6 +86,17 @@ struct JobDetailsView: View {
                 Section("Phase I", isExpanded: $sectionOneExpanded) {
                     Toggle("Ghosted", isOn: $job.ghosted)
                         .onChange(of: job.ghosted) {
+                            
+                            
+                            if job.ghosted {
+                                job.rejected = false
+                                job.interview = false
+                                job.offer = false
+                                job.no_offer = false
+                                job.accepted = false
+                                job.declined = false
+                            }
+                            
                             viewModel.saveContext()
                             updateExpansionStates()
                         }
@@ -110,36 +123,24 @@ struct JobDetailsView: View {
                 Section("Phase II", isExpanded: $sectionTwoExpanded) {
                     Toggle("Offer", isOn: $job.offer)
                         .onChange(of: job.offer) {
-                           
-                            if job.no_offer {
-                                job.accepted = false
-                                job.declined = false
+                            if !isSyncing {
+                                isSyncing = true
+                                job.no_offer = !job.offer
+                                viewModel.saveContext()
+                                updateExpansionStates()
+                                isSyncing = false
                             }
-                            
-                            if job.offer {
-                                job.no_offer = false
-                            }
-                            
-                            
-                            viewModel.saveContext()
-                            updateExpansionStates()
                         }
                     
                     Toggle("No Offer", isOn: $job.no_offer)
                         .onChange(of: job.no_offer) {
-                            
-                            
-                            if !job.no_offer {
-                                job.accepted = false
-                                job.declined = false
+                            if !isSyncing {
+                                isSyncing = true
+                                job.offer = !job.no_offer
+                                viewModel.saveContext()
+                                updateExpansionStates()
+                                isSyncing = false
                             }
-                            
-                            if job.offer {
-                                job.offer = false
-                            }
-                            
-                            viewModel.saveContext()
-                            updateExpansionStates()
                         }
                 }
                 
