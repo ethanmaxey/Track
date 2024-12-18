@@ -39,13 +39,6 @@ struct SankeyView: View {
                     )
                     .id(refreshOnAppearID)
                 }
-                
-                if orientation.isPortrait {
-                    // The overlayed tip, moved up 1/4 of the page.
-                    TipView(sankeyLandscapeTip, arrowEdge: .bottom)
-                        .padding()
-                        .offset(y: -UIScreen.main.bounds.height * 0.25)
-                }
             }
 
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
