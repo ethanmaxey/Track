@@ -25,7 +25,13 @@ struct SankeyMaticWebView: UIViewRepresentable {
         webView.isUserInteractionEnabled = false
         webView.translatesAutoresizingMaskIntoConstraints = false
         
-        guard let scene = UIApplication.shared.windows.first?.windowScene else {
+        let scene = UIApplication
+            .shared
+            .connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .last?.windowScene
+        
+        guard let scene else {
             return
         }
         

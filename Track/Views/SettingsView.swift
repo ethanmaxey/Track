@@ -24,11 +24,11 @@ struct SettingsView: View {
                 }
                 
                 Section(header: Text("Feedback")) {
-                    Button(action: {
+                    Button {
                         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                             SKStoreReviewController.requestReview(in: scene)
                         }
-                    }) {
+                    } label: {
                         Label("Rate This App", systemImage: "star")
                     }
                     
@@ -71,11 +71,14 @@ struct SettingsView: View {
                         WebView(url: url)
                             .ignoresSafeArea()
 
-                        Button(String(), systemImage: "x.circle") {
+                        Button {
                             showPrivacyPolicy.toggle()
+                        } label: {
+                            Image(systemName: "x.circle")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .padding()
                         }
-                        .frame(width: 50, height: 50)
-                        .padding()
                     }
                 }
             }
@@ -85,11 +88,14 @@ struct SettingsView: View {
                         WebView(url: url)
                             .ignoresSafeArea()
 
-                        Button(String(), systemImage: "x.circle") {
+                        Button {
                             showContactSupport.toggle()
+                        } label: {
+                            Image(systemName: "x.circle")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .padding()
                         }
-                        .frame(width: 50, height: 50)
-                        .padding()
                     }
                 }
             }
