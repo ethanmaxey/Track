@@ -23,15 +23,7 @@ struct SettingsView: View {
                     }
                 }
                 
-                Section(header: Text("Feedback")) {
-                    Button {
-                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                            SKStoreReviewController.requestReview(in: scene)
-                        }
-                    } label: {
-                        Label("Rate This App", systemImage: "star")
-                    }
-                    
+                Section(header: Text("Feedback")) {                    
                     Button {
                         AppStoreReview.requestReviewManually()
                     } label: {
