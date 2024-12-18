@@ -42,26 +42,6 @@
 		0DB0A81C2C83EC840038F855 /* TrackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		0D2054B92D12804100BA2802 /* Exceptions for "Track" folder in "Track" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Services/File.swift,
-			);
-			target = 0DB0A7FC2C83EC840038F855 /* Track */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		0D2054BA2D12804100BA2802 /* Exceptions for "Track" folder in "Copy Bundle Resources" phase from "Track" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 0DB0A7FB2C83EC840038F855 /* Resources */;
-			membershipExceptions = (
-				Services/File.swift,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0D27B69B2CF928BF001C9BB4 /* Track.ioUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -70,10 +50,6 @@
 		};
 		0DB0A7FF2C83EC840038F855 /* Track */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				0D2054B92D12804100BA2802 /* Exceptions for "Track" folder in "Track" target */,
-				0D2054BA2D12804100BA2802 /* Exceptions for "Track" folder in "Copy Bundle Resources" phase from "Track" target */,
-			);
 			path = Track;
 			sourceTree = "<group>";
 		};

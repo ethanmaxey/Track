@@ -31,6 +31,7 @@ struct HomeViewToolbarView: View {
             Button(String(), systemImage: "plus.circle") {
                 isAddJobAlertPresented = true
             }
+            .accessibilityLabel("addJob")
             .frame(minWidth: 30, maxWidth: 30)
             .customAlert(
                 "Congrats! Where did you apply?",

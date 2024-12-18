@@ -35,7 +35,7 @@ final class Track_ioUITests: XCTestCase {
     
     @MainActor
     func testTakeAddJobScreenshot() throws {
-        app.buttons["Add Job"].tap()
+        app.buttons["addJob"].tap()
         
         let textField = app.textFields["Enter job name here."]
         textField.tap()
