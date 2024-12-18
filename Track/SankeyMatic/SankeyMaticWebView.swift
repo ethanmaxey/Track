@@ -25,8 +25,12 @@ struct SankeyMaticWebView: UIViewRepresentable {
         webView.isUserInteractionEnabled = false
         webView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Rotate 90 Degrees
-        if orientation.isPortrait {
+        guard let scene = UIApplication.shared.windows.first?.windowScene else {
+            return
+        }
+        
+        let isPortrait = scene.interfaceOrientation.isPortrait
+        if isPortrait {
             let rotationAngle = CGFloat.pi / 2
             webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
         } else {

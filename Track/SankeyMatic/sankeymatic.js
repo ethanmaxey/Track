@@ -1107,8 +1107,8 @@ Requires:
         
       // Ethan: This changes size
       const
-        graphW = window.innerWidth * 0.9,
-        graphH = window.innerHeight * 0.9,
+        graphW = window.innerWidth * 0.8,
+        graphH = window.innerHeight * 0.7,
         lastStage = stagesArr.length - 1,
         labelsBeforeFirst
           = stagesArr[0].filter((n) => n.label?.anchor === 'end'),
