@@ -10,6 +10,9 @@ import StoreKit
 
 struct SettingsView: View {
     @AppStorage("useEmojis") private var useEmojis: Bool = true
+    
+    @State private var showPrivacyPolicy = false
+    @State private var showContactSupport = false
 
     var body: some View {
         NavigationView {
@@ -28,14 +31,25 @@ struct SettingsView: View {
                     }) {
                         Label("Rate This App", systemImage: "star")
                     }
+                    
+                    Button {
+                        AppStoreReview.requestReviewManually()
+                    } label: {
+                        Label("Leave a Review", systemImage: "pencil.and.scribble")
+                    }
+
                 }
 
                 Section(header: Text("Support")) {
-                    Link(destination: URL(string: "https://ethanmaxey.netlify.app/track-privacy.html")!) {
+                    Button {
+                        showPrivacyPolicy = true
+                    } label: {
                         Label("Privacy Policy", systemImage: "doc.text")
                     }
-                    
-                    Link(destination: URL(string: "https://ethanmaxey.netlify.app/track-support.html")!) {
+
+                    Button {
+                        showContactSupport.toggle()
+                    } label: {
                         Label("Contact Support", systemImage: "envelope")
                     }
                 }
@@ -51,8 +65,37 @@ struct SettingsView: View {
                     }
                 }
             }
+            .sheet(isPresented: $showPrivacyPolicy) {
+                if let url = URL(string: "https://ethanmaxey.netlify.app/track-privacy.html") {
+                    ZStack(alignment: .topLeading) {
+                        WebView(url: url)
+                            .ignoresSafeArea()
+
+                        Button(String(), systemImage: "x.circle") {
+                            showPrivacyPolicy.toggle()
+                        }
+                        .frame(width: 50, height: 50)
+                        .padding()
+                    }
+                }
+            }
+            .sheet(isPresented: $showContactSupport) {
+                if let url = URL(string: "https://ethanmaxey.netlify.app/track-support.html") {
+                    ZStack(alignment: .topLeading) {
+                        WebView(url: url)
+                            .ignoresSafeArea()
+
+                        Button(String(), systemImage: "x.circle") {
+                            showContactSupport.toggle()
+                        }
+                        .frame(width: 50, height: 50)
+                        .padding()
+                    }
+                }
+            }
             .navigationTitle("Settings")
             .listStyle(InsetGroupedListStyle())
+
         }
         .navigationViewStyle(.stack)
     }

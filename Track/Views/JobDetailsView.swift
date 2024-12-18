@@ -110,13 +110,16 @@ struct JobDetailsView: View {
                 Section("Phase II", isExpanded: $sectionTwoExpanded) {
                     Toggle("Offer", isOn: $job.offer)
                         .onChange(of: job.offer) {
-                                                    
-                            if !job.offer {
+                           
+                            if job.no_offer {
                                 job.accepted = false
                                 job.declined = false
-                            } else {
-                                job.no_offer = !job.offer
                             }
+                            
+                            if job.offer {
+                                job.no_offer = false
+                            }
+                            
                             
                             viewModel.saveContext()
                             updateExpansionStates()
@@ -124,11 +127,15 @@ struct JobDetailsView: View {
                     
                     Toggle("No Offer", isOn: $job.no_offer)
                         .onChange(of: job.no_offer) {
-                            job.no_offer = !job.offer
+                            
                             
                             if !job.no_offer {
                                 job.accepted = false
                                 job.declined = false
+                            }
+                            
+                            if job.offer {
+                                job.offer = false
                             }
                             
                             viewModel.saveContext()
