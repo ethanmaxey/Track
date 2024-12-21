@@ -28,7 +28,6 @@ struct HomeView: View {
     @State private var addJobAlertData = String()
     @State private var searchText = String()
     @State private var isFiltersPresented = false
-    @State private var filterCriteria: ApplicationStatus = .applied
     
     // To passed into SankeyMaticWebView as binding.
     @State private var sankeyOrigin: CGPoint = .zero

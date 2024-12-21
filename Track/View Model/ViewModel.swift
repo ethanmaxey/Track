@@ -81,7 +81,7 @@ class ViewModel: ObservableObject {
                     let emoji = try? await TextToEmoji.emoji(for: company)
                     guard let emoji else {
                         let randomEmoji = String(UnicodeScalar(Array(0x1F300...0x1F3F0).randomElement()!)!)
-                        newJob.company = randomEmoji + company
+                        newJob.company = randomEmoji + " " + company
                         return
                     }
                     
