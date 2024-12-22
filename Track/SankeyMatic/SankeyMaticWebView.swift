@@ -36,7 +36,7 @@ struct SankeyMaticWebView: UIViewRepresentable {
         }
         
         let isPortrait = scene.interfaceOrientation.isPortrait
-        if isPortrait {
+        if isPortrait, UIDevice.current.userInterfaceIdiom != .pad  {
             let rotationAngle = CGFloat.pi / 2
             webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
         } else {

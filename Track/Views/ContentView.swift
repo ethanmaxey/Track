@@ -28,6 +28,8 @@ struct ContentView: View {
                 }
                 .tag(2)
         }
+        // Fix Tabview from being on top in iPad.
+        .environment(\.horizontalSizeClass, .compact)
     }
 }
 
