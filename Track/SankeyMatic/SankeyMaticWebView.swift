@@ -52,6 +52,9 @@ struct SankeyMaticWebView: UIViewRepresentable {
         let _ = webView.takeSnapshot(with: nil) { img, err in
             if let img {
                 sankeyViewModel.image = img
+                if let savedPath = saveImageToDocuments(img, fileName: "sankey") {
+                    print("Saved image to \(savedPath)")
+                }
                 snapToggle = false
             } else {
                 print(err.debugDescription)
@@ -142,3 +145,32 @@ class SankeyMaticWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMes
     }
 }
 
+// MARK: - Saving Image for Widgets
+extension SankeyMaticWebView {
+    func saveImageToDocuments(_ image: UIImage, fileName: String) -> URL? {
+        guard let data = image.pngData() else {
+            print("Failed to convert image to PNG data.")
+            return nil
+        }
+        
+        let fileManager = FileManager.default
+        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+        
+        guard let documentsURL = urls.first else {
+            print("Failed to retrieve documents directory.")
+            return nil
+        }
+        
+        let fileURL = documentsURL.appendingPathComponent(fileName)
+        
+        do {
+            try data.write(to: fileURL)
+            print("Image saved to documents directory: \(fileURL.path)")
+            return fileURL
+        } catch {
+            print("Failed to save image: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+}
