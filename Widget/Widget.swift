@@ -5,8 +5,8 @@
 //  Created by Ethan Maxey on 12/26/24.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct ImageProvider: TimelineProvider {
     func placeholder(in context: Context) -> ImageEntry {
@@ -34,15 +34,16 @@ struct ImageEntry: TimelineEntry {
 }
 
 struct ImageWidgetEntryView : View {
-    var entry: ImageProvider.Entry
 
     var body: some View {
-        Image(uiImage: entry.image)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .containerBackground(for: .widget) {
-                Color.clear
-            }
+        VStack {
+            Image(uiImage: UIImage(named: "Default")!)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .containerBackground(for: .widget) {
+                    Color.clear
+                }
+        }
     }
 }
 
@@ -52,7 +53,7 @@ struct ImageWidget: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: ImageProvider()) { entry in
-            ImageWidgetEntryView(entry: entry)
+            ImageWidgetEntryView()
         }
         .configurationDisplayName("My Image Widget")
         .description("This is a widget that displays a default image.")
