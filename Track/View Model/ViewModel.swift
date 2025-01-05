@@ -93,7 +93,7 @@ class ViewModel: ObservableObject {
                                 self?.fetchJobs()
                             } catch {
                                 let nsError = error as NSError
-                                print("Unresolved error \(nsError), \(nsError.userInfo)")
+                                OSLogger.logger.error("Unresolved error \(nsError), \(nsError.userInfo)")
                             }
                         }
                     }
@@ -113,7 +113,7 @@ class ViewModel: ObservableObject {
                 fetchJobs()
             } catch {
                 // handle the error
-                print("Error saving context: \(error.localizedDescription)")
+                OSLogger.logger.error("Error saving context: \(error.localizedDescription)")
             }
         }
     }
@@ -162,9 +162,9 @@ extension ViewModel {
                     // Copy file to destination
                     try fileManager.copyItem(at: fileURL, to: destinationURL)
                     newResume.fileURL = destinationURL.absoluteString
-                    print("File successfully saved at: \(destinationURL.path)")
+                    OSLogger.logger.error("File successfully saved at: \(destinationURL.path)")
                 } catch {
-                    print("Failed to copy file: \(error)")
+                    OSLogger.logger.error("Failed to copy file: \(error)")
                     return nil
                 }
             }
@@ -174,7 +174,7 @@ extension ViewModel {
             return newResume
             
         case .failure(let error):
-            print("Add Resume did fail: \(error)")
+            OSLogger.logger.error("Add Resume did fail: \(error)")
             return nil
         }
     }

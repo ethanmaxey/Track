@@ -85,7 +85,7 @@ class PersistenceController {
                             ]
                         )
                     } catch {
-                        print("Error recreating the persistent store: \(error)")
+                        OSLogger.logger.error("Error recreating the persistent store: \(error)")
                     }
                 }
             }

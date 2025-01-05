@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WebKit
+import WidgetKit
 
 struct SankeyMaticWebView: UIViewRepresentable {
     @Binding var snapToggle: Bool
@@ -51,13 +52,14 @@ struct SankeyMaticWebView: UIViewRepresentable {
         
         let _ = webView.takeSnapshot(with: nil) { img, err in
             if let img {
-                sankeyViewModel.image = img
-                if let savedPath = saveImageToDocuments(img, fileName: "sankey") {
-                    print("Saved image to \(savedPath)")
+                if let imageData = img.pngData() {
+                    sankeyViewModel.image = img
+                    UserDefaults(suiteName: "group.shared.batch")?.set(imageData, forKey: "widgetImage")
+                    snapToggle = false
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
-                snapToggle = false
             } else {
-                print(err.debugDescription)
+                OSLogger.logger.error("Error Taking Snapshot")
             }
         }
     }
@@ -131,17 +133,21 @@ class SankeyMaticWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMes
     // Handle JavaScript errors
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "jsErrorHandler", let errorInfo = message.body as? [String: Any] {
-            print("JavaScript Error: \(errorInfo)")
+            OSLogger.logger.error("JavaScript Error: \(errorInfo)")
         }
     }
     
     // Handle Swift navigation errors
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        print("WebView navigation error: \(error.localizedDescription)")
+        OSLogger.logger.error("WebView navigation error: \(error.localizedDescription)")
     }
     
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        print("WebView provisional navigation error: \(error.localizedDescription)")
+    func webView(
+        _ webView: WKWebView,
+        didFailProvisionalNavigation navigation: WKNavigation!,
+        withError error: Error
+    ) {
+        OSLogger.logger.error("WebView navigation error: \(error.localizedDescription)")
     }
 }
 
@@ -149,7 +155,7 @@ class SankeyMaticWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMes
 extension SankeyMaticWebView {
     func saveImageToDocuments(_ image: UIImage, fileName: String) -> URL? {
         guard let data = image.pngData() else {
-            print("Failed to convert image to PNG data.")
+            OSLogger.logger.error("Failed to convert image to PNG data.")
             return nil
         }
         
@@ -157,7 +163,7 @@ extension SankeyMaticWebView {
         let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
         
         guard let documentsURL = urls.first else {
-            print("Failed to retrieve documents directory.")
+            OSLogger.logger.error("Failed to retrieve documents directory.")
             return nil
         }
         
@@ -165,10 +171,10 @@ extension SankeyMaticWebView {
         
         do {
             try data.write(to: fileURL)
-            print("Image saved to documents directory: \(fileURL.path)")
+            OSLogger.logger.error("Image saved to documents directory: \(fileURL.path)")
             return fileURL
         } catch {
-            print("Failed to save image: \(error.localizedDescription)")
+            OSLogger.logger.error("Failed to save image: \(error.localizedDescription)")
             return nil
         }
     }

@@ -171,9 +171,9 @@ struct JobDetailsView: View {
                 if let selectedResume = job.resume, let url = selectedResume.fileURL {
                     Button {
                         if FileManager.default.fileExists(atPath: url) {
-                            print("File exists at path: \(url)")
+                            OSLogger.logger.error("File exists at path: \(url)")
                         } else {
-                            print("File does not exist at path: \(url)")
+                            OSLogger.logger.error("File does not exist at path: \(url)")
                         }
 
                         
