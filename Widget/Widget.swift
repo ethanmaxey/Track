@@ -1,3 +1,4 @@
+import CoreData
 import SwiftUI
 import WidgetKit
 
@@ -52,12 +53,52 @@ struct ImageWidgetEntryView: View {
             Image(uiImage: entry.image)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .containerBackground(for: .widget) {
-                    Color.clear
-                }
+        }
+        .containerBackground(for: .widget) {
+            determineBackgroundColor(for: entry.image)
         }
     }
+
+    private func determineBackgroundColor(for image: UIImage) -> Color {
+        if isImageBackgroundLight(image: image) {
+            return Color.white
+        } else {
+            return Color.black
+        }
+    }
+
+    private func isImageBackgroundLight(image: UIImage) -> Bool {
+        guard let cgImage = image.cgImage else { return false }
+        
+        let inputImage = CIImage(cgImage: cgImage)
+        let extent = inputImage.extent
+        let context = CIContext(options: nil)
+        
+        // Get a small 1x1 pixel crop from the center of the image to analyze color
+        let smallExtent = CGRect(x: extent.midX, y: extent.midY, width: 1, height: 1)
+        guard let pixelImage = context.createCGImage(inputImage, from: smallExtent) else { return false }
+        
+        var bitmap = [UInt8](repeating: 0, count: 4) // RGBA
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        
+        let contextBitmap = CGContext(
+            data: &bitmap,
+            width: 1,
+            height: 1,
+            bitsPerComponent: 8,
+            bytesPerRow: 4,
+            space: colorSpace,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        )
+        
+        contextBitmap?.draw(pixelImage, in: CGRect(x: 0, y: 0, width: 1, height: 1))
+        
+        // Analyze the average brightness (Y = 0.299R + 0.587G + 0.114B)
+        let brightness = (0.299 * Double(bitmap[0]) + 0.587 * Double(bitmap[1]) + 0.114 * Double(bitmap[2])) / 255.0
+        return brightness > 0.5
+    }
 }
+
 
 @main
 struct ImageWidget: Widget {
