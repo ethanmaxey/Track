@@ -20,12 +20,14 @@ struct JobDetailsView: View {
     
     @State private var companyText: String
     @State private var jobDate: Date
+    @State private var jobTitleText: String
 
     init(job: JobListing) {
         self.job = job
         // Initialize the state with the job's company or an empty string if nil
         _companyText = State(initialValue: job.company ?? "")
         _jobDate = State(initialValue: job.date ?? Date())
+        _jobTitleText = State(initialValue: job.title ?? "")
     }
     
     var body: some View {
@@ -41,6 +43,22 @@ struct JobDetailsView: View {
                             .multilineTextAlignment(.trailing)
                             .onDisappear {
                                 job.company = companyText
+                                try? job.managedObjectContext?.save()
+                                viewModel.saveContext()
+                                NotificationCenter.default.post(name: .NSManagedObjectContextDidSave, object: job.managedObjectContext)
+                                viewModel.objectWillChange.send()
+                            }
+                    }
+                    
+                    HStack {
+                        Text("Title")
+                        
+                        Spacer()
+                        
+                        TextField("Job Title", text: $jobTitleText)
+                            .multilineTextAlignment(.trailing)
+                            .onDisappear {
+                                job.title = jobTitleText
                                 try? job.managedObjectContext?.save()
                                 viewModel.saveContext()
                                 NotificationCenter.default.post(name: .NSManagedObjectContextDidSave, object: job.managedObjectContext)

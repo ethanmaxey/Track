@@ -41,7 +41,10 @@ struct HomeView: View {
     
     var results: [JobListing] {
         jobs.filter { job in
-            let matchesSearchText = searchText.isEmpty || (job.company?.contains(searchText) ?? false)
+            let matchesSearchText = searchText.isEmpty ||
+                        (job.company?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+                        (job.title?.localizedCaseInsensitiveContains(searchText) ?? false)
+            
             let matchesStatuses = filterState.selectedStatuses.isEmpty || filterState.selectedStatuses.contains { status in
                 switch status {
                 case .declined:

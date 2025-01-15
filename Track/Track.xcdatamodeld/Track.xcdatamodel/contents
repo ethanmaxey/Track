@@ -12,6 +12,7 @@
         <attribute name="oa" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="offer" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="rejected" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="resume" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Resume" inverseName="job" inverseEntity="Resume"/>
     </entity>
     <entity name="Resume" representedClassName="Resume" syncable="YES" codeGenerationType="class">
