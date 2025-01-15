@@ -12,12 +12,14 @@ struct HomeViewToolbarView: View {
     
     @Binding var isAddJobAlertPresented: Bool
     @Binding var addJobAlertData: String
+    @Binding var isFilterSheetPresented: Bool
     
     var body: some View {
         HStack {
+            EditButton().frame(minWidth: 30, maxWidth: 30)
             
-            EditButton()
-                .frame(minWidth: 30, maxWidth: 30)
+            // To equally match spacing, this represents the space of the filter button.
+            Spacer().frame(minWidth: 30, maxWidth: 30)
             
             Spacer()
             
@@ -27,6 +29,11 @@ struct HomeViewToolbarView: View {
                 .padding(5)
             
             Spacer()
+            
+            Button(String(), systemImage: "line.3.horizontal.decrease") {
+                isFilterSheetPresented = true
+            }
+            .frame(minWidth: 30, maxWidth: 30)
             
             Button(String(), systemImage: "plus.circle") {
                 isAddJobAlertPresented = true

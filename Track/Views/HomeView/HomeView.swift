@@ -26,6 +26,8 @@ struct HomeView: View {
 
     @State var isAddJobAlertPresented = false
     @State private var addJobAlertData = String()
+    @State private var isFilterSheetPresented: Bool = false
+    
     @State private var searchText = String()
     @State private var isFiltersPresented = false
     
@@ -33,11 +35,69 @@ struct HomeView: View {
     @State private var sankeyOrigin: CGPoint = .zero
     @State private var sankeySize: CGSize = .zero
     
+    @AppStorage("filterState") private var storedFilterData: Data?
+    @State private var filterState: FilterState = FilterState()
+
+    
     var results: [JobListing] {
-        searchText.isEmpty ? Array(jobs) : jobs.filter {
-            $0.company?.contains(searchText) ?? false
+        jobs.filter { job in
+            let matchesSearchText = searchText.isEmpty || (job.company?.contains(searchText) ?? false)
+            let matchesStatuses = filterState.selectedStatuses.isEmpty || filterState.selectedStatuses.contains { status in
+                switch status {
+                case .declined:
+                    return job.declined
+                case .ghosted:
+                    return job.ghosted
+                case .inteviewed:
+                    return job.interview
+                case .no_offer:
+                    return job.no_offer
+                case .oa:
+                    return job.oa
+                case .offer:
+                    return job.offer
+                case .rejected:
+                    return job.rejected
+                }
+            }
+            let matchesDate: Bool
+            if
+                let filterDate = filterState.selectedDate,
+                let operatorType = filterState.dateFilterOperator,
+                let jobDate = job.date
+            {
+                switch operatorType {
+                case .any:
+                    matchesDate = true
+                case .lessThan:
+                    matchesDate = jobDate < filterDate
+                case .greaterThan:
+                    matchesDate = jobDate > filterDate
+                case .equal:
+                    matchesDate = Calendar.current.isDate(jobDate, inSameDayAs: filterDate)
+                }
+            } else {
+                matchesDate = true // No date filter
+            }
+
+            return matchesSearchText && matchesStatuses && matchesDate
         }
+        .sorted(by: { first, second in
+            switch filterState.sortOption {
+            case .dateAdded:
+                let firstDate = first.date ?? Date.distantPast
+                let secondDate = second.date ?? Date.distantPast
+                return filterState.isAscending ? firstDate < secondDate : firstDate > secondDate
+            case .alphabetical:
+                let firstCompany = viewModel.sanitizedString(first.company ?? "")
+                let secondCompany = viewModel.sanitizedString(second.company ?? "")
+                return filterState.isAscending
+                    ? firstCompany.localizedCaseInsensitiveCompare(secondCompany) == .orderedAscending
+                    : firstCompany.localizedCaseInsensitiveCompare(secondCompany) == .orderedDescending
+            }
+        })
     }
+
     
     var body: some View {
         NavigationStack {
@@ -52,6 +112,11 @@ struct HomeView: View {
                 }
                 .onAppear {
                     SwiftRater.check()
+                    
+                    if let data = storedFilterData,
+                       let savedState = try? JSONDecoder().decode(FilterState.self, from: data) {
+                        filterState = savedState
+                    }
                 }
                 .onReceive(didSave) { _ in
                      refreshing.toggle()
@@ -64,6 +129,12 @@ struct HomeView: View {
             .searchable(text: $searchText)
             .toolbar(content: contentViewToolbarContent)
         }
+        .sheet(isPresented: $isFilterSheetPresented) {
+             FilterSheet(
+                 isPresented: $isFilterSheetPresented,
+                 filterState: $filterState
+            )
+         }
     }
 }
 
@@ -74,7 +145,8 @@ extension HomeView {
         ToolbarItemGroup(placement: .principal) {
             HomeViewToolbarView(
                 isAddJobAlertPresented: $isAddJobAlertPresented,
-                addJobAlertData: $addJobAlertData
+                addJobAlertData: $addJobAlertData,
+                isFilterSheetPresented: $isFilterSheetPresented
             )
         }
     }

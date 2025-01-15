@@ -179,3 +179,14 @@ extension ViewModel {
         }
     }
 }
+
+// MARK: - Filter Assist
+extension ViewModel {
+    func sanitizedString(_ string: String) -> String {
+        // Use a regular expression to remove leading emojis
+        let regex = try? NSRegularExpression(pattern: "^[\\p{Emoji}\\p{So}\\p{Sk}\\p{Sc}\\p{Sm}]+")
+        let range = NSRange(location: 0, length: string.utf16.count)
+        return regex?.stringByReplacingMatches(in: string, options: [], range: range, withTemplate: "") ?? string
+    }
+
+}

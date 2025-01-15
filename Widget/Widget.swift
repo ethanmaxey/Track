@@ -60,11 +60,7 @@ struct ImageWidgetEntryView: View {
     }
 
     private func determineBackgroundColor(for image: UIImage) -> Color {
-        if isImageBackgroundLight(image: image) {
-            return Color.white
-        } else {
-            return Color.black
-        }
+        isImageBackgroundLight(image: image) ? .white : .black
     }
 
     private func isImageBackgroundLight(image: UIImage) -> Bool {
