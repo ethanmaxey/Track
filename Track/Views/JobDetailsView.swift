@@ -21,15 +21,24 @@ struct JobDetailsView: View {
     @State private var companyText: String
     @State private var jobDate: Date
     @State private var jobTitleText: String
+    @State private var salaryMin: String
+    @State private var salaryMax: String
+    @State private var jobDescriptionText: String
+    
+    @State var sliderPosition: ClosedRange<Int> = 95...145
 
     init(job: JobListing) {
         self.job = job
-        // Initialize the state with the job's company or an empty string if nil
         _companyText = State(initialValue: job.company ?? "")
         _jobDate = State(initialValue: job.date ?? Date())
         _jobTitleText = State(initialValue: job.title ?? "")
+        _salaryMin = State(initialValue: String(job.salaryMin))
+        _salaryMax = State(initialValue: String(job.salaryMax))
+        _jobDescriptionText = State(initialValue: job.jobDescription ?? "")
+        _sliderPosition = State(
+            initialValue: Int(job.salaryMin == 0 ? 95 : job.salaryMin)...Int(job.salaryMax == 0 ? 145 : job.salaryMax))
     }
-    
+
     var body: some View {
         VStack {
             Form {
@@ -175,6 +184,30 @@ struct JobDetailsView: View {
                             viewModel.saveContext()
                         }
                 }
+                
+                Section("Salary Range") {
+                    HStack {
+                        VStack {
+                            RangedSliderView(value: $sliderPosition, bounds: 0...300)
+                                .padding()
+                                .onChange(of: sliderPosition) {
+                                    job.salaryMin = Int32(sliderPosition.lowerBound)
+                                    job.salaryMax = Int32(sliderPosition.upperBound)
+                                    saveJob()
+                                }
+                        }
+                    }
+                    .padding()
+                }
+                
+                Section("Job Description") {
+                    TextEditor(text: $jobDescriptionText)
+                        .frame(minWidth: 200, maxWidth: 400, minHeight: 50, alignment: .center)
+                        .onChange(of: jobDescriptionText) {
+                            job.jobDescription = jobDescriptionText
+                            saveJob()
+                        }
+                }
             }
             .animation(.easeInOut, value: sectionTwoExpanded)
             .animation(.easeInOut, value: sectionThreeExpanded)
@@ -204,6 +237,17 @@ struct JobDetailsView: View {
             }
         }
          */
+    }
+    
+    private func saveJob() {
+        do {
+            try job.managedObjectContext?.save()
+            viewModel.saveContext()
+            NotificationCenter.default.post(name: .NSManagedObjectContextDidSave, object: job.managedObjectContext)
+            viewModel.objectWillChange.send()
+        } catch {
+            print("Failed to save job: \(error)")
+        }
     }
     
     private func updateExpansionStates() {

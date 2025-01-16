@@ -8,10 +8,13 @@
         <attribute name="ghosted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="interview" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="jobDescription" optional="YES" attributeType="String"/>
         <attribute name="no_offer" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="oa" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="offer" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="rejected" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="salaryMax" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="salaryMin" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="resume" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Resume" inverseName="job" inverseEntity="Resume"/>
     </entity>
