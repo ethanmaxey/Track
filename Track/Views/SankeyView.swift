@@ -18,8 +18,6 @@ struct SankeyView: View {
     @State private var orientation = UIDevice.current.orientation
     @State private var refreshOnAppearID = UUID()
     
-    var sankeyLandscapeTip = SankeyLandscapeTip()
-    
     var image: UIImage? {
         sankeyViewModel.image?.resizableImage(
             withCapInsets: UIEdgeInsets(top: 150, left: 150, bottom: 150, right: 150),
@@ -48,6 +46,10 @@ struct SankeyView: View {
             .onAppear {
                 refreshOnAppearID = UUID()
                 takeScreenShot()
+                
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    refresh()
+                }
             }
             .toolbar {
                 if let image {
@@ -69,6 +71,13 @@ struct SankeyView: View {
     private func takeScreenShot() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             snapshotTrigger.toggle()
+        }
+    }
+    
+    /// iPad view loads weird on initial load. Hopefullt this fixes it.
+    private func refresh() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+            refreshOnAppearID = UUID()
         }
     }
 }

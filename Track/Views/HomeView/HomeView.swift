@@ -38,6 +38,7 @@ struct HomeView: View {
     @AppStorage("filterState") private var storedFilterData: Data?
     @State private var filterState: FilterState = FilterState()
 
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
     
     var results: [JobListing] {
         jobs.filter { job in
@@ -103,41 +104,110 @@ struct HomeView: View {
 
     
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(results, id: \.self)  { job in
-                    NavigationLink(destination: JobDetailsView(job: job)) {
-                        Text((job.company ?? "Uh Oh! No name found." ) + (refreshing ? "" : ""))
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                List {
+                    ForEach(results, id: \.self)  { job in
+                        NavigationLink(
+                            destination: JobDetailsView(job: job).id(job.id)
+                        ) {
+                            Text((job.company ?? "Uh Oh! No name found." ) + (refreshing ? "" : ""))
+                        }
+                    }
+                    .onDelete { offsets in
+                        viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
+                    }
+                    .onAppear {
+                        SwiftRater.check()
+                        
+                        if let data = storedFilterData,
+                           let savedState = try? JSONDecoder().decode(FilterState.self, from: data) {
+                            filterState = savedState
+                        }
+                    }
+                    .onReceive(didSave) { _ in
+                        refreshing.toggle()
+                    }
+                    .onDisappear {
+                        viewModel.saveContext()
                     }
                 }
-                .onDelete { offsets in
-                    viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
+                .styleList()
+                .searchable(text: $searchText)
+                .toolbar(content: contentViewToolbarContent)
+                .sheet(isPresented: $isFilterSheetPresented) {
+                    FilterSheet(
+                        isPresented: $isFilterSheetPresented,
+                        filterState: $filterState
+                    )
                 }
-                .onAppear {
-                    SwiftRater.check()
-                    
-                    if let data = storedFilterData,
-                       let savedState = try? JSONDecoder().decode(FilterState.self, from: data) {
-                        filterState = savedState
+            } content: {
+                ContentUnavailableView {
+                    Label {
+                        Text("Select a job from the sidebar to view details.")
+                    } icon: {
+                        Image("Logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
                     }
                 }
-                .onReceive(didSave) { _ in
-                     refreshing.toggle()
+                .toolbar {
+                    Group {
+                        if columnVisibility == .all {
+                            ToolbarItem(placement: .bottomBar) {
+                                Button {
+                                    columnVisibility = .doubleColumn
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "chevron.left")
+                                        Text("Collapse")
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                .onDisappear {
-                    viewModel.saveContext()
-                }
+            } detail: {
+                SankeyView()
             }
-            .styleList()
-            .searchable(text: $searchText)
-            .toolbar(content: contentViewToolbarContent)
+        } else {
+            NavigationStack {
+                List {
+                    ForEach(results, id: \.self)  { job in
+                        NavigationLink(destination: JobDetailsView(job: job)) {
+                            Text((job.company ?? "Uh Oh! No name found." ) + (refreshing ? "" : ""))
+                        }
+                    }
+                    .onDelete { offsets in
+                        viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
+                    }
+                    .onAppear {
+                        SwiftRater.check()
+                        
+                        if let data = storedFilterData,
+                           let savedState = try? JSONDecoder().decode(FilterState.self, from: data) {
+                            filterState = savedState
+                        }
+                    }
+                    .onReceive(didSave) { _ in
+                        refreshing.toggle()
+                    }
+                    .onDisappear {
+                        viewModel.saveContext()
+                    }
+                }
+                .styleList()
+                .searchable(text: $searchText)
+                .toolbar(content: contentViewToolbarContent)
+            }
+            .sheet(isPresented: $isFilterSheetPresented) {
+                FilterSheet(
+                    isPresented: $isFilterSheetPresented,
+                    filterState: $filterState
+                )
+            }
         }
-        .sheet(isPresented: $isFilterSheetPresented) {
-             FilterSheet(
-                 isPresented: $isFilterSheetPresented,
-                 filterState: $filterState
-            )
-         }
     }
 }
 

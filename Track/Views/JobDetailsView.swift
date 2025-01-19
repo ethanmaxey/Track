@@ -9,7 +9,10 @@ import SwiftUI
 
 struct JobDetailsView: View {
     @EnvironmentObject var viewModel: ViewModel
+    @Environment(\.dismiss) var dismiss
+    
     @Environment(\.managedObjectContext) private var viewContext
+    
     @ObservedObject var job: JobListing
     
     @State private var sectionOneExpanded: Bool = true

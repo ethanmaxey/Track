@@ -9,27 +9,42 @@ import SwiftUI
 
 struct ContentView: View {    
     var body: some View {
-        TabView {
-            HomeView()
-                .tabItem {
-                    Label("Track", systemImage: "house")
+        
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                TabView {
+                    HomeView()
+                        .tabItem {
+                            Label("Track", systemImage: "house")
+                        }
+                        .tag(0)
+                    
+                    SankeyView()
+                        .tabItem {
+                            Label("Visualize", systemImage: "chart.xyaxis.line")
+                        }
+                        .tag(1)
+                    
+                    SettingsView()
+                        .tabItem {
+                            Label("Settings", systemImage: "gear")
+                        }
+                        .tag(2)
                 }
-                .tag(0)
-            
-            SankeyView()
-                .tabItem {
-                    Label("Visualize", systemImage: "chart.xyaxis.line")
+            } else {
+                TabView {
+                    HomeView()
+                        .tabItem {
+                            Label("Jobs", systemImage: "house")
+                        }
+                        .tag(0)
+                    
+                    SettingsView()
+                        .tabItem {
+                            Label("Settings", systemImage: "gear")
+                        }
+                        .tag(2)
                 }
-                .tag(1)
-            
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                }
-                .tag(2)
-        }
-        // Fix Tabview from being on top in iPad.
-        .environment(\.horizontalSizeClass, .compact)
+            }
     }
 }
 
