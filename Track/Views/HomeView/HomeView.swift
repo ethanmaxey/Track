@@ -156,13 +156,16 @@ struct HomeView: View {
                     Group {
                         if columnVisibility == .all {
                             ToolbarItem(placement: .bottomBar) {
-                                Button {
-                                    columnVisibility = .doubleColumn
-                                } label: {
-                                    HStack {
-                                        Image(systemName: "chevron.left")
-                                        Text("Collapse")
+                                HStack {
+                                    Button {
+                                        columnVisibility = .doubleColumn
+                                    } label: {
+                                        HStack {
+                                            Image(systemName: "chevron.left")
+                                            Text("Collapse")
+                                        }
                                     }
+                                    Spacer()
                                 }
                             }
                         }

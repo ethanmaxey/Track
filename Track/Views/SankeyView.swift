@@ -40,6 +40,7 @@ struct SankeyView: View {
             }
 
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                refreshOnAppearID = UUID()
                 orientation = UIDevice.current.orientation
                 takeScreenShot()
             }
