@@ -25,23 +25,24 @@ struct SankeyMaticWebView: UIViewRepresentable {
         webView.isInspectable = true
         webView.isUserInteractionEnabled = false
         webView.translatesAutoresizingMaskIntoConstraints = false
+
         
-        let scene = UIApplication
-            .shared
-            .connectedScenes
-            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
-            .last?.windowScene
-        
-        guard let scene else {
-            return
-        }
-        
-        let isPortrait = scene.interfaceOrientation.isPortrait
-        if isPortrait, UIDevice.current.userInterfaceIdiom != .pad  {
-            let rotationAngle = CGFloat.pi / 2
-            webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+         
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if webView.bounds.width <= 440 {
+                let rotationAngle = CGFloat.pi / 2
+                webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+            } else {
+                webView.transform = .identity
+            }
         } else {
-            webView.transform = .identity
+            // If small, rotate. 440 is small enough.
+            if UIScreen.main.bounds.width <= 440 {
+                let rotationAngle = CGFloat.pi / 2
+                webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+            } else {
+                webView.transform = .identity
+            }
         }
         
         updateSankeyData(for: webView)

@@ -192,3 +192,10 @@ extension ViewModel {
     }
 
 }
+    
+// MARK: - Toolbar Assist
+extension ViewModel {
+    var shouldShowEditButton: Bool {
+        UIDevice.current.userInterfaceIdiom == .phone || UIDevice.current.orientation.isPortrait
+    }
+}

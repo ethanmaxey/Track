@@ -16,7 +16,9 @@ struct HomeViewToolbarView: View {
     
     var body: some View {
         HStack {
-            EditButton().frame(minWidth: 30, maxWidth: 30)
+            if viewModel.shouldShowEditButton {
+                EditButton().frame(minWidth: 30, maxWidth: 30)
+            }
             
             // To equally match spacing, this represents the space of the filter button.
             Spacer().frame(minWidth: 30, maxWidth: 30)

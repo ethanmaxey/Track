@@ -171,6 +171,7 @@ struct HomeView: View {
             } detail: {
                 SankeyView()
             }
+            .navigationSplitViewStyle(.balanced)
         } else {
             NavigationStack {
                 List {
