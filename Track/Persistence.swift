@@ -18,12 +18,16 @@ class PersistenceController {
         facebook.company = "Facebook"
         facebook.id = UUID()
         facebook.ghosted = true
+        facebook.title = "Software Engineer"
+        facebook.jobDescription = "Fingers crossed!🤞"
         
         let microsft = JobListing(context: viewContext)
         microsft.company = "Microsoft"
         microsft.id = UUID()
         microsft.ghosted = false
         microsft.rejected = true
+        microsft.title = "Software Engineer"
+        microsft.jobDescription = "Fingers crossed!🤞"
         
         let apple = JobListing(context: viewContext)
         apple.company = "Apple"
@@ -31,6 +35,8 @@ class PersistenceController {
         apple.ghosted = false
         apple.interview = true
         apple.no_offer = true
+        apple.title = "Software Engineer"
+        apple.jobDescription = "Fingers crossed!🤞"
         
         let google = JobListing(context: viewContext)
         google.company = "Google"
@@ -39,6 +45,8 @@ class PersistenceController {
         google.interview = true
         google.offer = true
         google.accepted = true
+        google.title = "Software Engineer"
+        google.jobDescription = "Fingers crossed!🤞"
         
         let amazon = JobListing(context: viewContext)
         amazon.company = "Amazon"
@@ -47,6 +55,8 @@ class PersistenceController {
         amazon.interview = true
         amazon.offer = true
         amazon.declined = true
+        amazon.title = "Software Engineer"
+        amazon.jobDescription = "Fingers crossed!🤞"
         
         do {
             try viewContext.save()
@@ -123,13 +133,13 @@ class PersistenceController {
         newJob.offer = offer
         newJob.no_offer = no_offer
         
+        newJob.title = "Software Engineer"
+        newJob.jobDescription = "Fingers crossed!"
+        
         do {
             try container.viewContext.save()
         } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            // Hmm.
         }
     }
     

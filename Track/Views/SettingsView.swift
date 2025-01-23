@@ -33,15 +33,11 @@ struct SettingsView: View {
                 }
 
                 Section(header: Text("Support")) {
-                    Button {
-                        showPrivacyPolicy = true
-                    } label: {
+                    Link(destination: URL(string: "https://ethanmaxey.netlify.app/track-privacy.html")!) {
                         Label("Privacy Policy", systemImage: "doc.text")
                     }
-
-                    Button {
-                        showContactSupport.toggle()
-                    } label: {
+                    
+                    Link(destination: URL(string: "https://ethanmaxey.netlify.app/track-support.html")!) {
                         Label("Contact Support", systemImage: "envelope")
                     }
                 }
@@ -53,40 +49,6 @@ struct SettingsView: View {
                             Spacer()
                             Text(appVersion)
                             
-                        }
-                    }
-                }
-            }
-            .sheet(isPresented: $showPrivacyPolicy) {
-                if let url = URL(string: "https://ethanmaxey.netlify.app/track-privacy.html") {
-                    ZStack(alignment: .topLeading) {
-                        WebView(url: url)
-                            .ignoresSafeArea()
-
-                        Button {
-                            showPrivacyPolicy.toggle()
-                        } label: {
-                            Image(systemName: "x.circle")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                                .padding()
-                        }
-                    }
-                }
-            }
-            .sheet(isPresented: $showContactSupport) {
-                if let url = URL(string: "https://ethanmaxey.netlify.app/track-support.html") {
-                    ZStack(alignment: .topLeading) {
-                        WebView(url: url)
-                            .ignoresSafeArea()
-
-                        Button {
-                            showContactSupport.toggle()
-                        } label: {
-                            Image(systemName: "x.circle")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                                .padding()
                         }
                     }
                 }
