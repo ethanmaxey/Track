@@ -152,25 +152,6 @@ struct HomeView: View {
                             .frame(width: 100, height: 100)
                     }
                 }
-                .toolbar {
-                    Group {
-                        if columnVisibility == .all {
-                            ToolbarItem(placement: .bottomBar) {
-                                HStack {
-                                    Button {
-                                        columnVisibility = .doubleColumn
-                                    } label: {
-                                        HStack {
-                                            Image(systemName: "chevron.left")
-                                            Text("Collapse")
-                                        }
-                                    }
-                                    Spacer()
-                                }
-                            }
-                        }
-                    }
-                }
             } detail: {
                 SankeyView()
             }

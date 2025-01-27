@@ -25,25 +25,6 @@ struct SankeyMaticWebView: UIViewRepresentable {
         webView.isInspectable = true
         webView.isUserInteractionEnabled = false
         webView.translatesAutoresizingMaskIntoConstraints = false
-
-        
-         
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            if webView.bounds.width <= 440 {
-                let rotationAngle = CGFloat.pi / 2
-                webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
-            } else {
-                webView.transform = .identity
-            }
-        } else {
-            // If small, rotate. 440 is small enough.
-            if UIScreen.main.bounds.width <= 440 {
-                let rotationAngle = CGFloat.pi / 2
-                webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
-            } else {
-                webView.transform = .identity
-            }
-        }
         
         updateSankeyData(for: webView)
         
@@ -90,8 +71,29 @@ extension SankeyMaticWebView {
         webView.isOpaque = false
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = .clear
+
+        configureOrientation(for: webView)
         
         return webView
+    }
+    
+    private func configureOrientation(for webView: WKWebView) {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if UIDevice.current.orientation == .portrait || UIDevice.current.orientation == .portraitUpsideDown {
+                let rotationAngle = CGFloat.pi / 2
+                webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+            } else {
+                webView.transform = .identity
+            }
+        } else {
+            // If small, rotate. 440 is small enough.
+            if UIScreen.main.bounds.width <= 440 {
+                let rotationAngle = CGFloat.pi / 2
+                webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+            } else {
+                webView.transform = .identity
+            }
+        }
     }
 }
 
