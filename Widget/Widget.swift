@@ -52,7 +52,7 @@ struct ImageWidgetEntryView: View {
         VStack {
             Image(uiImage: entry.image)
                 .resizable()
-                .aspectRatio(contentMode: .fill)
+                .aspectRatio(contentMode: .fit)
         }
         .containerBackground(for: .widget) {
             determineBackgroundColor(for: entry.image)
@@ -106,7 +106,7 @@ struct ImageWidget: Widget {
         }
         .configurationDisplayName("My Job Search")
         .description("This is a widget that displays your job search progress.")
-        .supportedFamilies([.systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge, .systemExtraLarge])
     }
 }
 
