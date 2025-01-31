@@ -26,12 +26,9 @@ struct ImageProvider: TimelineProvider {
     }
 
     private func loadImage() -> UIImage {
-        
-        let targetSize = CGSize(width: 364, height: 169)
-        
         guard
             let widgetImage = UserDefaults(suiteName: "group.shared.batch")?.data(forKey: "widgetImage"),
-            let widgetImage = UIImage(data: widgetImage)?.scalePreservingAspectRatio(targetSize: targetSize)
+            let widgetImage = UIImage(data: widgetImage)
         else {
             return UIImage(named: "Default")!
         }
@@ -50,9 +47,12 @@ struct ImageWidgetEntryView: View {
 
     var body: some View {
         VStack {
-            Image(uiImage: entry.image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+            GeometryReader { proxy in
+                Image(uiImage: entry.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: proxy.size.width, height: proxy.size.height)
+            }
         }
         .containerBackground(for: .widget) {
             determineBackgroundColor(for: entry.image)
@@ -106,42 +106,12 @@ struct ImageWidget: Widget {
         }
         .configurationDisplayName("My Job Search")
         .description("This is a widget that displays your job search progress.")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge, .systemExtraLarge])
+        .supportedFamilies(UIDevice.current.userInterfaceIdiom == .phone ? [.systemMedium] : [])
     }
 }
 
-#Preview(as: .systemMedium) {
+#Preview(as: UIDevice.current.userInterfaceIdiom == .phone ? .systemMedium : .systemExtraLarge) {
     ImageWidget()
 } timeline: {
     ImageEntry(date: .now, image: UIImage(named: "Default")!)
-}
-
-extension UIImage {
-    fileprivate func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
-        // Determine the scale factor that preserves aspect ratio
-        let widthRatio = targetSize.width / size.width
-        let heightRatio = targetSize.height / size.height
-        
-        let scaleFactor = min(widthRatio, heightRatio)
-        
-        // Compute the new image size that preserves aspect ratio
-        let scaledImageSize = CGSize(
-            width: size.width * scaleFactor,
-            height: size.height * scaleFactor
-        )
-
-        // Draw and return the resized UIImage
-        let renderer = UIGraphicsImageRenderer(
-            size: scaledImageSize
-        )
-
-        let scaledImage = renderer.image { _ in
-            self.draw(in: CGRect(
-                origin: .zero,
-                size: scaledImageSize
-            ))
-        }
-        
-        return scaledImage
-    }
 }
