@@ -105,57 +105,74 @@ struct HomeView: View {
     
     var body: some View {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            NavigationSplitView(columnVisibility: $columnVisibility) {
-                List {
-                    ForEach(results, id: \.self)  { job in
-                        NavigationLink(
-                            destination: JobDetailsView(job: job).id(job.id)
-                        ) {
-                            Text((job.company ?? "Uh Oh! No name found." ) + (refreshing ? "" : ""))
+            GeometryReader { geometry in
+                NavigationSplitView(columnVisibility: $columnVisibility) {
+                    List {
+                        ForEach(results, id: \.self)  { job in
+                            NavigationLink(
+                                destination: JobDetailsView(job: job).id(job.id)
+                            ) {
+                                Text((job.company ?? "Uh Oh! No name found." ) + (refreshing ? "" : ""))
+                            }
+                        }
+                        .onDelete { offsets in
+                            viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
+                        }
+                        .onAppear {
+                            SwiftRater.check()
+                            
+                            if let data = storedFilterData,
+                               let savedState = try? JSONDecoder().decode(FilterState.self, from: data) {
+                                filterState = savedState
+                            }
+                        }
+                        .onReceive(didSave) { _ in
+                            refreshing.toggle()
+                        }
+                        .onDisappear {
+                            viewModel.saveContext()
                         }
                     }
-                    .onDelete { offsets in
-                        viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
+                    .styleList()
+                    .searchable(text: $searchText)
+                    .toolbar(content: contentViewToolbarContent)
+                    .sheet(isPresented: $isFilterSheetPresented) {
+                        FilterSheet(
+                            isPresented: $isFilterSheetPresented,
+                            filterState: $filterState
+                        )
                     }
-                    .onAppear {
-                        SwiftRater.check()
-                        
-                        if let data = storedFilterData,
-                           let savedState = try? JSONDecoder().decode(FilterState.self, from: data) {
-                            filterState = savedState
-                        }
-                    }
-                    .onReceive(didSave) { _ in
-                        refreshing.toggle()
-                    }
-                    .onDisappear {
-                        viewModel.saveContext()
-                    }
-                }
-                .styleList()
-                .searchable(text: $searchText)
-                .toolbar(content: contentViewToolbarContent)
-                .sheet(isPresented: $isFilterSheetPresented) {
-                    FilterSheet(
-                        isPresented: $isFilterSheetPresented,
-                        filterState: $filterState
+                    .navigationSplitViewColumnWidth(
+                        min: geometry.size.width / 4,
+                        ideal: geometry.size.width / 3,
+                        max: geometry.size.width / 2
                     )
-                }
-            } content: {
-                ContentUnavailableView {
-                    Label {
-                        Text("Select a job from the sidebar to view details.")
-                    } icon: {
-                        Image("Logo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
+                } content: {
+                    ContentUnavailableView {
+                        Label {
+                            Text("Select a job from the sidebar to view details.")
+                        } icon: {
+                            Image("Logo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
+                        }
                     }
+                    .navigationSplitViewColumnWidth(
+                        min: geometry.size.width / 4,
+                        ideal: geometry.size.width / 3,
+                        max: geometry.size.width / 2
+                    )
+                } detail: {
+                    SankeyView()
+                        .navigationSplitViewColumnWidth(
+                            min: geometry.size.width / 4,
+                            ideal: geometry.size.width / 3,
+                            max: geometry.size.width / 2
+                        )
                 }
-            } detail: {
-                SankeyView()
+                .navigationSplitViewStyle(.balanced)
             }
-            .navigationSplitViewStyle(.balanced)
         } else {
             NavigationStack {
                 List {
