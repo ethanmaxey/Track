@@ -106,11 +106,16 @@ struct ImageWidget: Widget {
         }
         .configurationDisplayName("My Job Search")
         .description("This is a widget that displays your job search progress.")
-        .supportedFamilies(UIDevice.current.userInterfaceIdiom == .phone ? [.systemMedium] : [])
+        .supportedFamilies(ImageWidget.supportedWidgetFamilies)
+    }
+    
+    /// Medium on iPhone and Extra Large on iPad for best experience.
+    static fileprivate var supportedWidgetFamilies: [WidgetFamily] {
+        UIDevice.current.userInterfaceIdiom == .phone ? [.systemMedium] : [.systemExtraLarge]
     }
 }
 
-#Preview(as: UIDevice.current.userInterfaceIdiom == .phone ? .systemMedium : .systemExtraLarge) {
+#Preview(as: ImageWidget.supportedWidgetFamilies.first!) {
     ImageWidget()
 } timeline: {
     ImageEntry(date: .now, image: UIImage(named: "Default")!)
