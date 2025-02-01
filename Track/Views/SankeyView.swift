@@ -40,17 +40,12 @@ struct SankeyView: View {
             }
 
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                refreshOnAppearID = UUID()
-                orientation = UIDevice.current.orientation
-                takeScreenShot()
+                reloadView()
+                takeScreenShot(after: TimeInterval(2))
             }
             .onAppear {
-                refreshOnAppearID = UUID()
-                takeScreenShot()
-                
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    refresh()
-                }
+                reloadView()
+                takeScreenShot(after: TimeInterval(2))
             }
             .toolbar {
                 if let image {
@@ -69,15 +64,16 @@ struct SankeyView: View {
         }
     }
     
-    private func takeScreenShot() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+    private func takeScreenShot(after seconds: TimeInterval = .zero) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             snapshotTrigger.toggle()
         }
     }
     
     /// iPad view loads weird on initial load. Hopefullt this fixes it.
-    private func refresh() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+    private func reloadView(after seconds: TimeInterval = .zero) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            orientation = UIDevice.current.orientation
             refreshOnAppearID = UUID()
         }
     }
