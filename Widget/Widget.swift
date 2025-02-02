@@ -47,7 +47,7 @@ struct ImageWidgetEntryView: View {
 
     var body: some View {
         VStack {
-            Image(uiImage: entry.image.trimming(top: 100, sides: 100)!)
+            Image(uiImage: entry.image.trimming(top: 100, sides: 75)!)
                 .resizable()
                 .aspectRatio(contentMode: contentModeForImage)
         }
