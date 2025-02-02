@@ -19,10 +19,7 @@ struct SankeyView: View {
     @State private var refreshOnAppearID = UUID()
     
     var image: UIImage? {
-        sankeyViewModel.image?.resizableImage(
-            withCapInsets: UIEdgeInsets(top: 150, left: 150, bottom: 150, right: 150),
-            resizingMode: .tile
-        )
+        sankeyViewModel.image
     }
     
     var body: some View {
