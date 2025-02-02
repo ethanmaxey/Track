@@ -143,9 +143,9 @@ struct HomeView: View {
                         )
                     }
                     .navigationSplitViewColumnWidth(
-                        min: geometry.size.width / 4,
-                        ideal: geometry.size.width / 3,
-                        max: geometry.size.width / 2
+                        min: 250,
+                        ideal: 275,
+                        max: 300
                     )
                 } content: {
                     ContentUnavailableView {

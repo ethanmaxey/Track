@@ -10,9 +10,6 @@ import StoreKit
 
 struct SettingsView: View {
     @AppStorage("useEmojis") private var useEmojis: Bool = true
-    
-    @State private var showPrivacyPolicy = false
-    @State private var showContactSupport = false
 
     var body: some View {
         NavigationView {
