@@ -79,7 +79,7 @@ extension SankeyMaticWebView {
     
     private func configureOrientation(for webView: WKWebView) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            if UIDevice.current.orientation == .portrait || UIDevice.current.orientation == .portraitUpsideDown {
+            if diagramWillAppearUgly {
                 let rotationAngle = CGFloat.pi / 2
                 webView.transform = CGAffineTransform(rotationAngle: rotationAngle)
             } else {
@@ -94,6 +94,13 @@ extension SankeyMaticWebView {
                 webView.transform = .identity
             }
         }
+    }
+    
+    /// Orientations in which the view is too narrow and diagram appears smashed together.
+    private var diagramWillAppearUgly: Bool {
+        UIDevice.current.orientation == .portrait ||
+        UIDevice.current.orientation == .portraitUpsideDown ||
+        UIDevice.current.orientation == .unknown
     }
 }
 
