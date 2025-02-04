@@ -116,7 +116,7 @@ struct HomeView: View {
                             }
                         }
                         .onDelete { offsets in
-                            viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
+                            viewModel.deleteJobs(offsets: offsets, from: results)
                         }
                         .onAppear {
                             SwiftRater.check()
@@ -182,7 +182,7 @@ struct HomeView: View {
                         }
                     }
                     .onDelete { offsets in
-                        viewModel.deleteJobs(offsets: offsets, from: Array(jobs))
+                        viewModel.deleteJobs(offsets: offsets, from: results)
                     }
                     .onAppear {
                         SwiftRater.check()
