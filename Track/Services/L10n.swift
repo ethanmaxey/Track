@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct L10n {
+public struct L10n {
     static func getTranslation(for key: String) -> String  {
         NSLocalizedString(key, comment: String())
     }

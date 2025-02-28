@@ -78,6 +78,21 @@
 			);
 			target = 0D2532E42D1DE07900B56D9C /* WidgetExtension */;
 		};
+		0DCE62CC2D71638E0029185F /* Exceptions for "Track" folder in "TrackUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Localizable.xcstrings,
+			);
+			target = 0DB0A81B2C83EC840038F855 /* TrackUITests */;
+		};
+		0DCE62CD2D71638E0029185F /* Exceptions for "Track" folder in "Track.ioUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Localizable.xcstrings,
+				Services/L10n.swift,
+			);
+			target = 0D27B6992CF928BF001C9BB4 /* Track.ioUITests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -96,6 +111,10 @@
 		};
 		0DB0A7FF2C83EC840038F855 /* Track */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0DCE62CC2D71638E0029185F /* Exceptions for "Track" folder in "TrackUITests" target */,
+				0DCE62CD2D71638E0029185F /* Exceptions for "Track" folder in "Track.ioUITests" target */,
+			);
 			path = Track;
 			sourceTree = "<group>";
 		};
