@@ -14,35 +14,35 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             List {
-                Section(header: Text("Preferences")) {
+                Section(header: Text(L10n.preferences)) {
                     Toggle(isOn: $useEmojis) {
-                        Label("Auto-Add Emoji to Jobs", systemImage: "face.smiling")
+                        Label(L10n.autoAddEmojiToJobs, systemImage: "face.smiling")
                     }
                 }
                 
-                Section(header: Text("Feedback")) {                    
+                Section(header: Text(L10n.feedback)) {
                     Button {
                         AppStoreReview.requestReviewManually()
                     } label: {
-                        Label("Leave a Review", systemImage: "pencil.and.scribble")
+                        Label(L10n.leaveAReview, systemImage: "pencil.and.scribble")
                     }
 
                 }
 
-                Section(header: Text("Support")) {
+                Section(header: Text(L10n.support)) {
                     Link(destination: URL(string: "https://ethanmaxey.netlify.app/track-privacy.html")!) {
-                        Label("Privacy Policy", systemImage: "doc.text")
+                        Label(L10n.privacyPolicy, systemImage: "doc.text")
                     }
                     
                     Link(destination: URL(string: "https://ethanmaxey.netlify.app/track-support.html")!) {
-                        Label("Contact Support", systemImage: "envelope")
+                        Label(L10n.contactSupport, systemImage: "envelope")
                     }
                 }
 
                 if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                    Section(header: Text("About")) {
+                    Section(header: Text(L10n.about)) {
                         HStack {
-                            Text("App Version")
+                            Text(L10n.appVersion)
                             Spacer()
                             Text(appVersion)
                             
@@ -50,7 +50,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle(L10n.settings)
             .listStyle(InsetGroupedListStyle())
 
         }

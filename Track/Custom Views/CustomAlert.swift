@@ -93,7 +93,7 @@ struct CustomAlertView<T: Hashable, M: View>: View {
             Haptics.play(.light)
             dismiss()
         } label: {
-            Text("Cancel")
+            Text(L10n.cancel)
                 .font(.headline)
                 .foregroundStyle(.tint)
                 .padding()
@@ -128,7 +128,7 @@ struct CustomAlertView<T: Hashable, M: View>: View {
     }
     
     var DefaultText: Text? {
-        Text("Enter job name here.")
+        Text(L10n.enterJobNameHere)
             .foregroundStyle(.gray)
     }
 

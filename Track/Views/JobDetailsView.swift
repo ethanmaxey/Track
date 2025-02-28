@@ -45,13 +45,13 @@ struct JobDetailsView: View {
     var body: some View {
         VStack {
             Form {
-                Section("Details") {
+                Section(L10n.details) {
                     HStack {
-                        Text("Company")
+                        Text(L10n.company)
                         
                         Spacer()
                         
-                        TextField("Company", text: $companyText)
+                        TextField(L10n.company, text: $companyText)
                             .multilineTextAlignment(.trailing)
                             .onDisappear {
                                 job.company = companyText
@@ -63,11 +63,11 @@ struct JobDetailsView: View {
                     }
                     
                     HStack {
-                        Text("Title")
+                        Text(L10n.title)
                         
                         Spacer()
                         
-                        TextField("Job Title", text: $jobTitleText)
+                        TextField(L10n.jobTitle, text: $jobTitleText)
                             .multilineTextAlignment(.trailing)
                             .onDisappear {
                                 job.title = jobTitleText
@@ -80,7 +80,7 @@ struct JobDetailsView: View {
                     
                     
                     DatePicker(
-                        "Date",
+                        L10n.date,
                         selection: $jobDate,
                         displayedComponents: .date
                     )
@@ -113,8 +113,8 @@ struct JobDetailsView: View {
                 }
                  */
 
-                Section("Phase I", isExpanded: $sectionOneExpanded) {
-                    Toggle("Ghosted", isOn: $job.ghosted)
+                Section(L10n.phaseI, isExpanded: $sectionOneExpanded) {
+                    Toggle(L10n.ghosted, isOn: $job.ghosted)
                         .onChange(of: job.ghosted) {
                             
                             
@@ -131,13 +131,13 @@ struct JobDetailsView: View {
                             updateExpansionStates()
                         }
                     
-                    Toggle("Rejected", isOn: $job.rejected)
+                    Toggle(L10n.rejected, isOn: $job.rejected)
                         .onChange(of: job.rejected) {
                             viewModel.saveContext()
                             updateExpansionStates()
                         }
 
-                    Toggle("Interview", isOn: $job.interview)
+                    Toggle(L10n.interview, isOn: $job.interview)
                         .onChange(of: job.interview) {
                             
                             if !job.interview {
@@ -150,8 +150,8 @@ struct JobDetailsView: View {
                         }
                 }
                 
-                Section("Phase II", isExpanded: $sectionTwoExpanded) {
-                    Toggle("Offer", isOn: $job.offer)
+                Section(L10n.phaseII, isExpanded: $sectionTwoExpanded) {
+                    Toggle(L10n.offer, isOn: $job.offer)
                         .onChange(of: job.offer) {
                             if !isSyncing {
                                 isSyncing = true
@@ -162,7 +162,7 @@ struct JobDetailsView: View {
                             }
                         }
                     
-                    Toggle("No Offer", isOn: $job.no_offer)
+                    Toggle(L10n.noOffer, isOn: $job.no_offer)
                         .onChange(of: job.no_offer) {
                             if !isSyncing {
                                 isSyncing = true
@@ -174,21 +174,21 @@ struct JobDetailsView: View {
                         }
                 }
                 
-                Section("Phase III", isExpanded: $sectionThreeExpanded) {
-                    Toggle("Accepted", isOn: $job.accepted)
+                Section(L10n.phaseIII, isExpanded: $sectionThreeExpanded) {
+                    Toggle(L10n.accepted, isOn: $job.accepted)
                         .onChange(of: job.accepted) {
                             job.declined = !job.accepted
                             viewModel.saveContext()
                         }
                     
-                    Toggle("Declined", isOn: $job.declined)
+                    Toggle(L10n.declined, isOn: $job.declined)
                         .onChange(of: job.declined) {
                             job.accepted = !job.declined
                             viewModel.saveContext()
                         }
                 }
                 
-                Section("Salary Range") {
+                Section(L10n.salaryRange) {
                     HStack {
                         VStack {
                             RangedSliderView(value: $sliderPosition, bounds: 0...300)
@@ -203,7 +203,7 @@ struct JobDetailsView: View {
                     .padding()
                 }
                 
-                Section("Job Description") {
+                Section(L10n.jobDescription) {
                     TextEditor(text: $jobDescriptionText)
                         .frame(minWidth: 200, maxWidth: 400, minHeight: 50, alignment: .center)
                         .onChange(of: jobDescriptionText) {

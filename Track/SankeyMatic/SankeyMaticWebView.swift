@@ -108,15 +108,15 @@ extension SankeyMaticWebView {
 extension SankeyMaticWebView {
     private func getInput() -> String {
         return """
-        Applications [\(viewModel.jobs.count { $0.interview })] Interviews
-        Applications [\(viewModel.jobs.count { $0.rejected })] Rejected
-        Applications [\(viewModel.jobs.count { $0.ghosted })] No Answer
+        \(L10n.applications) [\(viewModel.jobs.count { $0.interview })] \(L10n.interviews)
+        \(L10n.applications) [\(viewModel.jobs.count { $0.rejected })] \(L10n.rejected)
+        \(L10n.applications) [\(viewModel.jobs.count { $0.ghosted })] \(L10n.noAnswer)
         
-        Interviews [\(viewModel.jobs.count { $0.offer })] Offers
-        Interviews [\(viewModel.jobs.count { $0.no_offer })] No Offer
+        \(L10n.interviews) [\(viewModel.jobs.count { $0.offer })] \(L10n.offers)
+        \(L10n.interviews) [\(viewModel.jobs.count { $0.no_offer })] \(L10n.noOffer)
         
-        Offers [\(viewModel.jobs.count { $0.accepted })] Accepted
-        Offers [\(viewModel.jobs.count { $0.declined })] Declined
+        \(L10n.offers) [\(viewModel.jobs.count { $0.accepted })] \(L10n.accepted)
+        \(L10n.offers) [\(viewModel.jobs.count { $0.declined })] \(L10n.declined)
         """
     }
     

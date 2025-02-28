@@ -40,17 +40,16 @@ struct HomeViewToolbarView: View {
             Button(String(), systemImage: "plus.circle") {
                 isAddJobAlertPresented = true
             }
-            .accessibilityLabel("addJob")
             .frame(minWidth: 30, maxWidth: 30)
             .customAlert(
-                "Congrats! Where did you apply?",
+                LocalizedStringKey(L10n.congrats),
                 isPresented: $isAddJobAlertPresented,
                 presenting: addJobAlertData,
-                actionText: "Yes, Done"
+                actionText: LocalizedStringKey(L10n.yesDone)
             ) { userInput in
                 viewModel.addJob(company: userInput)
             } message: { value in
-                Text("Showing alert for \(value)… And adding a long text for preview.")
+                EmptyView()
             }
         }
     }
@@ -59,6 +58,7 @@ struct HomeViewToolbarView: View {
 #Preview("Light") {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(ViewModel.preview)
+        .environment(\.locale, .init(identifier: "de"))
 }
 
 #Preview("Dark") {

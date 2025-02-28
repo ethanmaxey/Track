@@ -13,46 +13,44 @@ struct FilterSheet: View {
     
     @AppStorage("filterState") private var storedFilterData: Data?
     
-    let statuses: [JobStatus] = JobStatus.allCases
-    
     var body: some View {
         NavigationView {
             VStack {
                 Form {
-                    Section(header: Text("Sort Options")) {
+                    Section(header: Text(L10n.sortOptions)) {
                         // Sort By Picker
                         HStack {
-                            Picker("Sort By", selection: $filterState.sortOption) {
+                            Picker(L10n.sortBy, selection: $filterState.sortOption) {
                                 ForEach(SortOption.allCases, id: \.self) { option in
-                                    Text(option.rawValue).tag(option)
+                                    Text(option.text).tag(option)
                                 }
                             }
                         }
                         
                         // Order Picker
-                        Picker("Order", selection: $filterState.isAscending) {
-                            Text("Ascending").tag(true)
-                            Text("Descending").tag(false)
+                        Picker(L10n.order, selection: $filterState.isAscending) {
+                            Text(L10n.ascending).tag(true)
+                            Text(L10n.descending).tag(false)
                         }
                     }
 
                     
-                    Section(header: Text("Filter by Date")) {
-                        DatePicker("Date", selection: Binding(
+                    Section(header: Text(L10n.filterByDate)) {
+                        DatePicker(L10n.date, selection: Binding(
                             get: { filterState.selectedDate ?? Date() },
                             set: { filterState.selectedDate = $0 }
                         ), displayedComponents: .date)
                         
-                        Picker("Criteria", selection: $filterState.dateFilterOperator) {
+                        Picker(L10n.criteria, selection: $filterState.dateFilterOperator) {
                             ForEach(DateFilterOperator.allCases, id: \.self) { op in
-                                Text(op.rawValue).tag(op as DateFilterOperator?)
+                                Text(op.text).tag(op as DateFilterOperator?)
                             }
                         }
                     }
 
-                    Section(header: Text("Filter by Status")) {
+                    Section(header: Text(L10n.filterByStatus)) {
                         ForEach(JobStatus.allCases) { status in
-                            Toggle(status.rawValue.capitalized, isOn: Binding(
+                            Toggle(status.text, isOn: Binding(
                                 get: { filterState.selectedStatuses.contains(status) },
                                 set: { isSelected in
                                     if isSelected {
@@ -66,7 +64,7 @@ struct FilterSheet: View {
                     }
                 }
             }
-            .navigationBarTitle("Filters", displayMode: .inline)
+            .navigationBarTitle(L10n.filters, displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
                 isPresented = false
             }) {
@@ -76,7 +74,7 @@ struct FilterSheet: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     HStack {
-                        Button("Clear Filters") {
+                        Button(L10n.clearFilters) {
                             filterState.selectedDate = nil
                             filterState.selectedStatuses = []
                             isPresented = false
@@ -87,7 +85,7 @@ struct FilterSheet: View {
                         
                         Spacer()
                         
-                        Button("Apply Filters") {
+                        Button(L10n.applyFilters) {
                             isPresented = false
                         }
                         .buttonStyle(.bordered)

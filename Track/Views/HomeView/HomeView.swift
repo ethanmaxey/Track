@@ -77,7 +77,7 @@ struct HomeView: View {
                     matchesDate = jobDate < filterDate
                 case .greaterThan:
                     matchesDate = jobDate > filterDate
-                case .equal:
+                case .equals:
                     matchesDate = Calendar.current.isDate(jobDate, inSameDayAs: filterDate)
                 }
             } else {

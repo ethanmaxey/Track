@@ -14,6 +14,7 @@ final class Track_ioUITests: XCTestCase {
     override func setUp() {
         // UI tests must launch the application that they test.
         app = XCUIApplication()
+        app.launchArguments = ["--Reset"]
         setupSnapshot(app)
         app.launch()
     }
@@ -24,12 +25,19 @@ final class Track_ioUITests: XCTestCase {
 
     @MainActor
     func testTakeMainListScreenshot() throws {
+        guard UIDevice.current.userInterfaceIdiom != .pad else {
+            // No need to see this view on iPad. Details view shows it.
+            return
+        }
+
+        
         snapshot("MainList")
     }
     
     @MainActor
     func testTakeDetailsScreenshot() throws {
         app.buttons["🚀 NASA"].tap()
+        app.swipeUp()
         snapshot("Details")
     }
     
@@ -44,7 +52,7 @@ final class Track_ioUITests: XCTestCase {
         
         let textField = app.textFields["Enter job name here."]
         textField.tap()
-        textField.typeText("DeepSeek")
+        textField.typeText("🎶 TikTok")
         snapshot("AddJob")
     }
     
@@ -62,8 +70,8 @@ final class Track_ioUITests: XCTestCase {
     @MainActor
     func testTakeSankeyShareScreenshot() throws {
         // Select job from list on iPad for better interface setup.
-        if UIDevice.current.userInterfaceIdiom != .pad {
-            app.buttons["🚀 NASA"].tap()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            app.buttons["ToggleSidebar"].tap()
         }
         
         // No visualize button on iPad
