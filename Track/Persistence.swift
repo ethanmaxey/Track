@@ -18,16 +18,16 @@ class PersistenceController {
         facebook.company = "Facebook"
         facebook.id = UUID()
         facebook.ghosted = true
-        facebook.title = "Software Engineer"
-        facebook.jobDescription = "Fingers crossed!🤞"
+        facebook.title = L10n.softwareEngineer
+        facebook.jobDescription = L10n.fingersCrossed
         
         let microsft = JobListing(context: viewContext)
         microsft.company = "Microsoft"
         microsft.id = UUID()
         microsft.ghosted = false
         microsft.rejected = true
-        microsft.title = "Software Engineer"
-        microsft.jobDescription = "Fingers crossed!🤞"
+        microsft.title = L10n.softwareEngineer
+        microsft.jobDescription = L10n.fingersCrossed
         
         let apple = JobListing(context: viewContext)
         apple.company = "Apple"
@@ -35,8 +35,8 @@ class PersistenceController {
         apple.ghosted = false
         apple.interview = true
         apple.no_offer = true
-        apple.title = "Software Engineer"
-        apple.jobDescription = "Fingers crossed!🤞"
+        apple.title = L10n.softwareEngineer
+        apple.jobDescription = L10n.fingersCrossed
         
         let google = JobListing(context: viewContext)
         google.company = "Google"
@@ -45,8 +45,8 @@ class PersistenceController {
         google.interview = true
         google.offer = true
         google.accepted = true
-        google.title = "Software Engineer"
-        google.jobDescription = "Fingers crossed!🤞"
+        google.title = L10n.softwareEngineer
+        google.jobDescription = L10n.fingersCrossed
         
         let amazon = JobListing(context: viewContext)
         amazon.company = "Amazon"
@@ -55,8 +55,8 @@ class PersistenceController {
         amazon.interview = true
         amazon.offer = true
         amazon.declined = true
-        amazon.title = "Software Engineer"
-        amazon.jobDescription = "Fingers crossed!🤞"
+        amazon.title = L10n.softwareEngineer
+        amazon.jobDescription = L10n.fingersCrossed
         
         do {
             try viewContext.save()
@@ -133,8 +133,8 @@ class PersistenceController {
         newJob.offer = offer
         newJob.no_offer = no_offer
         
-        newJob.title = "Software Engineer"
-        newJob.jobDescription = "Fingers crossed!"
+        newJob.title = L10n.softwareEngineer
+        newJob.jobDescription = L10n.fingersCrossed
         
         do {
             try container.viewContext.save()

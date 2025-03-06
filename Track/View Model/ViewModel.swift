@@ -75,7 +75,7 @@ class ViewModel: ObservableObject {
             newJob.date = .now
             newJob.resume = nil
             newJob.title = "Software Developer"
-            newJob.jobDescription = "Fingers Crossed!"
+            newJob.jobDescription = L10n.fingersCrossed
 
             let useEmojis = UserDefaults.standard.bool(forKey: "useEmojis")
             if useEmojis {

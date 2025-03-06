@@ -107,17 +107,38 @@ extension SankeyMaticWebView {
 // MARK: - Input Processing
 extension SankeyMaticWebView {
     private func getInput() -> String {
-        return """
-        \(L10n.applications) [\(viewModel.jobs.count { $0.interview })] \(L10n.interviews)
-        \(L10n.applications) [\(viewModel.jobs.count { $0.rejected })] \(L10n.rejected)
-        \(L10n.applications) [\(viewModel.jobs.count { $0.ghosted })] \(L10n.noAnswer)
+        var result: String = String()
         
-        \(L10n.interviews) [\(viewModel.jobs.count { $0.offer })] \(L10n.offers)
-        \(L10n.interviews) [\(viewModel.jobs.count { $0.no_offer })] \(L10n.noOffer)
+        if viewModel.jobs.count(where: { $0.interview }) != 0 {
+            result.append("\(L10n.applications) [\(viewModel.jobs.count { $0.interview })] \(L10n.interviews)\n")
+        }
         
-        \(L10n.offers) [\(viewModel.jobs.count { $0.accepted })] \(L10n.accepted)
-        \(L10n.offers) [\(viewModel.jobs.count { $0.declined })] \(L10n.declined)
-        """
+        if viewModel.jobs.count(where: { $0.rejected }) != 0 {
+            result.append("\(L10n.applications) [\(viewModel.jobs.count { $0.rejected })] \(L10n.rejected)\n")
+        }
+        
+        if viewModel.jobs.count(where: { $0.ghosted }) != 0 {
+            result.append("\(L10n.applications) [\(viewModel.jobs.count { $0.ghosted })] \(L10n.noAnswer)\n")
+        }
+        
+        if viewModel.jobs.count(where: { $0.offer }) != 0 {
+            result.append("\(L10n.interviews) [\(viewModel.jobs.count { $0.offer })] \(L10n.offers)\n")
+        }
+        
+        if viewModel.jobs.count(where: { $0.no_offer }) != 0 {
+            result.append("\(L10n.interviews) [\(viewModel.jobs.count { $0.no_offer })] \(L10n.noOffer)\n")
+        }
+        
+        if viewModel.jobs.count(where: { $0.accepted }) != 0 {
+            result.append("\(L10n.offers) [\(viewModel.jobs.count { $0.accepted })] \(L10n.accepted)\n")
+        }
+        
+        if viewModel.jobs.count(where: { $0.declined }) != 0 {
+            result.append("\(L10n.offers) [\(viewModel.jobs.count { $0.declined })] \(L10n.declined)\n")
+        }
+        
+        
+        return result
     }
     
     private func updateSankeyData(for webView: WKWebView) {

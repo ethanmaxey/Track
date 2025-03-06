@@ -22,6 +22,8 @@ struct CustomAlertView<T: Hashable, M: View>: View {
     private var message: (() -> M)?
     
     @State private var username: String = String()
+    
+    @FocusState private var textFieldFocused: Bool
 
     init(
         _ titleKey: LocalizedStringKey,
@@ -59,8 +61,14 @@ struct CustomAlertView<T: Hashable, M: View>: View {
 
                     // Cannot convert value of type 'some View' to expected argument type 'Text?'
                     TextField("", text: $username, prompt: DefaultText)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.white)
+                        .focused($textFieldFocused)
+                        .disableAutocorrection(true)
+                        .accessibilityIdentifier("EnterJobNameHere")
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
+                        .viewDidLoad {
+                            textFieldFocused = true
+                        }
 
                     /// Buttons
                     HStack {

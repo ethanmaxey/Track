@@ -14,19 +14,20 @@ struct ContentView: View {
                 TabView {
                     HomeView()
                         .tabItem {
-                            Label("Track", systemImage: "house")
+                            Label(L10n.track, systemImage: "house")
                         }
                         .tag(0)
                     
                     SankeyView()
                         .tabItem {
-                            Label("Visualize", systemImage: "chart.xyaxis.line")
+                            Label(L10n.visualize, systemImage: "chart.xyaxis.line")
+                                .accessibilityIdentifier("Visualize Tab")
                         }
                         .tag(1)
                     
                     SettingsView()
                         .tabItem {
-                            Label("Settings", systemImage: "gear")
+                            Label(L10n.settings, systemImage: "gear")
                         }
                         .tag(2)
                 }
@@ -34,13 +35,13 @@ struct ContentView: View {
                 TabView {
                     HomeView()
                         .tabItem {
-                            Label("Jobs", systemImage: "house")
+                            Label(L10n.jobs, systemImage: "house")
                         }
                         .tag(0)
                     
                     SettingsView()
                         .tabItem {
-                            Label("Settings", systemImage: "gear")
+                            Label(L10n.settings, systemImage: "gear")
                         }
                         .tag(2)
                 }

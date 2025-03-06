@@ -135,6 +135,10 @@ struct JobDetailsView: View {
                         .onChange(of: job.rejected) {
                             viewModel.saveContext()
                             updateExpansionStates()
+                            
+                            if job.rejected {
+                                job.ghosted = false
+                            }
                         }
 
                     Toggle(L10n.interview, isOn: $job.interview)

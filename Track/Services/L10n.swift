@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct L10n {
     static func getTranslation(for key: String) -> String  {
-        NSLocalizedString(key, comment: String())
+        NSLocalizedString(key, bundle: Bundle.main, comment: String())
     }
     
     static let about = getTranslation(for: "About")
@@ -63,8 +63,6 @@ public struct L10n {
     static let track = getTranslation(for: "Track")
     static let visualize = getTranslation(for: "Visualize")
     static let yesDone = getTranslation(for: "Yes, Done")
-    
-    // Need to add
     static let applications = getTranslation(for: "Applications")
     static let interviews = getTranslation(for: "Interviews")
     static let offers = getTranslation(for: "Offers")
@@ -77,4 +75,7 @@ public struct L10n {
     static let greaterThan = getTranslation(for: "Is Greater Than")
     static let equals = getTranslation(for: "Equals")
     static let noFilter = getTranslation(for: "No Filter")
+    static let fingersCrossed = getTranslation(for: "Fingers crossed!")
+    static let softwareEngineer = getTranslation(for: "Software Engineer")
+    
 }

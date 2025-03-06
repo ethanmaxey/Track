@@ -53,6 +53,7 @@ struct SankeyView: View {
                             image: Image(uiImage: image)
                         )
                     )
+                    .accessibilityIdentifier("share")
                 } else {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundStyle(.gray)

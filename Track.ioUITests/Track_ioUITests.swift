@@ -50,7 +50,7 @@ final class Track_ioUITests: XCTestCase {
         
         app.buttons["addJob"].tap()
         
-        let textField = app.textFields[L10n.enterJobNameHere]
+        let textField = app.textFields["EnterJobNameHere"]
         textField.tap()
         textField.typeText("🎶 TikTok")
         snapshot("AddJob")
@@ -63,7 +63,7 @@ final class Track_ioUITests: XCTestCase {
             return
         }
         
-        app.buttons[L10n.visualize].tap()
+        app.buttons["Visualize Tab"].tap()
         snapshot("Sankey")
     }
     
@@ -76,11 +76,11 @@ final class Track_ioUITests: XCTestCase {
         
         // No visualize button on iPad
         if UIDevice.current.userInterfaceIdiom != .pad {
-            app.buttons[L10n.visualize].tap()
+            app.buttons["Visualize Tab"].tap()
         }
         
-        if app.buttons["Share…"].waitForExistence(timeout: 10) {
-            app.buttons["Share…"].tap()
+        if app.buttons["share"].waitForExistence(timeout: 10) {
+            app.buttons["share"].tap()
         }
         
         snapshot("Share")
