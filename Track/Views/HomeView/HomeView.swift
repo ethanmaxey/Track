@@ -136,6 +136,7 @@ struct HomeView: View {
                     .styleList()
                     .searchable(text: $searchText)
                     .toolbar(content: contentViewToolbarContent)
+                    .navigationBarTitleDisplayMode(.inline)
                     .sheet(isPresented: $isFilterSheetPresented) {
                         FilterSheet(
                             isPresented: $isFilterSheetPresented,

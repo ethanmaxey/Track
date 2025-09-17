@@ -134,6 +134,12 @@
         }
       }
     },
+    "Add" : {
+
+    },
+    "Add Job Title" : {
+
+    },
     "Alphabetical" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1236,6 +1242,9 @@
           }
         }
       }
+    },
+    "Default Job Titles" : {
+
     },
     "Descending" : {
       "extractionState" : "manual",

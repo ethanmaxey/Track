@@ -28,6 +28,9 @@ struct JobDetailsView: View {
     @State private var salaryMax: String
     @State private var jobDescriptionText: String
     
+    @AppStorage("jobTitles") private var jobTitlesData: Data = Data()
+    @State private var savedJobTitles: [String] = []
+    
     @State var sliderPosition: ClosedRange<Int> = 95...145
 
     init(job: JobListing) {
@@ -64,18 +67,23 @@ struct JobDetailsView: View {
                     
                     HStack {
                         Text(L10n.title)
-                        
                         Spacer()
-                        
                         TextField(L10n.jobTitle, text: $jobTitleText)
                             .multilineTextAlignment(.trailing)
-                            .onDisappear {
-                                job.title = jobTitleText
-                                try? job.managedObjectContext?.save()
-                                viewModel.saveContext()
-                                NotificationCenter.default.post(name: .NSManagedObjectContextDidSave, object: job.managedObjectContext)
-                                viewModel.objectWillChange.send()
+                            .onDisappear { saveTitle() }
+                        
+                        if !savedJobTitles.isEmpty {
+                            Menu {
+                                ForEach(savedJobTitles, id: \.self) { title in
+                                    Button(title) {
+                                        jobTitleText = title
+                                        saveTitle()
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "chevron.down.circle")
                             }
+                        }
                     }
                     
                     
@@ -93,26 +101,6 @@ struct JobDetailsView: View {
                     }
                 }
                 
-                /*
-                Section("Resume") {
-                    Button("Upload Resume") {
-                        isDocumentPickerShowing.toggle()
-                    }
-                    .fileImporter(isPresented: $isDocumentPickerShowing, allowedContentTypes: [.pdf], allowsMultipleSelection: false) { result in
-                        if let newResume = viewModel.addResume(basedOn: result), let url = newResume.fileURL {
-                            job.resume = newResume
-                            previewURL = URL(fileURLWithPath: url)
-                        }
-                    }
-
-                    Picker("Selected Resume", selection: $job.resume) {
-                        ForEach(viewModel.jobs.filter({ $0.resume != nil }).map({ $0.resume! }), id: \.self) { resume in
-                            Text(resume.fileName ?? "Resume").tag(resume as Resume?)
-                        }
-                    }
-                }
-                 */
-
                 Section(L10n.phaseI, isExpanded: $sectionOneExpanded) {
                     Toggle(L10n.ghosted, isOn: $job.ghosted)
                         .onChange(of: job.ghosted) {
@@ -220,6 +208,7 @@ struct JobDetailsView: View {
             .animation(.easeInOut, value: sectionThreeExpanded)
         }
         .onAppear {
+            loadSavedJobTitles()
             updateExpansionStates()
         }
         
@@ -244,6 +233,17 @@ struct JobDetailsView: View {
             }
         }
          */
+    }
+    
+    private func loadSavedJobTitles() {
+        if let decoded = try? JSONDecoder().decode([String].self, from: jobTitlesData) {
+            savedJobTitles = decoded
+        }
+    }
+    
+    private func saveTitle() {
+        job.title = jobTitleText
+        saveJob()
     }
     
     private func saveJob() {
