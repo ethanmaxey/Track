@@ -1,11 +1,10 @@
 {
-  "fill" : {
-    "automatic-gradient" : "extended-gray:1.00000,1.00000"
-  },
+  "fill" : "automatic",
   "groups" : [
     {
       "layers" : [
         {
+          "glass" : false,
           "image-name" : "Icon.png",
           "name" : "Icon",
           "position" : {
