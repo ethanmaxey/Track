@@ -216,16 +216,16 @@ struct HomeView: View {
 
 // MARK: - Toolbar
 extension HomeView {
-    @ToolbarContentBuilder
-    public func contentViewToolbarContent() -> some ToolbarContent {
-        ToolbarItemGroup(placement: .principal) {
-            HomeViewToolbarView(
-                isAddJobAlertPresented: $isAddJobAlertPresented,
-                addJobAlertData: $addJobAlertData,
-                isFilterSheetPresented: $isFilterSheetPresented
-            )
-        }
-    }
+	@ToolbarContentBuilder
+	public func contentViewToolbarContent() -> some ToolbarContent {
+		ToolbarItemGroup {
+			HomeViewToolbarView(
+				isAddJobAlertPresented: $isAddJobAlertPresented,
+				addJobAlertData: $addJobAlertData,
+				isFilterSheetPresented: $isFilterSheetPresented
+			)
+		}
+	}
 }
 
 
