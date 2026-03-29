@@ -79,7 +79,7 @@ class ViewModel: ObservableObject {
 
             let useEmojis = UserDefaults.standard.bool(forKey: "useEmojis")
             if useEmojis {
-                Task {
+                Task { [weak self] in
                     let emoji = try? await TextToEmoji.emoji(for: company)
                     guard let emoji else {
                         let randomEmoji = String(UnicodeScalar(Array(0x1F300...0x1F3F0).randomElement()!)!)
@@ -87,18 +87,16 @@ class ViewModel: ObservableObject {
                         return
                     }
                     
-                    DispatchQueue.main.async { [weak self] in
-                        withAnimation {
-                            newJob.company = emoji + company
-                            do {
-                                try self?.viewContext.save()
-                                self?.fetchJobs()
-                            } catch {
-                                let nsError = error as NSError
-                                OSLogger.logger.error("Unresolved error \(nsError), \(nsError.userInfo)")
-                            }
-                        }
-                    }
+					withAnimation {
+						newJob.company = emoji + company
+						do {
+							try self?.viewContext.save()
+							self?.fetchJobs()
+						} catch {
+							let nsError = error as NSError
+							OSLogger.logger.error("Unresolved error \(nsError), \(nsError.userInfo)")
+						}
+					}
                 }
             } else {
                 newJob.company = company
