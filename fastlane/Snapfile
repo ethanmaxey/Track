@@ -2,22 +2,12 @@
 
 # A list of devices you want to take the screenshots from
 devices([
- "iPhone 16 Plus",
- "iPad Pro 13-inch (M4)"
+  "iPhone 11 Pro Max",
+  "iPad Air 13-inch (M2)",
 ])
 
 languages([
-"en",
-"zh-Hans",
-"fr",
-"de",
-"it",
-"ja",
-"ko",
-"pl",
-"pt-BR",
-"ru",
-"es"
+  "en-US",
 ])
 
 # The name of the scheme which contains the UI Tests
@@ -41,3 +31,12 @@ override_status_bar(true)
 
 # For more information about all available options run
 # fastlane action snapshot
+
+skip_open_summary(true)
+reinstall_app(true)
+stop_after_first_error(true)
+number_of_retries(0)
+concurrent_simulators(true)
+output_simulator_logs(true)
+headless(true)
+erase_simulator(true)
